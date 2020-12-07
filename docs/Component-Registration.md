@@ -176,13 +176,21 @@ Vue.use(ElementWidgets.TreeSelector)
 组件库中的每个组件, 如果需要按需导入, 则必需都提供`install`方法, 有两种方式:
 
 - 1.统一在`element-widgets/packages/index.js`中定义
-
-- 2.每个组件的出口文件(`element-widgets/packages/tree-selector/index.js`)中单独定义
-
 ``` js
 import { TreeSelector } from 'element-widgets'
-Vue.use(TreeSelector) //1: Success 2: Success
+Vue.use(TreeSelector) // Success
 
 import TreeSelector from 'element-widgets/packages/tree-selector'
-Vue.use(TreeSelector) //1: Failure, 此时TreeSelector没有install方法 2: Success
+Vue.use(TreeSelector) // Failure, 此时TreeSelector没有install方法
 ```
+
+- 2.每个组件的出口文件(`element-widgets/packages/tree-selector/index.js`)中单独定义
+``` js
+import { TreeSelector } from 'element-widgets'
+Vue.use(TreeSelector) // Success
+
+import TreeSelector from 'element-widgets/packages/tree-selector'
+Vue.use(TreeSelector) // Success
+```
+
+**第二种方式对于单个组件移植成库比较方便, 但代码量略多一点**
