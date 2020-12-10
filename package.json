@@ -1,8 +1,8 @@
 {
-  "name": "vue-admin-template",
-  "version": "4.4.0",
-  "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
-  "author": "Pan <panfree23@gmail.com>",
+  "name": "element-widgets-sample",
+  "version": "0.1.0",
+  "description": "element-widgets sample",
+  "author": "THRAEX <THRAEX@aliyun.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
@@ -17,6 +17,7 @@
     "axios": "0.18.1",
     "core-js": "3.6.5",
     "element-ui": "2.13.2",
+    "element-widgets": "file:../element-widgets",
     "js-cookie": "2.2.0",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",

@@ -160,6 +160,27 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/selector',
+    component: Layout,
+    meta: { title: 'Selector', icon: 'el-icon-finished' },
+    redirect: '/selector/user',
+    children: [
+      {
+        path: 'user',
+        name: 'UserSelector',
+        component: () => import('@/views/selector/user'),
+        meta: { title: 'User Selector', icon: 'el-icon-user-solid' }
+      },
+      {
+        path: 'project',
+        name: 'ProjectSelector',
+        component: () => import('@/views/selector/project'),
+        meta: { title: 'Project Selector', icon: 'el-icon-s-help' }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
