@@ -1,7 +1,7 @@
 {
-  "name": "element-widgets-sample",
+  "name": "vue-component-samples",
   "version": "0.1.0",
-  "description": "element-widgets sample",
+  "description": "Some samples of vue components",
   "author": "THRAEX <THRAEX@aliyun.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
