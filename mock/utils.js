@@ -20,6 +20,20 @@ function param2Obj(url) {
   return obj
 }
 
+/**
+ * @param {Number} page
+ * @param {Number} size
+ * @param {Array} list
+ */
+function pagination(page, size, list) {
+  const total = list.length
+  const offset = (page - 1) * size
+  const begin = offset + size
+
+  return begin >= total ? list.slice(offset, total) : list.slice(offset, begin)
+}
+
 module.exports = {
-  param2Obj
+  param2Obj,
+  pagination
 }
