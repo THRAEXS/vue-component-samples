@@ -1,11 +1,15 @@
 <template>
   <div class="app-container">
-    <thx-card-box>
+    <!-- <thx-card-box>
       <thx-tree-selection
         :data="data"
         :props="props"
       />
-    </thx-card-box>
+    </thx-card-box> -->
+
+    <thx-component-template />
+    <thx-user-selector />
+    <thx-project-selector />
 
     <!-- <btn type="danger">Btn</btn> -->
 

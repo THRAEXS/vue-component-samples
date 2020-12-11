@@ -16,6 +16,7 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 import Wdigets from 'element-widgets'
+import Plus from './components-plus'
 
 /**
  * If you don't want to use mock-server
@@ -36,6 +37,7 @@ Vue.use(ElementUI, { locale })
 // Vue.use(ElementUI)
 
 Vue.use(Wdigets)
+Vue.use(Plus)
 
 Vue.config.productionTip = false
 
