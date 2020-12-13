@@ -1,4 +1,4 @@
-const users = require('./data/users.tmp.json')
+const users = require('./data/users.tmp.json').data
 const { pagination } = require('../utils')
 
 module.exports = [
@@ -20,6 +20,13 @@ module.exports = [
   {
     url: '/api/thraex/user/ids',
     type: 'get',
-    response: () => ({ code: 20000, data: users })
+    response: config => {
+      const { ids } = config.query
+
+      return {
+        code: 20000,
+        data: users.filter(it => ids.includes(it.id))
+      }
+    }
   }
 ]

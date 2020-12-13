@@ -26,6 +26,9 @@ function param2Obj(url) {
  * @param {Array} list
  */
 function pagination(page, size, list) {
+  if (typeof page === 'string') page = Number.parseInt(page)
+  if (typeof size === 'string') size = Number.parseInt(size)
+
   const total = list.length
   const offset = (page - 1) * size
   const begin = offset + size

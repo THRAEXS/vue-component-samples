@@ -7,9 +7,9 @@
       />
     </thx-card-box> -->
 
-    <thx-component-template />
+    <!-- <thx-component-template />
     <thx-user-selector />
-    <thx-project-selector />
+    <thx-project-selector /> -->
 
     <!-- <btn type="danger">Btn</btn> -->
 
