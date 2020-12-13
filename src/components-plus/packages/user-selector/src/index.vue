@@ -1,5 +1,6 @@
 <template>
   <thx-pagination-selector
+    :multiple="multiple"
     :data="list.data"
     :total="list.total"
     :page.sync="list.query.page"
@@ -8,6 +9,8 @@
     :visible.sync="selectorVisible"
     :value.sync="selected"
     :index="{ label: '序号' }"
+    top="13vh"
+    width="70%"
     :height="530"
     @ok="handleOk"
     @cancel="handleCancel"
@@ -55,11 +58,7 @@ export default {
     value: {
       immediate: true,
       handler() {
-        if (this.multiple) {
-          console.debug('todo: watch multiple value...', this.value)
-        } else {
-          this.selected = this.value ? this.value.id : null
-        }
+        this.selected = this.value ? this.multiple ? this.value.map(it => it.id) : this.value.id : null
       }
     },
     visible: {
@@ -76,7 +75,7 @@ export default {
     }
   },
   created() {
-    console.debug('Opt: created...')
+    console.warn('Opt: not in created...')
     this.search()
   },
   methods: {
@@ -92,7 +91,11 @@ export default {
     handleOk() {
       new Promise(resolve => {
         if (this.multiple) {
-          console.debug('multiple...')
+          if (this.selected && this.selected.length > 0) {
+            this.getByIds(this.selected).then(({ data }) => resolve(data))
+          } else {
+            resolve([])
+          }
         } else {
           const one = this.list.data.find(it => it.id === this.selected)
           one ? resolve(one) : this.getByIds([this.selected]).then(({ data: [first] }) => resolve(first || null))

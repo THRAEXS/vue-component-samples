@@ -1,4 +1,4 @@
-const components = require.context('.', true, /\w+\/index.js$/)
+const components = require.context('./packages', true, /\w+\/index.js$/)
 
 const names = []
 const modules = {}
