@@ -11,7 +11,7 @@
     :top="top"
     :width="width"
     :height="height"
-    :index="indexProp"
+    :index="indexProps"
     @ok="assembly"
     @cancel="handleCancel"
     @close="handleClose"
@@ -67,7 +67,7 @@ export default {
     }
   },
   computed: {
-    indexProp() {
+    indexProps() {
       return Object.assign({ label: '序号' }, this.index)
     }
   },
