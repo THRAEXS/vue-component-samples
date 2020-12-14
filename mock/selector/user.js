@@ -6,9 +6,17 @@ module.exports = [
     url: '/api/thraex/user/page',
     type: 'get',
     response: config => {
-      const { page, size } = config.query
+      const { page, size, params: { deptId, username }} = config.query
+      console.debug({ deptId, username })
 
-      const list = [...users]
+      // Mock select
+      const deptUsers = deptId ? users.filter(it => it.deptId === deptId) : users
+
+      const list = username
+        ? deptUsers.filter(it =>
+          (it.fullName && it.fullName.includes(username)) ||
+          (it.username && it.username.includes(username))
+        ) : deptUsers
 
       return {
         code: 20000,

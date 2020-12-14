@@ -14,8 +14,28 @@
     @close="handleClose"
   >
     <template v-slot:condition>
-      <el-input v-model="conditions.name" />
+      <el-form :inline="true">
+        <el-form-item label="所级单位:">
+          <el-input v-model="conditions.deptId" size="mini" />
+          <!-- <el-cascader
+            v-model="value"
+            :options="options"
+            :props="{ expandTrigger: 'hover' }"
+            @change="handleChange"
+          /> -->
+        </el-form-item>
+        <el-form-item label="姓名或账号:">
+          <el-input
+            v-model="conditions.username"
+            size="mini"
+            clearable
+            placeholder="请输入人员姓名/拼音/账号"
+            style="width: 350px;"
+          />
+        </el-form-item>
+      </el-form>
     </template>
+
     <el-table-column prop="fullName" label="姓名" align="center" width="150" />
     <el-table-column prop="orgName" label="院级单位" align="center" />
     <el-table-column prop="deptName" label="所级单位" align="center" />
@@ -36,9 +56,15 @@ export default {
         ids: '/api/thraex/user/ids'
       },
       conditions: {
-        name: 'GUI'
+        deptId: null,
+        username: null
       }
     }
   }
 }
 </script>
+<style scoped>
+::v-deep .el-form .el-form-item {
+  margin-bottom: 0;
+}
+</style>
