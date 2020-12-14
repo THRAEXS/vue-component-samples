@@ -6,9 +6,13 @@ module.exports = [
     url: '/api/thraex/project/page',
     type: 'get',
     response: config => {
-      const { page, size } = config.query
+      const { page, size, params: { deptId, projectName }} = config.query
+      console.debug({ deptId, projectName })
 
-      const list = [...projects]
+      // Mock select
+      const list = projectName
+        ? projects.filter(it => it.projectName && it.projectName.includes(projectName))
+        : projects
 
       return {
         code: 20000,
@@ -20,6 +24,13 @@ module.exports = [
   {
     url: '/api/thraex/project/ids',
     type: 'get',
-    response: () => ({ code: 20000, data: projects })
+    response: config => {
+      const { ids } = config.query
+
+      return {
+        code: 20000,
+        data: projects.filter(it => ids.includes(it.id))
+      }
+    }
   }
 ]
