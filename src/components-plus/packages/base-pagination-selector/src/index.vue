@@ -37,7 +37,7 @@ export default {
       type: String,
       required: true
     },
-    apiByIds: {
+    apiIds: {
       type: String,
       required: true
     },
@@ -89,24 +89,19 @@ export default {
     }
   },
   mounted() {
-    console.warn('Opt: not in here...')
+    console.warn('Optimize: not in here...')
     this.search()
   },
   methods: {
     requestPage(params) {
-      return request({
-        url: this.apiPage,
-        method: 'GET',
-        params,
-        paramsSerializer: p => qs.stringify(p)
-      })
+      return this.apiPage
+        ? request({ url: this.apiPage, method: 'GET', params, paramsSerializer: p => qs.stringify(p) })
+        : new Promise(resolve => resolve({ data: [], total: 0 }))
     },
     requestByIds(ids) {
-      return request({
-        url: this.apiByIds,
-        method: 'GET',
-        params: { ids }
-      })
+      return this.apiIds
+        ? request({ url: this.apiIds, method: 'GET', params: { ids }})
+        : new Promise(resolve => resolve({ data: [] }))
     },
     search() {
       this.list.loading = true

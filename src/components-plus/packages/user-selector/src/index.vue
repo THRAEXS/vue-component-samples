@@ -1,14 +1,14 @@
 <template>
   <thx-base-pagination-selector
     v-model="selected"
-    api-page="/api/thraex/user/page"
-    api-by-ids="/api/thraex/user/ids"
-    :conditions="conditions"
     :multiple="multiple"
     :visible.sync="selectorVisible"
     :top="top"
     :width="width"
     :height="height"
+    :api-page="api.page"
+    :api-ids="api.ids"
+    :conditions="conditions"
     @ok="handleOk"
     @cancel="handleCancel"
     @close="handleClose"
@@ -31,6 +31,10 @@ export default {
   mixins: [PaginationSelectorMixin],
   data() {
     return {
+      api: {
+        page: '/api/thraex/user/page',
+        ids: '/api/thraex/user/ids'
+      },
       conditions: {
         name: 'GUI'
       }
