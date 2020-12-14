@@ -93,6 +93,46 @@
         </thx-card-box>
       </el-col>
     </el-row>
+
+    <thx-card-box title="Case 7 - 初始化查询条件">
+      <template v-slot:toolbar>
+        <el-button type="danger" size="mini" @click="case7.user = null">清除</el-button>
+        <el-button type="primary" size="mini" @click="case7.visible = true">选择</el-button>
+      </template>
+      {{ case7.user || 'Unchecked' }}
+
+      <thx-user-selector
+        :value.sync="case7.user"
+        :visible.sync="case7.visible"
+        :props="case7.props"
+      />
+    </thx-card-box>
+    <thx-card-box title="Case 8 - 初始化查询条件并禁用">
+      <template v-slot:toolbar>
+        <el-button type="danger" size="mini" @click="case8.user = null">清除</el-button>
+        <el-button type="primary" size="mini" @click="case8.visible = true">选择</el-button>
+      </template>
+      {{ case8.user || 'Unchecked' }}
+
+      <thx-user-selector
+        :value.sync="case8.user"
+        :visible.sync="case8.visible"
+        :props="case8.props"
+      />
+    </thx-card-box>
+    <thx-card-box title="Case 9 - 查询条件不可见(即条件值无效)">
+      <template v-slot:toolbar>
+        <el-button type="danger" size="mini" @click="case9.user = null">清除</el-button>
+        <el-button type="primary" size="mini" @click="case9.visible = true">选择</el-button>
+      </template>
+      {{ case9.user || 'Unchecked' }}
+
+      <thx-user-selector
+        :value.sync="case9.user"
+        :visible.sync="case9.visible"
+        :props="case9.props"
+      />
+    </thx-card-box>
   </div>
 </template>
 <script>
@@ -128,6 +168,32 @@ export default {
           { id: '00c5792a-77d3-49fd-a152-2b58521afa9e' },
           { id: '013f695b-f29f-4aac-92b5-849ae8ec7dad' }
         ]
+      },
+      case7: {
+        visible: false,
+        user: null,
+        // user: { id: '0028de89-2440-4b57-9b74-52ae6db387c8' },
+        props: {
+          // deptId: '5308703',
+          deptId: '3304',
+          username: '关新'
+        }
+      },
+      case8: {
+        visible: false,
+        user: null,
+        props: {
+          // username: { value: '关新', disabled: true },
+          deptId: { value: '3304', disabled: true }
+        }
+      },
+      case9: {
+        visible: false,
+        user: null,
+        props: {
+          // username: { visible: false },
+          deptId: { visible: false }
+        }
       }
     }
   },

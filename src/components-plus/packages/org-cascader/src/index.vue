@@ -5,6 +5,7 @@
     :options="options"
     :props="props"
     :show-all-levels="true"
+    :disabled="disabled"
     size="mini"
     clearable
     filterable
@@ -22,7 +23,8 @@ export default {
     value: {
       type: String,
       default: null
-    }
+    },
+    disabled: Boolean
   },
   data() {
     return {
@@ -31,7 +33,6 @@ export default {
         value: 'id',
         label: 'name',
         children: 'childOrgList'
-        // expandTrigger: 'hover'
       },
       orgList: [],
       options: []

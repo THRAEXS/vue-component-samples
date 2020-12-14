@@ -41,7 +41,7 @@ export default {
       type: String,
       required: true
     },
-    conditions: {
+    params: {
       type: Object,
       default() {
         return {}
@@ -84,10 +84,10 @@ export default {
         this.search()
       }
     },
-    conditions: {
+    params: {
       immediate: true,
       handler() {
-        Object.assign(this.list.query, { params: this.conditions })
+        Object.assign(this.list.query, { params: this.params })
       }
     }
   },

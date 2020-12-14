@@ -8,22 +8,25 @@
     :height="height"
     :api-page="api.page"
     :api-ids="api.ids"
-    :conditions="conditions"
+    :params="params"
     @ok="handleOk"
     @cancel="handleCancel"
     @close="handleClose"
   >
     <template v-slot:condition>
       <el-form :inline="true">
-        <el-form-item label="所级单位:">
-          <thx-org-cascader :value.sync="conditions.deptId" />
-          <!-- <el-input v-model="conditions.deptId" size="mini" /> -->
+        <el-form-item v-if="conditions.deptId.visible" label="所级单位:">
+          <thx-org-cascader
+            :value.sync="params.deptId"
+            :disabled="conditions.deptId.disabled"
+          />
         </el-form-item>
-        <el-form-item label="姓名或账号:">
+        <el-form-item v-if="conditions.username.visible" label="姓名或账号:">
           <el-input
-            v-model="conditions.username"
+            v-model="params.username"
             size="mini"
             clearable
+            :disabled="conditions.username.disabled"
             placeholder="请输入人员姓名/拼音/账号"
             style="width: 350px;"
           />
@@ -44,16 +47,51 @@ import PaginationSelectorMixin from '@cp/mixins/pagination-selector'
 export default {
   name: 'ThxUserSelector',
   mixins: [PaginationSelectorMixin],
+  props: {
+    props: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
   data() {
     return {
       api: {
         page: '/api/thraex/user/page',
         ids: '/api/thraex/user/ids'
       },
-      conditions: {
-        // deptId: '5308703',
-        deptId: '3304',
+      defaultItem: { disabled: false, visible: true, value: '' },
+      params: {
+        deptId: null,
         username: null
+      }
+    }
+  },
+  computed: {
+    conditions() {
+      const conds = {}
+
+      // throw new Error()
+      Object.keys(this.params).forEach(it => {
+        const item = this.props[it] || ''
+        conds[it] = Object.assign({}, this.defaultItem,
+          typeof item === 'string' ? { value: item } : item)
+      })
+
+      return conds
+    }
+  },
+  watch: {
+    conditions: {
+      immediate: true,
+      deep: true,
+      handler() {
+        // throw new Error()
+        Object.keys(this.params).forEach(it => {
+          const { visible, value } = this.conditions[it]
+          this.params[it] = visible ? value : ''
+        })
       }
     }
   }
