@@ -6,13 +6,15 @@ module.exports = [
     url: '/api/thraex/project/page',
     type: 'get',
     response: config => {
-      const { page, size, params: { deptId, projectName }} = config.query
-      console.debug({ deptId, projectName })
+      const { page, size, params: { projectOrgId, projectName }} = config.query
+      console.debug({ projectOrgId, projectName })
 
       // Mock select
       const list = projectName
         ? projects.filter(it => it.projectName && it.projectName.includes(projectName))
         : projects
+
+      list.forEach(it => (it.unionOrgName = '院内参加单位, '.repeat(10)))
 
       return {
         code: 20000,

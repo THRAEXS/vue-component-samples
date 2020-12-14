@@ -17,7 +17,7 @@
     <template v-slot:condition>
       <el-form :inline="true">
         <el-form-item label="所级单位:">
-          <el-input v-model="conditions.deptId" size="mini" />
+          <el-input v-model="conditions.projectOrgId" size="mini" />
         </el-form-item>
         <el-form-item label="项目名称:">
           <el-input
@@ -59,7 +59,7 @@ export default {
         ids: '/api/thraex/project/ids'
       },
       conditions: {
-        deptId: null,
+        projectOrgId: null,
         projectName: null
       }
     }
