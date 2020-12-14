@@ -129,3 +129,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+::v-deep .el-form .el-form-item {
+  margin-bottom: 2px;
+}
+</style>

@@ -16,13 +16,8 @@
     <template v-slot:condition>
       <el-form :inline="true">
         <el-form-item label="所级单位:">
-          <el-input v-model="conditions.deptId" size="mini" />
-          <!-- <el-cascader
-            v-model="value"
-            :options="options"
-            :props="{ expandTrigger: 'hover' }"
-            @change="handleChange"
-          /> -->
+          <thx-org-cascader :value.sync="conditions.deptId" />
+          <!-- <el-input v-model="conditions.deptId" size="mini" /> -->
         </el-form-item>
         <el-form-item label="姓名或账号:">
           <el-input
@@ -56,15 +51,11 @@ export default {
         ids: '/api/thraex/user/ids'
       },
       conditions: {
-        deptId: null,
+        // deptId: '5308703',
+        deptId: '3304',
         username: null
       }
     }
   }
 }
 </script>
-<style scoped>
-::v-deep .el-form .el-form-item {
-  margin-bottom: 0;
-}
-</style>
