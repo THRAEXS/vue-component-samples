@@ -43,55 +43,20 @@
 </template>
 <script>
 import PaginationSelectorMixin from '@cp/mixins/pagination-selector'
+import ConditionMixin from '@cp/mixins/condition'
 
 export default {
   name: 'ThxUserSelector',
-  mixins: [PaginationSelectorMixin],
-  props: {
-    props: {
-      type: Object,
-      default() {
-        return {}
-      }
-    }
-  },
+  mixins: [PaginationSelectorMixin, ConditionMixin],
   data() {
     return {
       api: {
         page: '/api/thraex/user/page',
         ids: '/api/thraex/user/ids'
       },
-      defaultItem: { disabled: false, visible: true, value: '' },
       params: {
         deptId: null,
         username: null
-      }
-    }
-  },
-  computed: {
-    conditions() {
-      const conds = {}
-
-      // throw new Error()
-      Object.keys(this.params).forEach(it => {
-        const item = this.props[it] || ''
-        conds[it] = Object.assign({}, this.defaultItem,
-          typeof item === 'string' ? { value: item } : item)
-      })
-
-      return conds
-    }
-  },
-  watch: {
-    conditions: {
-      immediate: true,
-      deep: true,
-      handler() {
-        // throw new Error()
-        Object.keys(this.params).forEach(it => {
-          const { visible, value } = this.conditions[it]
-          this.params[it] = visible ? value : ''
-        })
       }
     }
   }

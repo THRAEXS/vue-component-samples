@@ -7,7 +7,7 @@ module.exports = [
     type: 'get',
     response: config => {
       const { page, size, params: { deptId, username }} = config.query
-      console.debug({ deptId, username })
+      // console.debug({ deptId, username })
 
       // Mock select
       const deptUsers = deptId ? users.filter(it => it.deptId === deptId) : users

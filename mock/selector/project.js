@@ -7,7 +7,7 @@ module.exports = [
     type: 'get',
     response: config => {
       const { page, size, params: { projectOrgId, projectName }} = config.query
-      console.debug({ projectOrgId, projectName })
+      // console.debug({ projectOrgId, projectName })
 
       // Mock select
       const list = projectName
