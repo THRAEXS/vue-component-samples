@@ -6,7 +6,7 @@ const modules = {}
 components.keys().forEach(it => {
   const { default: module } = components(it)
   names.push(module.name)
-  modules[module.name] = (module)
+  modules[module.name] = module
 })
 
 const install = Vue => names.forEach(name => Vue.component(name, modules[name]))

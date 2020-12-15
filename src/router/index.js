@@ -160,23 +160,50 @@ export const constantRoutes = [
     ]
   },
 
+  // {
+  //   path: '/selector',
+  //   component: Layout,
+  //   meta: { title: 'Selector', icon: 'el-icon-finished' },
+  //   redirect: '/selector/user',
+  //   children: [
+  //     {
+  //       path: 'user',
+  //       name: 'UserSelector',
+  //       component: () => import('@/views/selector/user'),
+  //       meta: { title: 'User Selector', icon: 'el-icon-user-solid' }
+  //     },
+  //     {
+  //       path: 'project',
+  //       name: 'ProjectSelector',
+  //       component: () => import('@/views/selector/project'),
+  //       meta: { title: 'Project Selector', icon: 'el-icon-s-help' }
+  //     }
+  //   ]
+  // },
+
   {
-    path: '/selector',
+    path: '/components/plus',
     component: Layout,
-    meta: { title: 'Selector', icon: 'el-icon-finished' },
-    redirect: '/selector/user',
+    meta: { title: 'Components Plus', icon: 'el-icon-finished' },
     children: [
       {
-        path: 'user',
+        path: '',
+        name: 'ComponentsPlus',
+        component: () => import('@/views/components-plus'),
+        meta: { title: 'Docs', icon: 'el-icon-user-solid' },
+        hidden: true
+      },
+      {
+        path: 'selector/user',
         name: 'UserSelector',
-        component: () => import('@/views/selector/user'),
+        component: () => import('@/views/components-plus/selector/user'),
         meta: { title: 'User Selector', icon: 'el-icon-user-solid' }
       },
       {
-        path: 'project',
+        path: 'selector/project',
         name: 'ProjectSelector',
-        component: () => import('@/views/selector/project'),
-        meta: { title: 'Project Selector', icon: 'el-icon-s-help' }
+        component: () => import('@/views/components-plus/selector/project'),
+        meta: { title: 'Project Selector', icon: 'el-icon-user-solid' }
       }
     ]
   },
