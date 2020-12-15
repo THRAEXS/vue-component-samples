@@ -9,21 +9,25 @@
     :index="{ fixed: true }"
     :api-page="api.page"
     :api-ids="api.ids"
-    :conditions="conditions"
+    :params="params"
     @ok="handleOk"
     @cancel="handleCancel"
     @close="handleClose"
   >
     <template v-slot:condition>
       <el-form :inline="true">
-        <el-form-item label="所级单位:">
-          <el-input v-model="conditions.projectOrgId" size="mini" />
+        <el-form-item v-if="conditions.projectOrgId.visible" label="所级单位:">
+          <thx-org-cascader
+            :value.sync="params.projectOrgId"
+            :disabled="conditions.projectOrgId.disabled"
+          />
         </el-form-item>
-        <el-form-item label="项目名称:">
+        <el-form-item v-if="conditions.projectName.visible" label="项目名称:">
           <el-input
-            v-model="conditions.projectName"
+            v-model="params.projectName"
             size="mini"
             clearable
+            :disabled="conditions.projectName.disabled"
             placeholder="请输入项目名称"
             style="width: 350px;"
           />
@@ -48,17 +52,18 @@
 </template>
 <script>
 import PaginationSelectorMixin from '@cp/mixins/pagination-selector'
+import ConditionMixin from '@cp/mixins/condition'
 
 export default {
   name: 'ThxProjectSelector',
-  mixins: [PaginationSelectorMixin],
+  mixins: [PaginationSelectorMixin, ConditionMixin],
   data() {
     return {
       api: {
         page: '/api/thraex/project/page',
         ids: '/api/thraex/project/ids'
       },
-      conditions: {
+      params: {
         projectOrgId: null,
         projectName: null
       }

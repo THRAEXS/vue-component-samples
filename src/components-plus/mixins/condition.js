@@ -22,7 +22,6 @@ export default {
         conds[it] = Object.assign({}, this.defaultItem,
           typeof item === 'string' ? { value: item } : item)
       })
-      console.debug(Object.keys(this.params), conds)
 
       return conds
     }

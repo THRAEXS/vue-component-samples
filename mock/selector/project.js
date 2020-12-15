@@ -10,9 +10,13 @@ module.exports = [
       // console.debug({ projectOrgId, projectName })
 
       // Mock select
-      const list = projectName
-        ? projects.filter(it => it.projectName && it.projectName.includes(projectName))
+      const orgProjects = projectOrgId
+        ? projects.filter(it => it.projectOrgId === projectOrgId)
         : projects
+
+      const list = projectName
+        ? orgProjects.filter(it => it.projectName && it.projectName.includes(projectName))
+        : orgProjects
 
       list.forEach(it => (it.unionOrgName = '院内参加单位, '.repeat(10)))
 
