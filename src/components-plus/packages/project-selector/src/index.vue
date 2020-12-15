@@ -51,8 +51,8 @@
   </thx-base-pagination-selector>
 </template>
 <script>
-import PaginationSelectorMixin from '@cp/mixins/pagination-selector'
-import ConditionMixin from '@cp/mixins/condition'
+import PaginationSelectorMixin from '~/mixins/pagination-selector'
+import ConditionMixin from '~/mixins/condition'
 
 export default {
   name: 'ThxProjectSelector',

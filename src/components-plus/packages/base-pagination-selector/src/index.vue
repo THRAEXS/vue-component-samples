@@ -24,7 +24,7 @@
   </thx-pagination-selector>
 </template>
 <script>
-import PaginationSelectorMixin from '@cp/mixins/pagination-selector'
+import PaginationSelectorMixin from '~/mixins/pagination-selector'
 
 import request from '@/utils/request'
 import qs from 'qs'

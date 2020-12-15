@@ -45,7 +45,7 @@ module.exports = {
     resolve: {
       alias: {
         '@': resolve('src'),
-        '@cp': resolve('src/components-plus')
+        '~': resolve('src/components-plus')
       }
     }
   },
