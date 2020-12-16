@@ -1,8 +1,29 @@
 ## User Selector
 
-### 基本用法
+### 基本用法(`.sync`)
 
-<case-1 class="not-md" />
+<thx-card-box>
+  <case-1 />
+
+  <!-- <template v-slot:footer>
+    <el-button type="success" size="mini">Show Code</el-button>
+    <div>
+    ```Code```....
+    </div>
+  </template> -->
+</thx-card-box>
+
+### 基本用法(Callback)
+
+<thx-card-box>
+  <case-2 />
+</thx-card-box>
+
+### 多选
+
+<thx-card-box :body-style="{ maxHeight: '300px', overflow: 'auto' }">
+  <case-3 />
+</thx-card-box>
 
 ### Attributes
 

@@ -1,15 +1,24 @@
 <template>
   <div>
-    <thx-card-box>Case User Selector 333</thx-card-box>
-    <el-button type="primary" @click="click">333</el-button>
+    <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
+    <el-button type="danger" size="mini" @click="users = null">清除</el-button>
+
+    <div>{{ users }}</div>
+
+    <thx-user-selector
+      multiple
+      :value.sync="users"
+      :visible.sync="visible"
+    />
   </div>
 </template>
 <script>
 export default {
-  name: 'CaseUserSelector3',
-  methods: {
-    click() {
-      this.$message('Vue in Markdown 3')
+  name: 'CaseUserSelector1',
+  data() {
+    return {
+      users: [],
+      visible: false
     }
   }
 }
