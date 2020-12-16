@@ -1,3 +1,4 @@
+import '@/styles/github-markdown.scss'
 import { importAll } from '@/utils/modules'
 import docs from './docs.md'
 
