@@ -99,12 +99,18 @@ export default {
     requestPage(params) {
       return this.apiPage
         ? request({ url: this.apiPage, method: 'GET', params, paramsSerializer: p => qs.stringify(p) })
-        : new Promise(resolve => resolve({ data: [], total: 0 }))
+        : this.emptyData()
     },
     requestByIds(ids) {
       return this.apiIds
         ? request({ url: this.apiIds, method: 'GET', params: { ids }})
-        : new Promise(resolve => resolve({ data: [] }))
+        : this.emptyData()
+    },
+    async emptyData() {
+      return { data: [], total: 0 }
+    },
+    getByIds(ids) {
+      console.debug(ids)
     },
     search() {
       this.list.loading = true
@@ -112,7 +118,28 @@ export default {
         .then(({ data, total }) => Object.assign(this.list, { data, total }))
         .finally(() => (this.list.loading = false))
     },
+    async collectRadio() {
+      let one = null
+
+      if (this.selected) {
+        one = this.list.data.find(it => it.id === this.selected)
+
+        if (!one) {
+          const { data: [first] } = await this.requestByIds([this.selected])
+          one = first || null
+        }
+      }
+
+      return one
+    },
+    async collectMultiple() {
+      return this.selected && this.selected.length > 0 ? (await this.requestByIds(this.selected)).data : []
+    },
     assembly() {
+      (this.multiple ? this.collectMultiple : this.collectRadio)().then(this.handleOk)
+    },
+    // @Deprecated
+    assemblyV1() {
       new Promise(resolve => {
         if (this.multiple) {
           if (this.selected && this.selected.length > 0) {
