@@ -1,29 +1,41 @@
-# Components Plus
+## Components Plus
 
-## Todos
+### Todos
 
 - [ ] Documentation
 - [ ] Org Selector
 - [ ] Condition component
 
-## `user-selector`
+### Dev
 
-## `project-selector`
+- VS Code 安装 `ESLint` / `Vetur`
 
-## `base-pagination-selector`
+- 提交代码前**务必**执行`npm run lint`进行代码格式检查，若有`warning`/`error`，请及时解决
 
-## `org-cascader`
+- 自动修复: `npm run lint -- --fix`。`eslint`会自动修复一些简单的错误。
 
-**临时过度**
-
-## `demo-code`
-
-**临时过度**
-
-## Dev
-
-- VS Code `ESLint`
-
-- `npm run lint`
+- 后端提供的API**不符合RESTFul风格**请拒绝使用
 
 - Docs
+
+### Component Dev
+
+> **`components-plus`下所有的组件会在`main.js`中全局注册，使用时无需单独导入注册。**
+
+组件包根路径: `src/components-plus`
+
+开始新的组件开发前，请按以下步骤:
+
+- 复制一份`component-template`:
+``` sh
+$ cd src/components-plus/packages
+$ cp -r component-template other-component
+```
+- 修改`other-component/src/index.vue`:`{ name: ThxOtherComponent }`。`name`前缀**必须为Thx**
+
+### Attentions
+
+以下组件为**临时过渡**性的，后续会被替换:
+
+- `org-cascader`
+- `demo-code`
