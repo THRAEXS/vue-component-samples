@@ -98,13 +98,21 @@ export default {
   methods: {
     requestPage(params) {
       return this.apiPage
-        ? request({ url: this.apiPage, method: 'GET', params, paramsSerializer: p => qs.stringify(p) })
-        : this.emptyData()
+        ? request({
+          url: this.apiPage,
+          method: 'GET',
+          params,
+          paramsSerializer: p => qs.stringify(p, { indices: false })
+        }) : this.emptyData()
     },
     requestByIds(ids) {
       return this.apiIds
-        ? request({ url: this.apiIds, method: 'GET', params: { ids }})
-        : this.emptyData()
+        ? request({
+          url: this.apiIds,
+          method: 'GET',
+          params: { ids },
+          paramsSerializer: p => qs.stringify(p, { indices: false })
+        }) : this.emptyData()
     },
     async emptyData() {
       return { data: [], total: 0 }
