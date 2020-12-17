@@ -109,8 +109,25 @@ export default {
     async emptyData() {
       return { data: [], total: 0 }
     },
-    getByIds(ids) {
-      console.debug(ids)
+    async getByIds(ids, full = true) {
+      if (!ids) return null
+
+      const isArr = Array.isArray(ids)
+      const params = isArr ? ids : [ids]
+
+      const data = params.length > 0 ? (await this.requestByIds(params)).data : []
+
+      return isArr ? data : data.length > 0 ? data[0] : null
+
+      /* let result
+      if (Array.isArray(ids)) {
+        result = ids.length > 0 ? (await this.requestByIds(ids)).data : []
+      } else {
+        // ({ data: [result = null] } = await this.requestByIds([ids]))
+        [result = null] = (await this.requestByIds([ids])).data
+      }
+
+      return result */
     },
     search() {
       this.list.loading = true
