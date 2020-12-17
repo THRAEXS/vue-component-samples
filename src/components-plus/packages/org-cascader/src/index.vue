@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      selected: null,
+      selected: [],
       props: {
         value: 'id',
         label: 'name',
@@ -87,7 +87,7 @@ export default {
       }
     },
     handleChange(nodes) {
-      const [val] = nodes.reverse()
+      const val = [...nodes].pop() || null
       this.$emit('update:value', val)
       this.$emit('change', val)
     }
