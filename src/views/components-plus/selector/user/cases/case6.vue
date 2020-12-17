@@ -8,6 +8,7 @@
     <thx-user-selector
       :value.sync="user"
       :visible.sync="visible"
+      :props="props"
     />
   </div>
 </template>
@@ -16,7 +17,11 @@ export default {
   data() {
     return {
       user: null,
-      visible: false
+      visible: false,
+      props: {
+        deptId: '3304',
+        username: '王'
+      }
     }
   }
 }

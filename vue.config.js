@@ -46,7 +46,8 @@ module.exports = {
       alias: {
         '@': resolve('src'),
         '~': resolve('src/components-plus')
-      }
+      },
+      extensions: ['.md']
     }
   },
   chainWebpack(config) {

@@ -190,8 +190,7 @@ export const constantRoutes = [
         path: '',
         name: 'ComponentsPlus',
         component: () => import('@/views/components-plus'),
-        meta: { title: 'Docs', icon: 'el-icon-user-solid' },
-        hidden: true
+        meta: { title: 'Docs', icon: 'el-icon-user-solid' }
       },
       {
         path: 'selector/user',

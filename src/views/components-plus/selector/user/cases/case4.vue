@@ -15,7 +15,7 @@
 export default {
   data() {
     return {
-      user: null,
+      user: { id: '0028de89-2440-4b57-9b74-52ae6db387c8' },
       visible: false
     }
   }

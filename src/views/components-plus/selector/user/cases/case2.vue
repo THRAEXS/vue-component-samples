@@ -14,7 +14,6 @@
 </template>
 <script>
 export default {
-  name: 'CaseUserSelector2',
   data() {
     return {
       user: null,
