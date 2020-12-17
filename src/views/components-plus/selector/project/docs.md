@@ -1,55 +1,24 @@
-`false`
+## Project Selector
 
-<case-1 />
+**当前阶段**用法与`<thx-user-selector />`一致。唯一区别在于 **`props`**。
 
-**sdf**
+### TODOS
 
-- [ ] 1
-- [ ] 2
-- [X] 3
+项目选择器还需要扩展:
 
-``` js
-export function importAll(modules) {
-  const components = {}
-
-  modules.keys().forEach(it => (components[removeSuffix(it)] = modules(it).default))
-
-  return components
-}
-
-export function removeSuffix(name) {
-  return name.split('/').pop().replace(/\.\w+$/, '')
-}
-```
-
-| C1 | C2 | C3 |
-| -- | -- | -- |
-| 1 | 2 | 3 |
-| 1 | 2 | 3 |
+- [ ] 查询条件: **业务类型**
+- [ ] 所显示的列的数量: **经费**
 
 
-## Case 1
+### props
 
-**Demo**
+| Attribute | Type | Accepted Values | Default | Description |
+| :----: | :----: | :----: | :----: | ---- |
+| `projectOrgId` | `String` / `Object` | - | `{ disabled: false, visible: true, value: '' }` | 所级单位ID |
+| `projectName` | `String` / `Object` | - | `{ disabled: false, visible: true, value: '' }` | 项目名称 |
 
-**Code**
+如果**只需指定查询条件，仅需提供`String`类型的值。**
 
-## Case 2
-
-<case-2 />
-
-**Demo**
-
-**Code**
-
-## Case 3
-
-<case-3 />
-
-**Demo**
-
-**Code**
-
-## Attributes desc
-
-<case-1 />
+- `disabled`: 是否禁用
+- `visible`: 是否可见。若不可见，则值无效
+- `value`: 属性值
