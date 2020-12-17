@@ -6,7 +6,8 @@ module.exports = [
     url: '/api/thraex/project/page',
     type: 'get',
     response: config => {
-      const { page, size, params: { projectOrgId, projectName }} = config.query
+      const { page, size, params = {}} = config.query
+      const { projectOrgId, projectName } = params
       // console.debug({ projectOrgId, projectName })
 
       // Mock select
@@ -31,7 +32,7 @@ module.exports = [
     url: '/api/thraex/project/ids',
     type: 'get',
     response: config => {
-      const { ids } = config.query
+      const { ids = [] } = config.query
 
       return {
         code: 20000,
