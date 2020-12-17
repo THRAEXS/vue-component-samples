@@ -16,7 +16,7 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 import Wdigets from 'element-widgets'
-import Plus from './components-plus'
+import Plus from '~'
 
 /**
  * If you don't want to use mock-server
