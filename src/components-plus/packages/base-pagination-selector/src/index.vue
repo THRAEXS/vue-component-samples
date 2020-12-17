@@ -109,15 +109,23 @@ export default {
     async emptyData() {
       return { data: [], total: 0 }
     },
-    async getByIds(ids) {
+    async getByIds(ids, full = true) {
       if (!ids) return null
 
+      let result
+
       const isArr = Array.isArray(ids)
-      const params = isArr ? ids : [ids]
+      if (full) {
+        const params = isArr ? ids : [ids]
 
-      const data = params.length > 0 ? (await this.requestByIds(params)).data : []
+        const data = params.length > 0 ? (await this.requestByIds(params)).data : []
 
-      return isArr ? data : data.length > 0 ? data[0] : null
+        result = isArr ? data : data.length > 0 ? data[0] : null
+      } else {
+        result = isArr ? ids.map(id => ({ id })) : { id: ids }
+      }
+
+      return result
 
       /* let result
       if (Array.isArray(ids)) {

@@ -34,8 +34,8 @@ export default {
     }
   },
   methods: {
-    getByIds(ids) {
-      return this.$refs.thxBps.getByIds(ids)
+    getByIds(ids, full) {
+      return this.$refs.thxBps.getByIds(ids, full)
     },
     handleOk(data) {
       this.$emit('update:value', data)
