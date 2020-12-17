@@ -1,6 +1,6 @@
 ## Project Selector
 
-**当前阶段**用法与`<thx-user-selector />`一致。唯一区别在于 **`props`**。
+**当前阶段**用法与[User Selector](/components/plus/selector/user)一致。唯一区别在于 **`props`**。
 
 ### TODOS
 
@@ -8,7 +8,6 @@
 
 - [ ] 查询条件: **业务类型**
 - [ ] 所显示的列的数量: **经费**
-
 
 ### props
 

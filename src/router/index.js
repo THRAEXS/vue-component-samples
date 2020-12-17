@@ -193,6 +193,12 @@ export const constantRoutes = [
         meta: { title: 'Docs', icon: 'el-icon-user-solid' }
       },
       {
+        path: 'selector/base',
+        name: 'BasePaginationSelector',
+        component: () => import('@/views/components-plus/selector/base'),
+        meta: { title: 'Pagination Selector', icon: 'el-icon-user-solid' }
+      },
+      {
         path: 'selector/user',
         name: 'UserSelector',
         component: () => import('@/views/components-plus/selector/user'),
@@ -212,7 +218,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

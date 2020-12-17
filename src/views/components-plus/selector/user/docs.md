@@ -452,7 +452,7 @@ export default {
 
 | Attribute | Type | Accepted Values | Default | Description |
 | :----: | :----: | :----: | :----: | ---- |
-| `value` / `v-model` | `Object` / `Array` | - | - | 选中项绑定值，用于回填，支持`.sync`修饰符。单选:`Object`；多选: `Array` |
+| `value` / `v-model` | `Object` / `Array` | - | - | 选中项绑定值，用于接收和回填，支持`.sync`修饰符。单选:`Object`；多选: `Array` |
 | `visible` | `Boolean` | - | `false` | 是否显示`Selector`，支持`.sync`修饰符 |
 | `multiple` | `Boolean` | - | `false` | 是否多选 |
 | `top` | `String` | - | `13vh` | `Dialog` CSS中的`margin-top`值 |
