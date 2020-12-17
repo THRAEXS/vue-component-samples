@@ -109,7 +109,7 @@ export default {
     async emptyData() {
       return { data: [], total: 0 }
     },
-    async getByIds(ids, full = true) {
+    async getByIds(ids) {
       if (!ids) return null
 
       const isArr = Array.isArray(ids)

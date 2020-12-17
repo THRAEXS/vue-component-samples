@@ -1,5 +1,6 @@
 <template>
   <thx-base-pagination-selector
+    ref="thxBps"
     v-model="selected"
     :multiple="multiple"
     :visible.sync="selectorVisible"
