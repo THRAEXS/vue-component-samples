@@ -20,7 +20,8 @@ export default {
       visible: false,
       props: {
         // username: { visible: false },
-        deptId: { visible: false }
+        // deptId: { visible: false }
+        deptId: { value: '3304', visible: false }
       }
     }
   }

@@ -32,10 +32,11 @@ export default {
       deep: true,
       handler() {
         this.checkParams()
-        Object.keys(this.params).forEach(it => {
+        /* Object.keys(this.params).forEach(it => {
           const { visible, value } = this.conditions[it]
           this.params[it] = visible ? value : ''
-        })
+        }) */
+        Object.keys(this.params).forEach(it => ({ value: this.params[it] } = this.conditions[it]))
       }
     }
   },

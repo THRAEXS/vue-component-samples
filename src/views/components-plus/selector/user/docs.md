@@ -272,9 +272,9 @@ export default {
    
 </thx-demo-code>
 
-### 不启用查询条件
+### 隐藏查询条件
 
-不启用即**值无效**
+查询条件被隐藏, `value`不受影响, 类似`deptId: { value: '3304', visible: false }`传值, `value`依然生效
 
 <thx-demo-code>
   <template v-slot:demo>
@@ -304,7 +304,8 @@ export default {
       visible: false,
       props: {
         // username: { visible: false },
-        deptId: { visible: false }
+        // deptId: { visible: false }
+        deptId: { value: '3304', visible: false }
       }
     }
   }
@@ -475,7 +476,7 @@ export default {
 如果**只需指定查询条件，仅需提供`String`类型的值。**
 
 - `disabled`: 是否禁用
-- `visible`: 是否可见。若不可见，则值无效
+- `visible`: 是否可见
 - `value`: 属性值
 
 ### Methods
