@@ -33,6 +33,27 @@
             style="width: 350px;"
           />
         </el-form-item>
+        <el-form-item v-if="conditions.types.visible" label="业务类型:">
+          <el-select
+            v-model="params.types"
+            size="mini"
+            multiple
+            clearable
+            placeholder="请选择业务类型"
+            style="width: 350px;"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+
+          <!-- <el-checkbox-group v-model="checkedCities">
+            <el-checkbox v-for="city in cities" :key="city" :label="city">{{ city }}</el-checkbox>
+          </el-checkbox-group> -->
+        </el-form-item>
       </el-form>
     </template>
 
@@ -66,8 +87,37 @@ export default {
       },
       params: {
         projectOrgId: null,
-        projectName: null
-      }
+        projectName: null,
+        types: [] // ['上海', '北京']
+      },
+      checkedCities: [],
+      cities: ['上海', '北京', '广州', '深圳', '深圳1', '深圳2', '深圳3'],
+      options: [
+        {
+          value: '选项1',
+          label: '黄金糕'
+        },
+        {
+          value: '选项2',
+          label: '双皮奶'
+        },
+        {
+          value: '选项3',
+          label: '蚵仔煎'
+        },
+        {
+          value: '选项4',
+          label: '龙须面'
+        },
+        {
+          value: '选项5',
+          label: '北京烤鸭'
+        },
+        {
+          value: '选项6',
+          label: '北京烤鸭1'
+        }
+      ]
     }
   }
 }
