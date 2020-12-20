@@ -88,6 +88,7 @@ export default {
       params: {
         projectOrgId: null,
         projectName: null,
+	status: null,
         types: [] // ['上海', '北京']
       },
       checkedCities: [],
