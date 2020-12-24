@@ -9,6 +9,14 @@
 - [ ] 查询条件: **业务类型**
 - [ ] 所显示的列的数量: **经费**
 
+### 基本用法
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-1 />
+  </template>
+</thx-demo-code>
+
 ### props
 
 | Attribute | Type | Accepted Values | Default | Description |
