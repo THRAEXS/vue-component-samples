@@ -2,8 +2,8 @@
   <div>
     <el-button type="primary" @click="visible = true">选择</el-button>
 
-    <thx-user-selector
-      :value.sync="user"
+    <thx-project-selector
+      :value.sync="project"
       :visible.sync="visible"
     />
   </div>
@@ -13,7 +13,7 @@ export default {
   name: 'CaseProjectSelector1',
   data() {
     return {
-      user: null,
+      project: null,
       visible: false
     }
   }
