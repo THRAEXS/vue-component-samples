@@ -1,13 +1,12 @@
 <template>
   <div>
     <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
-    <el-button type="danger" size="mini" @click="users = []">清除</el-button>
+    <el-button type="danger" size="mini" @click="project = null">清除</el-button>
 
-    <div>{{ users }}</div>
+    <div>{{ project || 'Unchecked' }}</div>
 
-    <thx-user-selector
-      multiple
-      :value.sync="users"
+    <thx-project-selector
+      :value.sync="project"
       :visible.sync="visible"
     />
   </div>
@@ -16,7 +15,7 @@
 export default {
   data() {
     return {
-      users: [],
+      project: { id: '22fdf07032e111ebb276efb62b803ff7' },
       visible: false
     }
   }

@@ -87,7 +87,7 @@ export default {
 <template>
   <div>
     <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
-    <el-button type="danger" size="mini" @click="users = null">清除</el-button>
+    <el-button type="danger" size="mini" @click="users = []">清除</el-button>
 
     <div>{{ users }}</div>
 
@@ -162,7 +162,7 @@ export default {
 <template>
   <div>
     <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
-    <el-button type="danger" size="mini" @click="users = null">清除</el-button>
+    <el-button type="danger" size="mini" @click="users = []">清除</el-button>
 
     <div>{{ users }}</div>
 
