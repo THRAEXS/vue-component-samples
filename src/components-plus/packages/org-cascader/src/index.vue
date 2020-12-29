@@ -10,7 +10,7 @@
     clearable
     filterable
     placeholder="请选择组织机构"
-    style="width: 350px;"
+    :style="cascaderStyle"
     @change="handleChange"
   />
 </template>
@@ -24,7 +24,15 @@ export default {
       type: String,
       default: null
     },
-    disabled: Boolean
+    disabled: Boolean,
+    cascaderStyle: {
+      type: Object,
+      default() {
+        return {
+          width: '350px'
+        }
+      }
+    }
   },
   data() {
     return {
