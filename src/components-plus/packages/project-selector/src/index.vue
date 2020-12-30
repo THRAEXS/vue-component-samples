@@ -17,43 +17,48 @@
   >
     <template v-slot:condition>
       <el-form :inline="true">
-        <el-form-item v-if="conditions.projectOrgId.visible" label="所级单位:">
-          <thx-org-cascader
-            :value.sync="params.projectOrgId"
-            :disabled="conditions.projectOrgId.disabled"
-          />
-        </el-form-item>
-        <el-form-item v-if="conditions.projectName.visible" label="项目名称:">
-          <el-input
-            v-model="params.projectName"
-            size="mini"
-            clearable
-            :disabled="conditions.projectName.disabled"
-            placeholder="请输入项目名称"
-            style="width: 350px;"
-          />
-        </el-form-item>
-        <el-form-item v-if="conditions.types.visible" label="业务类型:">
-          <el-select
-            v-model="params.types"
-            size="mini"
-            multiple
-            clearable
-            placeholder="请选择业务类型"
-            style="width: 350px;"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-
-          <!-- <el-checkbox-group v-model="checkedCities">
-            <el-checkbox v-for="city in cities" :key="city" :label="city">{{ city }}</el-checkbox>
-          </el-checkbox-group> -->
-        </el-form-item>
+        <el-row type="flex" justify="end">
+          <el-col :span="8">
+            <el-form-item v-if="conditions.projectOrgId.visible" label="所级单位:">
+              <thx-org-cascader
+                :value.sync="params.projectOrgId"
+                :disabled="conditions.projectOrgId.disabled"
+                :cascader-style="conditionStyle"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" align="center">
+            <el-form-item v-if="conditions.projectName.visible" label="项目名称:">
+              <el-input
+                v-model="params.projectName"
+                size="mini"
+                clearable
+                :disabled="conditions.projectName.disabled"
+                placeholder="请输入项目名称"
+                :style="conditionStyle"
+              />·
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" align="right">
+            <el-form-item v-if="conditions.types.visible" label="业务类型:">
+              <el-select
+                v-model="params.types"
+                size="mini"
+                multiple
+                clearable
+                placeholder="请选择业务类型"
+                :style="conditionStyle"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
     </template>
 
@@ -91,8 +96,6 @@ export default {
         projectName: null,
         types: [] // ['上海', '北京']
       },
-      checkedCities: [],
-      cities: ['上海', '北京', '广州', '深圳', '深圳1', '深圳2', '深圳3'],
       options: [
         {
           value: '选项1',
@@ -118,7 +121,10 @@ export default {
           value: '选项6',
           label: '北京烤鸭1'
         }
-      ]
+      ],
+      conditionStyle: {
+        width: '350px'
+      }
     }
   }
 }
