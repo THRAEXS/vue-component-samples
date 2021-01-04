@@ -416,6 +416,51 @@ export default {
 
 ### 通过组件获取数据
 
+将组件当作API接口来用。单个`id`返回`Object`, `id`数组返回`Array`。
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-11 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <label>
+      e.g.: 22fdf07032e111ebb276efb62b803ff7, 9830ecc032d811eb9521b1959b2330f5
+    </label>
+
+    <thx-input-carrier
+      v-model="id"
+      label="Get"
+      clearable
+      @click="handleSearch"
+    />
+
+    <div>{{ project || 'No data' }}</div>
+
+    <thx-project-selector ref="thxSelector" />
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      id: '',
+      project: null
+    }
+  },
+  methods: {
+    handleSearch() {
+      this.$refs.thxSelector.getByIds(this.id).then(data => (this.project = data))
+    }
+  }
+}
+</script>
+```
+  
+</thx-demo-code>
+
 ### props
 
 | Attribute | Type | Accepted Values | Default | Description |
