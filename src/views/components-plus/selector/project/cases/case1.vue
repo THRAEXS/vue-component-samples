@@ -13,7 +13,6 @@
 </template>
 <script>
 export default {
-  name: 'CaseProjectSelector1',
   data() {
     return {
       project: null,

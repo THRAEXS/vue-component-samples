@@ -14,7 +14,6 @@
 </template>
 <script>
 export default {
-  name: 'CaseProjectSelector7',
   data() {
     return {
       project: null,
