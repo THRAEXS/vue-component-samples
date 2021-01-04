@@ -202,11 +202,130 @@ export default {
    
 </thx-demo-code>
 
-### 初始化查询条件
+### 查询条件
 
-### 禁用查询条件
+列表查询条件有**所级单位** / **项目名称** / **业务类型**，默认仅显示**项目名称**。
 
-### 隐藏查询条件
+#### 初始化查询条件
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-6 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
+    <el-button type="danger" size="mini" @click="project = null">清除</el-button>
+
+    <div>{{ project || 'Unchecked' }}</div>
+
+    <thx-project-selector
+      :value.sync="project"
+      :visible.sync="visible"
+      :props="props"
+    />
+  </div>
+</template>
+<script>
+export default {
+  name: 'CaseProjectSelector6',
+  data() {
+    return {
+      project: null,
+      visible: false,
+      props: {
+        projectName: '测试'
+      }
+    }
+  }
+}
+</script>
+```
+
+</thx-demo-code>
+
+#### 禁用查询条件
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-7 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
+    <el-button type="danger" size="mini" @click="project = null">清除</el-button>
+
+    <div>{{ project || 'Unchecked' }}</div>
+
+    <thx-project-selector
+      :value.sync="project"
+      :visible.sync="visible"
+      :props="props"
+    />
+  </div>
+</template>
+<script>
+export default {
+  name: 'CaseProjectSelector7',
+  data() {
+    return {
+      project: null,
+      visible: false,
+      props: {
+        projectName: { disabled: true }
+      }
+    }
+  }
+}
+</script>
+```
+
+</thx-demo-code>
+
+#### 显示其它查询条件并初始条件值
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-8 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
+    <el-button type="danger" size="mini" @click="project = null">清除</el-button>
+
+    <div>{{ project || 'Unchecked' }}</div>
+
+    <thx-project-selector
+      :value.sync="project"
+      :visible.sync="visible"
+      :props="props"
+    />
+  </div>
+</template>
+<script>
+export default {
+  name: 'CaseProjectSelector8',
+  data() {
+    return {
+      project: null,
+      visible: false,
+      props: {
+        projectOrgId: { visible: true, value: '3304' },
+        dictProjectStatisticsTypeList: { visible: true, value: ['0', '4'] }
+      }
+    }
+  }
+}
+</script>
+```
+
+</thx-demo-code>
 
 ### 在表单中使用
 
@@ -216,8 +335,9 @@ export default {
 
 | Attribute | Type | Accepted Values | Default | Description |
 | :----: | :----: | :----: | :----: | ---- |
-| `projectOrgId` | `String` / `Object` | - | `{ disabled: false, visible: true, value: '' }` | 所级单位ID |
+| `projectOrgId` | `String` / `Object` | - | `{ disabled: false, visible: false, value: '' }` | 所级单位ID |
 | `projectName` | `String` / `Object` | - | `{ disabled: false, visible: true, value: '' }` | 项目名称 |
+| `dictProjectStatisticsTypeList` | `String` / `Object` | - | `{ disabled: false, visible: false, value: '' }` | 业务类型 |
 
 如果**只需指定查询条件，仅需提供`String`类型的值。**
 

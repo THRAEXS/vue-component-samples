@@ -17,9 +17,9 @@
   >
     <template v-slot:condition>
       <el-form :inline="true">
-        <el-row type="flex" justify="end">
-          <el-col :span="8">
-            <el-form-item v-if="conditions.projectOrgId.visible" label="所级单位:">
+        <el-row>
+          <el-col v-if="conditions.projectOrgId.visible" :span="8">
+            <el-form-item label="所级单位:">
               <thx-org-cascader
                 :value.sync="params.projectOrgId"
                 :disabled="conditions.projectOrgId.disabled"
@@ -27,8 +27,8 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="8" align="center">
-            <el-form-item v-if="conditions.projectName.visible" label="项目名称:">
+          <el-col v-if="conditions.projectName.visible" :span="8" align="center">
+            <el-form-item label="项目名称:">
               <el-input
                 v-model="params.projectName"
                 size="mini"
@@ -39,8 +39,8 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="8" align="right">
-            <el-form-item v-if="conditions.dictProjectStatisticsTypeList.visible" label="业务类型:">
+          <el-col v-if="conditions.dictProjectStatisticsTypeList.visible" :span="8" align="right">
+            <el-form-item label="业务类型:">
               <el-select
                 v-model="params.dictProjectStatisticsTypeList"
                 size="mini"
@@ -101,7 +101,25 @@ export default {
       types: [],
       conditionStyle: {
         width: '350px'
+      },
+      defaultItem: {
+        projectOrgId: { disabled: false, visible: false, value: null },
+        projectName: { disabled: false, visible: true, value: null },
+        dictProjectStatisticsTypeList: { disabled: false, visible: false, value: null }
       }
+    }
+  },
+  computed: {
+    conditions() {
+      const conds = {}
+
+      Object.keys(this.params).forEach(it => {
+        const item = this.props[it] || ''
+        conds[it] = Object.assign({}, this.defaultItem[it],
+          typeof item === 'string' ? { value: item } : item)
+      })
+
+      return conds
     }
   },
   created() {
