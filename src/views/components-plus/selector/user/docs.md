@@ -473,7 +473,7 @@ export default {
 | `deptId` | `String` / `Object` | - | `{ disabled: false, visible: true, value: '' }` | 所级单位ID |
 | `username` | `String` / `Object` | - | `{ disabled: false, visible: true, value: '' }` | 姓名/拼音/账号 |
 
-如果**只需指定查询条件，仅需提供`String`类型的值。**
+如果**只需指定查询条件值，仅需提供`String`类型的值。**
 
 - `disabled`: 是否禁用
 - `visible`: 是否可见
