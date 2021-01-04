@@ -36,13 +36,13 @@
                 :disabled="conditions.projectName.disabled"
                 placeholder="请输入项目名称"
                 :style="conditionStyle"
-              />·
+              />
             </el-form-item>
           </el-col>
           <el-col :span="8" align="right">
-            <el-form-item v-if="conditions.types.visible" label="业务类型:">
+            <el-form-item v-if="conditions.dictProjectStatisticsTypeList.visible" label="业务类型:">
               <el-select
-                v-model="params.types"
+                v-model="params.dictProjectStatisticsTypeList"
                 size="mini"
                 multiple
                 clearable
@@ -50,9 +50,9 @@
                 :style="conditionStyle"
               >
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
+                  v-for="item in types"
+                  :key="item.id"
+                  :label="item.name"
                   :value="item.value"
                 />
               </el-select>
@@ -82,6 +82,8 @@
 import PaginationSelectorMixin from '~/mixins/pagination-selector'
 import ConditionMixin from '~/mixins/condition'
 
+import request from '@/utils/request'
+
 export default {
   name: 'ThxProjectSelector',
   mixins: [PaginationSelectorMixin, ConditionMixin],
@@ -94,37 +96,20 @@ export default {
       params: {
         projectOrgId: null,
         projectName: null,
-        types: [] // ['上海', '北京']
+        dictProjectStatisticsTypeList: null
       },
-      options: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        },
-        {
-          value: '选项6',
-          label: '北京烤鸭1'
-        }
-      ],
+      types: [],
       conditionStyle: {
         width: '350px'
       }
+    }
+  },
+  created() {
+    this.requestTypes().then(({ data }) => (this.types = data))
+  },
+  methods: {
+    requestTypes() {
+      return request({ url: '/api/thraex/project/types', method: 'GET' })
     }
   }
 }
