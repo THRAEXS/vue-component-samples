@@ -19,7 +19,8 @@ export default {
       this.checkParams()
       Object.keys(this.params).forEach(it => {
         const item = this.props[it]
-        conds[it] = Object.assign({}, this.defaultItem,
+        conds[it] = Object.assign({},
+          this.selfItem && this.selfItem[it] ? this.selfItem[it] : this.defaultItem,
           item === undefined || item === null || item.constructor !== Object ? { value: item } : item)
       })
 

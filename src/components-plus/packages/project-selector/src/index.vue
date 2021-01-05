@@ -100,38 +100,19 @@ export default {
         dictProjectStatisticsTypeList: null,
         dictProjectStatusList: null
       },
-      // defaultItem: {
-      //   projectOrgId: { disabled: false, visible: false, value: null },
-      //   projectName: { disabled: false, visible: true, value: null },
-      //   dictProjectStatisticsTypeList: { disabled: false, visible: false, value: null },
-      //   dictProjectStatusList: { disabled: false, visible: false, value: null }
-      // },
+      selfItem: {
+        projectOrgId: { disabled: false, visible: false, value: null },
+        dictProjectStatisticsTypeList: { disabled: false, visible: false, value: null },
+        dictProjectStatusList: { disabled: false, visible: false, value: null }
+      },
       types: [],
       conditionStyle: {
         width: '350px'
       }
     }
   },
-  // computed: {
-  //   conditions() {
-  //     const conds = {}
-
-  //     Object.keys(this.params).forEach(it => {
-  //       const item = this.props[it]
-  //       conds[it] = Object.assign({}, this.defaultItem[it],
-  //         item === undefined || item === null || item.constructor !== Object ? { value: item } : item)
-  //     })
-
-  //     return conds
-  //   }
-  // },
   created() {
-    this.requestTypes().then(({ data }) => (this.types = data))
-  },
-  methods: {
-    requestTypes() {
-      return request({ url: this.api.types, method: 'GET' })
-    }
+    request({ url: this.api.types, method: 'GET' }).then(({ data }) => (this.types = data))
   }
 }
 </script>
