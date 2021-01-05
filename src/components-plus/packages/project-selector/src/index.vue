@@ -72,7 +72,9 @@
     />
     <el-table-column prop="projectFrom" label="项目来源" align="center" width="160" />
     <el-table-column prop="projectType" label="项目类型" align="center" width="160" />
-    <el-table-column prop="expenseCode" label="经费编号" align="center" width="100" />
+    <template v-if="mode === 1">
+      <el-table-column prop="expenseCode" label="经费编号" align="center" width="100" />
+    </template>
     <el-table-column prop="projectOrgName" label="承担单位" align="center" width="200" />
     <el-table-column prop="unionOrgName" label="院内参加单位" header-align="center" width="400" show-overflow-tooltip />
     <el-table-column prop="annual" label="计划年度" align="center" width="80" />
@@ -87,6 +89,15 @@ import request from '@/utils/request'
 export default {
   name: 'ThxProjectSelector',
   mixins: [PaginationSelectorMixin, ConditionMixin],
+  props: {
+    mode: {
+      type: Number,
+      default: 0,
+      validator(value) {
+        return [0, 1].indexOf(value) !== -1
+      }
+    }
+  },
   data() {
     return {
       api: {

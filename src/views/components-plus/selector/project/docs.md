@@ -192,6 +192,42 @@ export default {
    
 </thx-demo-code>
 
+### 显示经费相关列
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-12 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
+    <el-button type="danger" size="mini" @click="project = null">清除</el-button>
+
+    <div>{{ project || 'Unchecked' }}</div>
+
+    <thx-project-selector
+      :value.sync="project"
+      :visible.sync="visible"
+      :mode="1"
+    />
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      project: null,
+      visible: false
+    }
+  }
+}
+</script>
+```
+  
+</thx-demo-code>
+
 ### 查询条件
 
 #### 初始化查询条件
@@ -493,6 +529,7 @@ export default {
 | `value` / `v-model` | `Object` / `Array` | - | - | 选中项绑定值，用于接收和回填，支持`.sync`修饰符。单选:`Object`；多选: `Array` |
 | `visible` | `Boolean` | - | `false` | 是否显示`Selector`，支持`.sync`修饰符 |
 | `multiple` | `Boolean` | - | `false` | 是否多选 |
+| `mode` | `Number` | `0`: 不显示经费相关列; `1`: 显示经费相关列 | `0` | 是否显示经费相关列 |
 | `top` | `String` | - | `13vh` | `Dialog` CSS中的`margin-top`值 |
 | `width` | `String` | - | `70%` | `Dialog`的宽度 |
 | `height` | `String` / `Number` | - | `530` | `Table`的高度，默认为自动高度。如果`height`为`number`类型，单位 `px`；如果`height`为`String`类型，则这个高度会设置为`Table`的`style.height`的值，`Table`的高度会受控于外部样式。 |
