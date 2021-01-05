@@ -1,14 +1,5 @@
 ## Project Selector
 
-**当前阶段**用法与[User Selector](/components/plus/selector/user)一致。唯一区别在于 **`props`**。
-
-### TODOS
-
-项目选择器还需要扩展:
-
-- [ ] 查询条件: **业务类型**
-- [ ] 所显示的列的数量: **经费**
-
 ### 基本用法(`.sync`)
 
 <thx-demo-code>
@@ -203,8 +194,6 @@ export default {
 
 ### 查询条件
 
-列表查询条件有**所级单位** / **项目名称** / **业务类型**，默认仅显示**项目名称**。
-
 #### 初始化查询条件
 
 <thx-demo-code>
@@ -323,13 +312,49 @@ export default {
 
 </thx-demo-code>
 
-#### 其他查询条件
+#### 使用项目计划状态条件
 
-`props`中的查询
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-9 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
+    <el-button type="danger" size="mini" @click="project = null">清除</el-button>
+
+    <div>{{ project || 'Unchecked' }}</div>
+
+    <thx-project-selector
+      :value.sync="project"
+      :visible.sync="visible"
+      :props="props"
+    />
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      project: null,
+      visible: false,
+      props: {
+        // dictProjectStatusList: '11'
+        dictProjectStatusList: ['11', '31']
+      }
+    }
+  }
+}
+</script>
+```
+  
+</thx-demo-code>
 
 ### 在表单中使用
 
-配合`<thx-input-carrier />`进行单选，**多选尚在开发中**
+配合`<thx-input-carrier />`进行单选，**多选尚在开发中**。
 
 <thx-demo-code>
   <template v-slot:demo>
@@ -475,13 +500,16 @@ export default {
 
 ### props
 
+默认仅显示**项目名称**。
+
 | Attribute | Type | Accepted Values | Default | Description |
 | :----: | :----: | :----: | :----: | ---- |
-| `projectOrgId` | `String` / `Object` | - | `{ disabled: false, visible: false, value: '' }` | 所级单位ID |
-| `projectName` | `String` / `Object` | - | `{ disabled: false, visible: true, value: '' }` | 项目名称 |
-| `dictProjectStatisticsTypeList` | `String` / `Object` | - | `{ disabled: false, visible: false, value: '' }` | 业务类型 |
+| `projectOrgId` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 所级单位ID |
+| `projectName` | `String` / `Object` | - | `{ disabled: false, visible: true, value: null }` | 项目名称 |
+| `dictProjectStatisticsTypeList` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 业务类型 |
+| `dictProjectStatusList` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 计划状态, 仅`value`有效, 不在列表上方体现  |
 
-如果**只需指定查询条件值，仅需提供`String`类型的值。**
+如果**只需指定查询条件值，仅需提供`String` / `Array` 类型的值。**
 
 - `disabled`: 是否禁用
 - `visible`: 是否可见

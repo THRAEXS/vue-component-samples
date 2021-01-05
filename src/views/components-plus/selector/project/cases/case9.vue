@@ -19,8 +19,8 @@ export default {
       project: null,
       visible: false,
       props: {
-        projectOrgId: { visible: true, value: '3304' },
-        dictProjectStatisticsTypeList: { visible: true, value: ['0', '4'] }
+        // dictProjectStatusList: '11'
+        dictProjectStatusList: ['11', '31']
       }
     }
   }

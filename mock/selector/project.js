@@ -28,7 +28,12 @@ module.exports = [
     type: 'get',
     response: config => {
       const { page, size, params = {}} = config.query
-      const { projectOrgId, projectName, dictProjectStatisticsTypeList: types } = params
+      const {
+        projectOrgId,
+        projectName,
+        dictProjectStatisticsTypeList: types,
+        dictProjectStatusList: status
+      } = params
 
       // Mock select
       const orgProjects = projectOrgId
@@ -39,10 +44,15 @@ module.exports = [
         ? orgProjects.filter(it => it.projectName && it.projectName.includes(projectName))
         : orgProjects
 
+      const stas = status ? typeof status === 'string' ? [status] : status : []
+      const statusProjects = stas.length > 0
+        ? nameProjects.filter(it => stas.includes(it.dictProjectStatus))
+        : nameProjects
+
       const labels = toLabel(types)
       const list = labels.length > 0
-        ? nameProjects.filter(it => labels.includes(it.dictProjectStatisticsType))
-        : nameProjects
+        ? statusProjects.filter(it => labels.includes(it.dictProjectStatisticsType))
+        : statusProjects
 
       list.forEach(it => (it.unionOrgName = '院内参加单位, '.repeat(10)))
 

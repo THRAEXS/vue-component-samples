@@ -9,7 +9,7 @@ export default {
   },
   data() {
     return {
-      defaultItem: { disabled: false, visible: true, value: '' }
+      defaultItem: { disabled: false, visible: true, value: null }
     }
   },
   computed: {
@@ -18,9 +18,9 @@ export default {
 
       this.checkParams()
       Object.keys(this.params).forEach(it => {
-        const item = this.props[it] || ''
+        const item = this.props[it]
         conds[it] = Object.assign({}, this.defaultItem,
-          typeof item === 'string' ? { value: item } : item)
+          item === undefined || item === null || item.constructor !== Object ? { value: item } : item)
       })
 
       return conds

@@ -91,43 +91,46 @@ export default {
     return {
       api: {
         page: '/api/thraex/project/page',
-        ids: '/api/thraex/project/ids'
+        ids: '/api/thraex/project/ids',
+        types: '/api/thraex/project/types'
       },
       params: {
         projectOrgId: null,
         projectName: null,
-        dictProjectStatisticsTypeList: null
+        dictProjectStatisticsTypeList: null,
+        dictProjectStatusList: null
       },
+      // defaultItem: {
+      //   projectOrgId: { disabled: false, visible: false, value: null },
+      //   projectName: { disabled: false, visible: true, value: null },
+      //   dictProjectStatisticsTypeList: { disabled: false, visible: false, value: null },
+      //   dictProjectStatusList: { disabled: false, visible: false, value: null }
+      // },
       types: [],
       conditionStyle: {
         width: '350px'
-      },
-      defaultItem: {
-        projectOrgId: { disabled: false, visible: false, value: null },
-        projectName: { disabled: false, visible: true, value: null },
-        dictProjectStatisticsTypeList: { disabled: false, visible: false, value: null }
       }
     }
   },
-  computed: {
-    conditions() {
-      const conds = {}
+  // computed: {
+  //   conditions() {
+  //     const conds = {}
 
-      Object.keys(this.params).forEach(it => {
-        const item = this.props[it] || ''
-        conds[it] = Object.assign({}, this.defaultItem[it],
-          typeof item === 'string' ? { value: item } : item)
-      })
+  //     Object.keys(this.params).forEach(it => {
+  //       const item = this.props[it]
+  //       conds[it] = Object.assign({}, this.defaultItem[it],
+  //         item === undefined || item === null || item.constructor !== Object ? { value: item } : item)
+  //     })
 
-      return conds
-    }
-  },
+  //     return conds
+  //   }
+  // },
   created() {
     this.requestTypes().then(({ data }) => (this.types = data))
   },
   methods: {
     requestTypes() {
-      return request({ url: '/api/thraex/project/types', method: 'GET' })
+      return request({ url: this.api.types, method: 'GET' })
     }
   }
 }
