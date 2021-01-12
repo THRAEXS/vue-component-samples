@@ -39,6 +39,11 @@ Vue.use(ElementUI, { locale })
 Vue.use(Wdigets)
 Vue.use(Plus)
 
+import PlTable from 'pl-table'
+import 'pl-table/themes/index.css'
+// import 'pl-table/themes/plTableStyle.css'
+Vue.use(PlTable)
+
 Vue.config.productionTip = false
 
 new Vue({

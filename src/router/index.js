@@ -69,6 +69,24 @@ export const constantRoutes = [
         meta: { title: 'Table', icon: 'table' }
       },
       {
+        path: 'clusterize/table',
+        name: 'Clusterize',
+        component: () => import('@/views/table/clusterize'),
+        meta: { title: 'Clusterize', icon: 'table' }
+      },
+      {
+        path: 'pl/table',
+        name: 'PlTable',
+        component: () => import('@/views/table/pl-table'),
+        meta: { title: 'pl-table', icon: 'table' }
+      },
+      {
+        path: 'big/table',
+        name: 'BigTable',
+        component: () => import('@/views/table/big'),
+        meta: { title: 'Big Table', icon: 'table' }
+      },
+      {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
