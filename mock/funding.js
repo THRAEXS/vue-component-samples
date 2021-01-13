@@ -11,7 +11,7 @@ const data = {
 }
 
 const dicts = {}
-for (let i = 0; i < 200; i++) {
+for (let i = 0; i < 60; i++) {
   const key = 1000 + i
   dicts[`${key}`] = `科目名称-${i + 1}`
 }
@@ -20,7 +20,7 @@ data.dicts.push(dicts)
 const fundTypes = ['总部费用', '投资计划', '地区公司自筹']
 fundTypes.forEach((fundsName, ind) => data.fundsNames.push({ fundsCode: `${2429 + ind}`, fundsName }))
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 5; i++) {
   data.year.push(2017 + i)
 }
 

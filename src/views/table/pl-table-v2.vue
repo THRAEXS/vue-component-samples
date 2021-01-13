@@ -14,9 +14,10 @@
       <pl-table-column type="index" label="序号" align="center" width="50" />
       <pl-table-column prop="code" label="科目编码" align="center" />
       <pl-table-column prop="name" label="科目名称" align="center" width="150" />
-      <pl-table-column v-for="(year, yi) in headers.years" :key="`year-${yi}`" :label="`${year}年`" align="center">
-        <pl-table-column v-for="(org, oi) in headers.orgs" :key="`org-${oi}`" :label="org.orgName" align="center">
-          <pl-table-column v-for="(fund, fi) in headers.fundTypes" :key="`fund-${fi}`" :label="fund.fundsName" align="center">
+      <pl-table-column v-for="(year, yi) in years" :key="`year-${yi}`" :label="`${year}年`" align="center">
+        <pl-table-column v-for="(org, oi) in orgs" :key="`org-${oi}`" :label="org.orgName" align="center">
+          <pl-table-column v-for="(fund, fi) in fundTypes" :key="`fund-${fi}`" :label="fund.fundsName" align="center">
+            <!-- <pl-table-column :prop="`attr${1}`" label="预算(万元)" align="center" /> -->
             <pl-table-column label="预算(万元)" align="center">
               <template slot-scope="scope">
                 {{ scope.row.years[year][org.orgName].fundType[fund.fundsName].funding }}
@@ -24,30 +25,7 @@
             </pl-table-column>
             <pl-table-column label="支出(万元)" align="center">
               <template slot-scope="scope">
-                <!-- <el-input
-                  v-model.number="scope.row.years[year][org.orgName].fundType[fund.fundsName].spending"
-                  size="mini"
-                /> -->
                 {{ scope.row.years[year][org.orgName].fundType[fund.fundsName].spending }}
-                <!-- <el-input
-                  :value="scope.row.years[year][org.orgName].fundType[fund.fundsName].spending"
-                  size="mini"
-                  @input="handleCellInput(scope.row.years[year][org.orgName].fundType[fund.fundsName], $event)"
-                /> -->
-                <!-- <div @click="handleCellClick(scope.row.years[year][org.orgName].fundType[fund.fundsName], $event)">
-                  <el-input
-                    v-if="scope.row.years[year][org.orgName].fundType[fund.fundsName].edit"
-                    v-model="scope.row.years[year][org.orgName].fundType[fund.fundsName].spending"
-                    size="mini"
-                    @blur="handleInputBlur(scope.row.years[year][org.orgName].fundType[fund.fundsName], $event)"
-                  />
-                  <div v-else>{{ scope.row.years[year][org.orgName].fundType[fund.fundsName].spending }}</div>
-                </div> -->
-                <!-- <div
-                  contenteditable="true"
-                  style="border: 1px solid red;"
-                  @input="handleDivInput(scope.row.years[year][org.orgName].fundType[fund.fundsName], $event)"
-                >{{ scope.row.years[year][org.orgName].fundType[fund.fundsName].spending }}</div> -->
               </template>
             </pl-table-column>
           </pl-table-column>
@@ -66,23 +44,15 @@ export default {
   mixins: [TimerMixin],
   data() {
     return {
-      headers: {
-        years: [],
-        orgs: [],
-        fundTypes: []
-      },
+      years: [],
+      orgs: [],
+      fundTypes: [],
       data: []
     }
   },
   created() {
     console.time('timer-get-data')
     getFunding().then(this.assembly)
-
-    // getFundingFinal().then(({ data: { headers, data }}) => {
-    //   console.timeEnd('timer-get-data')
-    //   this.headers = headers
-    //   this.data = data
-    // })
   },
   methods: {
     async assembly({ data }) {
@@ -91,9 +61,11 @@ export default {
 
       const { dicts: [dicts], fundsNames: fundTypes, orgs, year: years } = data
 
-      console.time('timer-set-columns')
-      Object.assign(this.headers, { fundTypes, orgs, years })
-      console.timeEnd('timer-set-columns')
+      console.time('timer-set-column-header')
+      this.years = years
+      this.orgs = orgs
+      this.fundTypes = fundTypes
+      console.timeEnd('timer-set-column-header')
 
       console.time('timer-set-rows')
       const fundType = {}
@@ -124,27 +96,13 @@ export default {
         name,
         years: this.deepClone(newYears),
         fundingTotal: 10,
+        attr1: '12g',
         spendingTotal: 20
       }))
       console.timeEnd('timer-set-rows')
     },
     deepClone(data) {
       return JSON.parse(JSON.stringify(data))
-    },
-    handleCellInput(cell, val) {
-      this.$set(cell, 'spending', val)
-    },
-    handleCellClick(cell) {
-      // console.debug(arguments)
-      this.$set(cell, 'edit', true)
-    },
-    handleInputBlur(cell) {
-      console.debug(arguments)
-      this.$set(cell, 'edit', false)
-    },
-    handleDivInput(cell, event) {
-      // console.debug(arguments)
-      setTimeout(() => this.$set(cell, 'spending', event.target.innerText))
     }
   }
 }

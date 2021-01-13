@@ -81,6 +81,12 @@ export const constantRoutes = [
         meta: { title: 'pl-table', icon: 'table' }
       },
       {
+        path: 'pl/table/v2',
+        name: 'PlTableV2',
+        component: () => import('@/views/table/pl-table-v2'),
+        meta: { title: 'pl-table-v2', icon: 'table' }
+      },
+      {
         path: 'big/table',
         name: 'BigTable',
         component: () => import('@/views/table/big'),
