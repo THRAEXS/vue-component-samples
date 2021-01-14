@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" @click="handleSave">Save</el-button>
     <pl-table
       :data="data"
       stripe
@@ -17,15 +18,20 @@
       <pl-table-column v-for="(year, yi) in years" :key="`year-${yi}`" :label="`${year}年`" align="center">
         <pl-table-column v-for="(org, oi) in orgs" :key="`org-${oi}`" :label="org.orgName" align="center">
           <pl-table-column v-for="(fund, fi) in fundTypes" :key="`fund-${fi}`" :label="fund.fundsName" align="center">
-            <!-- <pl-table-column :prop="`attr${1}`" label="预算(万元)" align="center" /> -->
-            <pl-table-column label="预算(万元)" align="center">
+            <pl-table-column :prop="`${year}-${org.orgCode}-${fund.fundsCode}-funding`" label="预算(万元)" align="center" />
+            <!-- <pl-table-column :prop="`${year}-${org.orgCode}-${fund.fundsCode}-spending`" label="支出(万元)" align="center" /> -->
+            <!-- <pl-table-column label="预算(万元)" align="center">
               <template slot-scope="scope">
                 {{ scope.row.years[year][org.orgName].fundType[fund.fundsName].funding }}
               </template>
-            </pl-table-column>
+            </pl-table-column> -->
             <pl-table-column label="支出(万元)" align="center">
               <template slot-scope="scope">
-                {{ scope.row.years[year][org.orgName].fundType[fund.fundsName].spending }}
+                <el-input
+                  v-model.number="scope.row[`${year}-${org.orgCode}-${fund.fundsCode}-spending`]"
+                  size="mini"
+                />
+                <!-- <input class="edit-input" v-model="scope.row[`${year}-${org.orgCode}-${fund.fundsCode}-spending`]"> -->
               </template>
             </pl-table-column>
           </pl-table-column>
@@ -68,7 +74,7 @@ export default {
       console.timeEnd('timer-set-column-header')
 
       console.time('timer-set-rows')
-      const fundType = {}
+      /* const fundType = {}
       fundTypes.forEach(({ fundsCode, fundsName }, ind) => (
         fundType[fundsName] = {
           id: '',
@@ -96,14 +102,46 @@ export default {
         name,
         years: this.deepClone(newYears),
         fundingTotal: 10,
-        attr1: '12g',
         spendingTotal: 20
-      }))
+      })) */
+
+      this.data = Object.entries(dicts).map(([code, name]) => {
+        const item = { code, name, fundingTotal: 0, spendingTotal: 0 }
+
+        years.forEach((year, yi) => {
+          orgs.forEach(({ orgCode }, oi) => {
+            fundTypes.forEach(({ fundsCode }, fi) => {
+              const prefix = `${year}-${orgCode}-${fundsCode}`
+              item[`${prefix}-funding`] = (yi + oi + fi + 1) * 100
+              item[`${prefix}-spending`] = (yi + oi + fi + 1) * 100 / 2
+
+              item.fundingTotal += item[`${prefix}-funding`]
+              item.spendingTotal += item[`${prefix}-spending`]
+            })
+          })
+        })
+
+        return item
+      })
+
       console.timeEnd('timer-set-rows')
     },
     deepClone(data) {
       return JSON.parse(JSON.stringify(data))
+    },
+    handleSave() {
+      console.debug(this.data)
     }
   }
 }
 </script>
+<style scoped>
+>>> .el-input--mini .el-input__inner {
+  height: 23px;
+  line-height: 23px;
+  padding: 0 10px;
+}
+.edit-input {
+  width: 50px;
+}
+</style>

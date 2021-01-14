@@ -93,6 +93,12 @@ export const constantRoutes = [
         meta: { title: 'Big Table', icon: 'table' }
       },
       {
+        path: 'draw/table',
+        name: 'DrawTable',
+        component: () => import('@/views/table/draw'),
+        meta: { title: 'Draw', icon: 'table' }
+      },
+      {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
