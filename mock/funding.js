@@ -11,9 +11,9 @@ const data = {
 }
 
 const dicts = {}
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 200; i++) {
   const key = 1000 + i
-  dicts[`${key}`] = `科目名称-${i + 1}`
+  dicts[`${key}`] = `科目名称科目名称科目名称-${i + 1}`
 }
 data.dicts.push(dicts)
 
