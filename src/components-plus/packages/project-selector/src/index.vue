@@ -109,12 +109,18 @@ export default {
         projectOrgId: null,
         projectName: null,
         dictProjectStatisticsTypeList: null,
-        dictProjectStatusList: null
+        dictProjectStatusList: null,
+        dictProjectSendStatusList: null,
+        projectFrom: null,
+        projectFlag: null
       },
       selfItem: {
         projectOrgId: { disabled: false, visible: false, value: null },
         dictProjectStatisticsTypeList: { disabled: false, visible: false, value: null },
-        dictProjectStatusList: { disabled: false, visible: false, value: null }
+        dictProjectStatusList: { disabled: false, visible: false, value: null },
+        dictProjectSendStatusList: { disabled: false, visible: false, value: null },
+        projectFrom: { disabled: false, visible: false, value: null },
+        projectFlag: { disabled: false, visible: false, value: null }
       },
       types: [],
       conditionStyle: {

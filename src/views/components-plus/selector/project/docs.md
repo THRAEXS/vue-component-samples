@@ -388,6 +388,50 @@ export default {
   
 </thx-demo-code>
 
+#### 使用其他条件
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-13 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <el-button type="primary" size="mini" @click="visible = true">选择</el-button>
+    <el-button type="danger" size="mini" @click="project = null">清除</el-button>
+
+    <div>{{ project || 'Unchecked' }}</div>
+
+    <thx-project-selector
+      :value.sync="project"
+      :visible.sync="visible"
+      :props="props"
+    />
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      project: null,
+      visible: false,
+      props: {
+        dictProjectSendStatusList: '0',
+        // dictProjectSendStatusList: ['0', '2'],
+        projectFrom: 'dict_project_from_jtgfgs_kjglb',
+        // projectFrom: 'dict_project_from_zyfgs',
+        projectFlag: 0
+        // projectFlag: 1
+      }
+    }
+  }
+}
+</script>
+```
+  
+</thx-demo-code>
+
 ### 在表单中使用
 
 配合`<thx-input-carrier />`进行单选，**多选尚在开发中**。
@@ -543,8 +587,11 @@ export default {
 | :----: | :----: | :----: | :----: | ---- |
 | `projectOrgId` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 所级单位ID |
 | `projectName` | `String` / `Object` | - | `{ disabled: false, visible: true, value: null }` | 项目名称 |
-| `dictProjectStatisticsTypeList` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 业务类型 |
-| `dictProjectStatusList` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 计划状态, 仅`value`有效, 不在列表上方体现  |
+| `dictProjectStatisticsTypeList` | `String` / `Array` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 业务类型 |
+| `dictProjectStatusList` | `String` / `Array` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 计划状态, 仅`value`有效, 隐式条件  |
+| `dictProjectSendStatusList` | `String` / `Array` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 计划下达状态, 仅`value`有效, 隐式条件  |
+| `projectFrom` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 项目来源(**字典code**), 仅`value`有效, 隐式条件  |
+| `projectFlag` | `Number` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 是否钱递给任务书(`0`/`1`), 仅`value`有效, 隐式条件  |
 
 如果**只需指定查询条件值，仅需提供`String` / `Array` 类型的值。**
 

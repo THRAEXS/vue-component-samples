@@ -28,6 +28,7 @@ module.exports = [
     type: 'get',
     response: config => {
       const { page, size, params = {}} = config.query
+      console.debug(params)
       const {
         projectOrgId,
         projectName,
