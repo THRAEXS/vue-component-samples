@@ -217,6 +217,12 @@ export const constantRoutes = [
     meta: { title: 'Components Plus', icon: 'el-icon-finished' },
     children: [
       {
+        path: 'single/test',
+        name: 'SingleTest',
+        component: () => import('@/views/components-plus/selector/project/cases/case14'),
+        meta: { title: 'Single Test', icon: 'example' }
+      },
+      {
         path: '',
         name: 'ComponentsPlus',
         component: () => import('@/views/components-plus'),
