@@ -31,15 +31,15 @@
           <plx-table-column type="index" label="序号" align="center" width="50" fixed="left" />
           <plx-table-column prop="code" label="科目编码" align="center" width="70" fixed="left" />
           <plx-table-column prop="name" label="科目名称" align="center" width="200" fixed="left" />
-          <!-- <plx-table-column v-for="(year, yi) in years" :key="`${year}-${yi}`" :label="`${year}年`" align="center">
+          <plx-table-column v-for="(year, yi) in years" :key="`${year}-${yi}`" :label="`${year}年`" align="center">
             <plx-table-column v-for="(org, oi) in orgs" :key="`${org}-${oi}`" :label="org.orgName" align="center">
               <plx-table-column v-for="(fund, fi) in fundTypes" :key="`${fund}-${fi}`" :label="fund.fundsName" align="center">
                 <plx-table-column
                   :key="`fundiing-${yi}-${oi}-${fi}`"
                   :prop="`${year}-${org.orgCode}-${fund.fundsCode}-funding`"
-                  :label="`预算(万元)-${yi}-${oi}-${fi}`"
+                  label="预算(万元)"
                   align="center"
-                  width="120"
+                  width="80"
                 />
                 <plx-table-column
                   :key="`spending-${yi}-${oi}-${fi}`"
@@ -50,8 +50,8 @@
                 />
               </plx-table-column>
             </plx-table-column>
-          </plx-table-column> -->
-          <template v-for="(year, yi) in years">
+          </plx-table-column>
+          <!-- <template v-for="(year, yi) in years">
             <template v-for="(org, oi) in orgs">
               <template v-for="(fund, fi) in fundTypes">
                 <plx-table-column
@@ -61,13 +61,13 @@
                   align="center"
                   width="90"
                 />
-                <!-- <plx-table-column
+                <plx-table-column
                   :key="`spending-${yi}-${oi}-${fi}`"
                   :prop="`${year}-${org.orgCode}-${fund.fundsCode}-spending`"
                   label="支出(万元)"
                   align="center"
                   width="80"
-                /> -->
+                />
                 <plx-table-column
                   :key="`spending-${yi}-${oi}-${fi}`"
                   :label="`支出(${yi}-${oi}-${fi})`"
@@ -83,20 +83,18 @@
                 </plx-table-column>
               </template>
             </template>
-          </template>
-          <!-- <plx-table-column>
-            <template v-slot:header>
-            </template>
-          </plx-table-column> -->
+          </template> -->
+          <!-- <plx-table-column v-for="(year, yi) in years" :key="`${year}-${yi}`" :label="`${year}年`" align="center"> -->
+          <!-- </plx-table-column> -->
           <!-- <plx-table-column prop="fundingTotal" label="预算小计" align="center" fixed="right" width="80" />
           <plx-table-column prop="spendingTotal" label="支出小计" align="center" fixed="right" width="80" /> -->
-          <plx-table-column label="预算小计" align="center" fixed="right" width="80">
-            <template slot-scope="scope">
+          <plx-table-column label="预算小计(万元)" align="center" fixed="right" width="120">
+            <template v-slot="scope">
               {{ handleTotal('funding', scope.row) }}
             </template>
           </plx-table-column>
-          <plx-table-column label="支出小计" align="center" fixed="right" width="80">
-            <template slot-scope="scope">
+          <plx-table-column label="支出小计(万元)" align="center" fixed="right" width="120">
+            <template v-slot="scope">
               {{ handleTotal('spending', scope.row) }}
             </template>
           </plx-table-column>
@@ -207,6 +205,10 @@ export default {
 
       console.timeEnd('timer-set-rows')
     },
+    handleColumn() {
+      console.debug(arguments)
+      return 'AAA'
+    },
     handleTotal(key, row) {
       return Object.keys(row)
         .filter(it => it.includes(key))
@@ -220,3 +222,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+>>> .plx-cell {
+  max-height: none!important;
+}
+</style>
