@@ -3,6 +3,7 @@
     <el-row :gutter="5">
       <el-col :span="3">
         <el-table
+          ref="orgTable"
           :data="orgs"
           :show-header="false"
           stripe
@@ -125,12 +126,12 @@ export default {
   mixins: [TimerMixin],
   data() {
     return {
+      selected: null,
       orgs: [],
       years: [],
       fundTypes: [],
       data: [],
-      plx: false,
-      loading: false
+      plx: false
     }
   },
   created() {
@@ -170,9 +171,20 @@ export default {
         })
       })
       console.timeEnd('timer-set-rows')
+
+      console.time('timer-select-first-org')
+      const [first] = this.orgs
+      if (first) {
+        this.$refs.orgTable.setCurrentRow(first)
+        this.handleRowClick(first)
+      }
+      console.timeEnd('timer-select-first-org')
     },
-    handleRowClick(row) {
-      this.data = row.data
+    handleRowClick({ orgCode, data }) {
+      if (orgCode !== this.selected) {
+        this.selected = orgCode
+        this.$set(this, 'data', data)
+      }
     },
     handleTotal(key, row) {
       return Object.keys(row)
