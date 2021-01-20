@@ -593,7 +593,7 @@ export default {
 | `dictProjectLevelList` | `String` / `Array` | `dict_project_level`字典`value` | - | 项目层级, 隐式条件  |
 | `financeStatusList` | `String` / `Array` | `dict_project_budget_status`字典`value` | - | 财务预算状态, 隐式条件  |
 | `projectFrom` | `String` | `dict_project_from`字典`code` | - | 项目来源, 隐式条件  |
-| `projectFlag` | `Number` | `0` / `1` | - | 是否钱递给任务书, 隐式条件  |
+| `projectFlag` | `Number` | `0` / `1` | - | 是否签订任务书, 隐式条件  |
 
 如果**只需指定查询条件值，仅需提供`String` / `Array` 类型的值。**
 
