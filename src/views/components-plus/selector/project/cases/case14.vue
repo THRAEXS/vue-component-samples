@@ -14,6 +14,7 @@
       <thx-project-selector
         :value.sync="project"
         :visible.sync="visible"
+        :props="props"
       />
     </thx-card-box>
   </div>
@@ -23,7 +24,16 @@ export default {
   data() {
     return {
       project: null,
-      visible: false
+      visible: false,
+      props: {
+        projectName: '1',
+        guiwang: 'dd'
+        // dictProjectStatisticsTypeList: '1',
+        // dictProjectStatusList: '1',
+        // dictProjectSendStatusList: '1',
+        // projectFrom: '1',
+        // projectFlag: '1'
+      }
     }
   }
 }

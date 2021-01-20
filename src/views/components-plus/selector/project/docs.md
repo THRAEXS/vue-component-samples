@@ -587,11 +587,13 @@ export default {
 | :----: | :----: | :----: | :----: | ---- |
 | `projectOrgId` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 所级单位ID |
 | `projectName` | `String` / `Object` | - | `{ disabled: false, visible: true, value: null }` | 项目名称 |
-| `dictProjectStatisticsTypeList` | `String` / `Array` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 业务类型 |
-| `dictProjectStatusList` | `String` / `Array` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 计划状态, 仅`value`有效, 隐式条件  |
-| `dictProjectSendStatusList` | `String` / `Array` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 计划下达状态, 仅`value`有效, 隐式条件  |
-| `projectFrom` | `String` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 项目来源(**字典code**), 仅`value`有效, 隐式条件  |
-| `projectFlag` | `Number` / `Object` | - | `{ disabled: false, visible: false, value: null }` | 是否钱递给任务书(`0`/`1`), 仅`value`有效, 隐式条件  |
+| `dictProjectStatisticsTypeList` | `String` / `Array` | `dict_project_statistics_type`字典`value`  | `{ disabled: false, visible: false, value: null }` | 业务类型 |
+| `dictProjectStatusList` | `String` / `Array` | `dict_project_status`字典`value` | - | 项目计划状态, 隐式条件  |
+| `dictProjectSendStatusList` | `String` / `Array` | `dict_project_send_status`字典`value` | - | 计划下达状态, 隐式条件  |
+| `dictProjectLevelList` | `String` / `Array` | `dict_project_level`字典`value` | - | 项目层级, 隐式条件  |
+| `financeStatusList` | `String` / `Array` | `dict_project_budget_status`字典`value` | - | 财务预算状态, 隐式条件  |
+| `projectFrom` | `String` | `dict_project_from`字典`code` | - | 项目来源, 隐式条件  |
+| `projectFlag` | `Number` | `0` / `1` | - | 是否钱递给任务书, 隐式条件  |
 
 如果**只需指定查询条件值，仅需提供`String` / `Array` 类型的值。**
 

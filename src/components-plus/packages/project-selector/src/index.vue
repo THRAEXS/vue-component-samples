@@ -111,6 +111,8 @@ export default {
         dictProjectStatisticsTypeList: null,
         dictProjectStatusList: null,
         dictProjectSendStatusList: null,
+        dictProjectLevelList: null,
+        financeStatusList: null,
         projectFrom: null,
         projectFlag: null
       },
@@ -119,6 +121,8 @@ export default {
         dictProjectStatisticsTypeList: { disabled: false, visible: false, value: null },
         dictProjectStatusList: { disabled: false, visible: false, value: null },
         dictProjectSendStatusList: { disabled: false, visible: false, value: null },
+        dictProjectLevelList: { disabled: false, visible: false, value: null },
+        financeStatusList: { disabled: false, visible: false, value: null },
         projectFrom: { disabled: false, visible: false, value: null },
         projectFlag: { disabled: false, visible: false, value: null }
       },
