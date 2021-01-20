@@ -13,12 +13,19 @@ const data = {
 const dicts = {}
 for (let i = 0; i < 100; i++) {
   const key = 1000 + i
-  dicts[`${key}`] = `科目名称科目名称科目名称-${i + 1}`
+  dicts[`${key}`] = `科目名称-${i + 1}`
 }
 data.dicts.push(dicts)
 
 const fundTypes = ['总部费用', '投资计划', '地区公司自筹']
 fundTypes.forEach((fundsName, ind) => data.fundsNames.push({ fundsCode: `${2429 + ind}`, fundsName }))
+
+for (let i = 0; i < 20; i++) {
+  data.orgs.push({
+    orgCode: `X${100 + i}`,
+    orgName: `东南宗教特勤局-${i}`
+  })
+}
 
 for (let i = 0; i < 6; i++) {
   data.year.push(2017 + i)
