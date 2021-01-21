@@ -109,6 +109,12 @@ export const constantRoutes = [
         name: 'FundPlTable',
         component: () => import('@/views/table/fund-pl-table'),
         meta: { title: 'Fund Pl Table', icon: 'example' }
+      },
+      {
+        path: 'fund/clusterize',
+        name: 'FundClusterize',
+        component: () => import('@/views/table/fund-clusterize'),
+        meta: { title: 'Fund Clusterize', icon: 'example' }
       }
     ]
   },
