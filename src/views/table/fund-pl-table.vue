@@ -10,7 +10,7 @@
           border
           highlight-current-row
           size="mini"
-          :height="468"
+          :height="498"
           @row-click="handleRowClick"
         >
           <el-table-column prop="orgName" show-overflow-tooltip />
@@ -23,7 +23,7 @@
           stripe
           border
           size="mini"
-          :height="468"
+          :height="498"
         >
           <plx-table-column type="index" label="序号" align="center" width="50" fixed="left" />
           <plx-table-column prop="code" label="科目编码" align="center" width="80" fixed="left" />
@@ -64,13 +64,15 @@
 
         <pl-table
           v-else
+          use-virtual
           :data="data"
           stripe
           border
           size="mini"
-          :height="468"
+          :height="498"
           :row-height="30"
-          use-virtual
+          show-summary
+          :summary-method="handleSummaries"
         >
           <pl-table-column type="index" label="序号" align="center" width="50" fixed />
           <pl-table-column prop="code" label="科目编码" align="center" width="80" fixed />
@@ -90,6 +92,7 @@
                 width="120"
               /> -->
               <pl-table-column
+                :prop="`${year}-${fund.fundsCode}-spending`"
                 label="支出(万元)"
                 align="center"
                 width="120"
@@ -137,6 +140,9 @@ export default {
   created() {
     console.time('timer-get-data')
     getFunding().then(this.assembly)
+
+    // const a = [1]
+    // console.debug('a:', a.reduce((acc, cur) => acc + cur))
   },
   methods: {
     async assembly({ data }) {
@@ -162,8 +168,8 @@ export default {
           years.forEach((year, yi) => {
             fundTypes.forEach(({ fundsCode }, fi) => {
               const prefix = `${year}-${fundsCode}`
-              item[`${prefix}-funding`] = (yi + fi + 1) * 10000
-              item[`${prefix}-spending`] = (yi + fi + 1) * 10000 / 2
+              item[`${prefix}-funding`] = (yi + fi + 1) * 10
+              item[`${prefix}-spending`] = (yi + fi + 1) * 10 / 2
             })
           })
 
@@ -189,9 +195,25 @@ export default {
     handleTotal(key, row) {
       return Object.keys(row)
         .filter(it => it.includes(key))
-        .map(it => Number.parseFloat(row[it]))
+        .map(it => Number(row[it]))
         .map(it => Number.isNaN(it) ? 0 : it)
         .reduce((acc, cur) => acc + cur)
+    },
+    handleSummaries({ columns, data }) {
+      const fixedColumns = [null, null, '合计(万元)']
+      const calcColumns = columns.slice(fixedColumns.length, columns.length - 2)
+
+      const sums = calcColumns.map(({ property }) =>
+        this.data.map(row => row[property])
+          .map(val => Number(val))
+          .map(val => Number.isNaN(val) ? 0 : val)
+          .reduce((acc, cur) => acc + cur))
+
+      const fundings = sums.filter((it, ind) => ind % 2 === 0)
+      const spendings = sums.filter((it, ind) => ind % 2 === 1)
+      const reduce = arr => arr.length > 0 ? arr.reduce((acc, cur) => acc + cur) : 0
+
+      return [[...fixedColumns, ...sums, reduce(fundings), reduce(spendings)]]
     }
   }
 }
