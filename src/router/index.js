@@ -237,7 +237,7 @@ export const constantRoutes = [
       {
         path: 'single/test',
         name: 'SingleTest',
-        component: () => import('@/views/components-plus/selector/project/cases/case14'),
+        component: () => import('@/views/components-plus/selector/org/cases/case1'),
         meta: { title: 'Single Test', icon: 'example' }
       },
       {
@@ -263,6 +263,12 @@ export const constantRoutes = [
         name: 'ProjectSelector',
         component: () => import('@/views/components-plus/selector/project'),
         meta: { title: 'Project Selector', icon: 'el-icon-user-solid' }
+      },
+      {
+        path: 'selector/org',
+        name: 'OrgSelector',
+        component: () => import('@/views/components-plus/selector/org'),
+        meta: { title: 'Org Selector', icon: 'el-icon-grape' }
       }
     ]
   },
