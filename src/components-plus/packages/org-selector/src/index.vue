@@ -7,7 +7,7 @@
     :cascader="cascader"
     label="选择"
     v-bind="$attrs"
-    v-on="$listeners"
+    v-on="listeners"
     @ok="handleOk"
   />
 </template>
@@ -51,6 +51,10 @@ export default {
   computed: {
     props() {
       return Object.assign({}, this.$attrs.props || {}, FixedProps)
+    },
+    listeners() {
+      const { ok, ...others } = this.$listeners
+      return others
     }
   },
   watch: {
