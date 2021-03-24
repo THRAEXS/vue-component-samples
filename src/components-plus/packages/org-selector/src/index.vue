@@ -18,8 +18,6 @@ const FixedProps = {
   value: 'id',
   label: 'name',
   children: 'childOrgList',
-  // multiple: true,
-  // checkStrictly: false,
   emitPath: false
 }
 
@@ -98,6 +96,8 @@ export default {
           for (let i = children.length - 1; i >= 0; i--) {
             stack.push(children[i])
           }
+
+          array.push(node)
         }
       }
 

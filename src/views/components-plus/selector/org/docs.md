@@ -44,7 +44,164 @@ export default {
   </template>
 
 ``` html
+<template>
+  <div>
+    <el-row :gutter="5" style="margin-bottom: 10px;">
+      <el-col :span="22">
+        <thx-org-selector v-model="selected" :props="props" />
+      </el-col>
+      <el-col :span="2">
+        <el-button type="danger" size="mini" @click="selected = []">Clear</el-button>
+      </el-col>
+    </el-row>
 
+    <thx-table :data="selected" :max-height="400" size="mini">
+      <el-table-column type="index" width="50" align="center" />
+      <el-table-column label="Data" align="center">
+        <template v-slot:default="scope">
+          {{ scope.row }}
+        </template>
+      </el-table-column>
+      <el-table-column width="50">
+        <template v-slot:default="scope">
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            size="mini"
+            @click="selected.splice(scope.$index, 1)"
+          />
+        </template>
+      </el-table-column>
+    </thx-table>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      selected: [],
+      props: {
+        multiple: true
+      }
+    }
+  }
+}
+</script>
+```
+</thx-demo-code>
+
+#### 选择任意一级(单选)
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-3 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <el-row :gutter="5">
+      <el-col :span="22">
+        <thx-org-selector v-model="selected" :props="props" />
+      </el-col>
+      <el-col :span="2">
+        <el-button type="danger" size="mini" @click="selected = null">Clear</el-button>
+      </el-col>
+    </el-row>
+
+    {{ data }}
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      selected: null,
+      props: {
+        checkStrictly: true
+      }
+    }
+  },
+  computed: {
+    data() {
+      let result = null
+      if (this.selected) {
+        const { childOrgList, ...data } = this.selected
+        result = childOrgList
+          ? Object.assign(data, { childOrgList: childOrgList.length })
+          : data
+      }
+
+      return result
+    }
+  }
+}
+</script>
+```
+</thx-demo-code>
+
+#### 选择任意一级(多选)
+
+<thx-demo-code>
+  <template v-slot:demo>
+    <case-4 />
+  </template>
+
+``` html
+<template>
+  <div>
+    <el-row :gutter="5" style="margin-bottom: 10px;">
+      <el-col :span="22">
+        <thx-org-selector v-model="selected" :props="props" />
+      </el-col>
+      <el-col :span="2">
+        <el-button type="danger" size="mini" @click="selected = []">Clear</el-button>
+      </el-col>
+    </el-row>
+
+    <thx-table :data="selected" :max-height="400" size="mini">
+      <el-table-column type="index" width="50" align="center" />
+      <el-table-column label="Data" align="center">
+        <template v-slot:default="scope">
+          {{ handleData(scope.row) }}
+        </template>
+      </el-table-column>
+      <el-table-column width="50">
+        <template v-slot:default="scope">
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            size="mini"
+            @click="selected.splice(scope.$index, 1)"
+          />
+        </template>
+      </el-table-column>
+    </thx-table>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      selected: [],
+      props: {
+        multiple: true,
+        checkStrictly: true
+      }
+    }
+  },
+  methods: {
+    handleData(row) {
+      const { childOrgList, ...data } = row
+      return childOrgList
+        ? Object.assign(data, { childOrgList: childOrgList.length })
+        : data
+    }
+  }
+}
+</script>
 ```
 </thx-demo-code>
 
@@ -62,6 +219,9 @@ TODOS
 
 ### props
 
+| Attribute | Type | Accepted Values | Default | Description |
+| :----: | :----: | :----: | :----: | ---- |
+
 ### Methods
 
 | Method | Description | Parameters | Return |
@@ -71,7 +231,7 @@ TODOS
 
 `cascader`模式下的事件请参考[Cascader Events](https://element.eleme.cn/2.13/#/zh-CN/component/cascader)。
 
-以下为弹框模式下的事件:
+以下为**弹框模式**下的事件:
 
 | Event Name | Parameters | Description |
 | :----: | :----: | ---- |
