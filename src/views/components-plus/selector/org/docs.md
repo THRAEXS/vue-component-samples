@@ -40,6 +40,7 @@ export default {
 
 <thx-demo-code>
   <template v-slot:demo>
+    <case-2 />
   </template>
 
 ``` html
