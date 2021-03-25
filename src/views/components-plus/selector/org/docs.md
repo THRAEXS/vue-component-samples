@@ -672,17 +672,23 @@
 
 | Attribute | Type | Accepted Values | Default | Description |
 | :----: | :----: | :----: | :----: | ---- |
+| `multiple` | `Boolean` | - | `false` | 是否多选 |
+| `checkStrictly` | `Boolean` | - | `false` | 是否严格的遵守父子节点不互相关联 |
 
-### Methods
+**其它的`props`属性请参考[Cascader Props](https://element.eleme.cn/2.13/#/zh-CN/component/cascader)和[Tree Props](https://element.eleme.cn/2.13/#/zh-CN/component/tree)**
+
+<!-- ### Methods
 
 | Method | Description | Parameters | Return |
-| :----: | :----: | :----: | :----: |
+| :----: | :----: | :----: | :----: | -->
 
 ### Events
 
-`cascader`模式下的事件请参考[Cascader Events](https://element.eleme.cn/2.13/#/zh-CN/component/cascader)。
+`cascader`模式下的事件请参考[Cascader Events](https://element.eleme.cn/2.13/#/zh-CN/component/cascader)。以下事件被覆写:
 
-change
+| Event Name | Parameters | Description |
+| :----: | :----: | ---- |
+| `change` | 选中节点的data | 当选中节点变化时触发 |
 
 以下为**弹框模式**下的事件:
 
