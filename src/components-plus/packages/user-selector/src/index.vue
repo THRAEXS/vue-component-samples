@@ -17,9 +17,15 @@
     <template v-slot:condition>
       <el-form :inline="true">
         <el-form-item v-if="conditions.deptId.visible" label="所级单位:">
-          <thx-org-cascader
+          <!-- <thx-org-cascader
             :value.sync="params.deptId"
             :disabled="conditions.deptId.disabled"
+          /> -->
+          <thx-org-selector
+            v-model="orgData"
+            :disabled="conditions.deptId.disabled"
+            cascader
+            style="width: 350px;"
           />
         </el-form-item>
         <el-form-item v-if="conditions.username.visible" label="姓名或账号:">
@@ -58,7 +64,23 @@ export default {
       params: {
         deptId: null,
         username: null
+      },
+      orgData: null
+    }
+  },
+  watch: {
+    props: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        const { deptId } = val || {}
+        const { value } = deptId || {}
+        const id = value || deptId
+        this.orgData = id ? { id } : null
       }
+    },
+    orgData(val) {
+      this.$set(this.params, 'deptId', (val || {}).id)
     }
   }
 }
