@@ -7,6 +7,8 @@
     :cascader="cascader"
     :show-all-levels="false"
     label="选择"
+    :filter-input="filterInput"
+    :filter-method="handleFilter"
     v-bind="$attrs"
     v-on="listeners"
     @ok="handleOk"
@@ -47,7 +49,10 @@ export default {
     return {
       data: [],
       selected: null,
-      orgMap: new Map()
+      orgMap: new Map(),
+      filterInput: {
+        placeholder: '输入关键字进行过滤'
+      }
     }
   },
   computed: {
@@ -134,6 +139,13 @@ export default {
       this.$emit(event, result)
 
       return result
+    },
+    handleFilter() {
+      // dialog
+
+      // cascader
+      // node, keyword
+      console.debug('filter:', arguments)
     }
   }
 }
