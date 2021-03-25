@@ -17,6 +17,9 @@
 </template>
 <script>
 import request from '@/utils/request'
+import pinyin from 'js-pinyin'
+
+pinyin.setOptions({ charCase: 1 })
 
 const FixedProps = {
   value: 'id',
@@ -149,10 +152,24 @@ export default {
 
       if (!keyword) return true
 
-      const { label } = this.props
       const kw = keyword.toLowerCase()
+      const [name, shortName] = [
+        data[this.props.label].toLowerCase(),
+        (data.shortName || '').toLowerCase()
+      ]
+      const [full, camel, shortFull, shortCamel] = [
+        pinyin.getFullChars(name),
+        pinyin.getCamelChars(name),
+        pinyin.getFullChars(shortName),
+        pinyin.getCamelChars(shortName)
+      ]
 
-      return data[label].indexOf(kw) !== -1
+      return name.indexOf(kw) !== -1 ||
+        full.indexOf(kw) !== -1 ||
+        camel.indexOf(kw) !== -1 ||
+        shortName.indexOf(kw) !== -1 ||
+        shortFull.indexOf(kw) !== -1 ||
+        shortCamel.indexOf(kw) !== -1
     }
   }
 }
