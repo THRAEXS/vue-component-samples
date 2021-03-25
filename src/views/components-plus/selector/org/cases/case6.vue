@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-row :gutter="5" style="margin-bottom: 10px;">
-      <el-col :span="22">
+      <el-col :span="20">
         <thx-org-selector v-model="selected" :props="props" />
       </el-col>
-      <el-col :span="2">
+      <el-col :span="4">
         <el-button
           type="danger"
           size="mini"
