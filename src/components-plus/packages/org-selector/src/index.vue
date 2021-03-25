@@ -140,12 +140,19 @@ export default {
 
       return result
     },
-    handleFilter() {
-      // dialog
+    handleFilter(var1, var2) {
+      /**
+       * dialog: keyword, data, node
+       * cascader: node, keyword
+       */
+      const [keyword, data] = this.cascader ? [var2, var1.data] : [var1, var2]
 
-      // cascader
-      // node, keyword
-      console.debug('filter:', arguments)
+      if (!keyword) return true
+
+      const { label } = this.props
+      const kw = keyword.toLowerCase()
+
+      return data[label].indexOf(kw) !== -1
     }
   }
 }
