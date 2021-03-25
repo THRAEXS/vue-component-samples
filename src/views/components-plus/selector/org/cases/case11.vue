@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="5">
       <el-col :span="22">
-        <thx-org-selector v-model="selected" />
+        <thx-org-selector v-model="selected" cascader />
       </el-col>
       <el-col :span="2">
         <el-button
@@ -20,7 +20,7 @@
 export default {
   data() {
     return {
-      selected: null
+      selected: { id: '58165' }
     }
   }
 }

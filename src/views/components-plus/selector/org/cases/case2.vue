@@ -5,7 +5,11 @@
         <thx-org-selector v-model="selected" :props="props" />
       </el-col>
       <el-col :span="2">
-        <el-button type="danger" size="mini" @click="selected = []">Clear</el-button>
+        <el-button
+          type="danger"
+          size="mini"
+          @click="selected = []"
+        >Clear</el-button>
       </el-col>
     </el-row>
 

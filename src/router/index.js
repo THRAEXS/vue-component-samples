@@ -237,7 +237,7 @@ export const constantRoutes = [
       {
         path: 'single/test',
         name: 'SingleTest',
-        component: () => import('@/views/components-plus/selector/org/cases/case1'),
+        component: () => import('@/views/components-plus/selector/org/cases/case7'),
         meta: { title: 'Single Test', icon: 'example' }
       },
       {

@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="5" style="margin-bottom: 10px;">
       <el-col :span="22">
-        <thx-org-selector v-model="selected" :props="props" />
+        <thx-org-selector v-model="selected" :props="props" cascader />
       </el-col>
       <el-col :span="2">
         <el-button
@@ -17,7 +17,7 @@
       <el-table-column type="index" width="50" align="center" />
       <el-table-column label="Data" align="center">
         <template v-slot:default="scope">
-          {{ handleData(scope.row) }}
+          {{ scope.row }}
         </template>
       </el-table-column>
       <el-table-column width="50">
@@ -38,19 +38,15 @@
 export default {
   data() {
     return {
-      selected: [],
+      selected: [
+        { id: '58168' },
+        { id: '58169' },
+        { id: '58172' },
+        { id: '58162' }
+      ],
       props: {
-        multiple: true,
-        checkStrictly: true
+        multiple: true
       }
-    }
-  },
-  methods: {
-    handleData(row) {
-      const { childOrgList, ...data } = row
-      return childOrgList
-        ? Object.assign(data, { childOrgList: childOrgList.length })
-        : data
     }
   }
 }

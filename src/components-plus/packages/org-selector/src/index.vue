@@ -5,10 +5,12 @@
     :props="props"
     :data="data"
     :cascader="cascader"
+    :show-all-levels="false"
     label="选择"
     v-bind="$attrs"
     v-on="listeners"
     @ok="handleOk"
+    @change="handleChange"
   />
 </template>
 <script>
@@ -53,8 +55,13 @@ export default {
       return Object.assign({}, this.$attrs.props || {}, FixedProps)
     },
     listeners() {
-      const { ok, ...others } = this.$listeners
-      return others
+      const baned = ['ok', 'input', 'change']
+      const events = {}
+      Object.keys(this.$listeners)
+        .filter(e => !baned.includes(e))
+        .forEach(e => (events[e] = this.$listeners[e]))
+
+      return events
     }
   },
   watch: {
@@ -110,6 +117,12 @@ export default {
     handleOk(value) {
       // console.debug(this.$refs.selector.$refs.selector.$refs.cascader
       //   .$refs.panel.$refs.panel.$refs.tree.getNode)
+      this.handleValue(value, 'ok')
+    },
+    handleChange(value) {
+      this.handleValue(value, 'change')
+    },
+    handleValue(value, event) {
       const { multiple } = this.$attrs.props || {}
 
       const result = multiple === true
@@ -118,8 +131,15 @@ export default {
 
       this.$emit('input', result)
       this.$emit('update:value', result)
-      this.$emit('ok', result)
+      this.$emit(event, result)
+
+      return result
     }
   }
 }
 </script>
+<style>
+.el-popper .el-cascader-panel .el-scrollbar {
+  max-height: 500px;
+}
+</style>

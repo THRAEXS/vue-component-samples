@@ -22,7 +22,4 @@
 .case-layout h4 {
   margin: 5px 0;
 }
-.el-col {
-  /* border: 1px solid red; */
-}
 </style>
