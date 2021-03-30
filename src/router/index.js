@@ -208,6 +208,19 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/charts',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/charts'),
+        name: 'Charts',
+        meta: { title: 'Charts', icon: 'el-icon-pie-chart' }
+      }
+    ]
+  },
+
   // {
   //   path: '/selector',
   //   component: Layout,
