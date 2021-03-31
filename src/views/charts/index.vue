@@ -1,11 +1,11 @@
 <template>
   <div>
     Charts
-    {{ data }}
   </div>
 </template>
 <script>
 import * as d3 from 'd3'
+import chartData from '../../../bars.tmp/data'
 
 export default {
   data() {
@@ -18,7 +18,7 @@ export default {
       data: [],
       margin,
       barSize,
-      width: 0,
+      width: 600,
       height,
       duration: 250,
       n,
@@ -32,6 +32,7 @@ export default {
       axis: null,
       textTween: null,
       labels: null,
+      bars: null,
       prev: null,
       next: null,
       nameframes: null,
@@ -42,6 +43,8 @@ export default {
     }
   },
   created() {
+    this.data = chartData
+
     this.x = d3.scaleLinear([0, 1], this.margin.left, this.width - this.margin.right)
     this.y = d3.scaleBand()
       .domain(d3.range(this.n + 1))
@@ -65,7 +68,8 @@ export default {
     this.formatDate = d3.utcFormat('%Y')
     this.formatNumber = d3.format(',d')
 
-    this.datevalues = Array.from(d3.rollup(this.data, ([d]) => d.value, d => +d.date, d => d.name))
+    this.datevalues = Array.from(d3.rollup(this.data,
+      ([d]) => d.value, d => +new Date(d.date), d => d.name))
       .map(([date, data]) => [new Date(date), data])
       .sort(([a], [b]) => d3.ascending(a, b))
 
@@ -91,7 +95,6 @@ export default {
       }
       keyframes.push([new Date(kb), this.rank(name => b.get(name) || 0)])
 
-      this.keyframes = keyframes
       return keyframes
     })()
 
@@ -156,6 +159,28 @@ export default {
               .attr('y', this.y.bandwidth() / 2)
           )
       }
+    }
+
+    this.bars = svg => {
+      let bar = svg.append('g')
+        .attr('fill-opacity', 0.6)
+        .selectAll('rect')
+
+      return ([date, data], transition) => {
+        bar = bar
+          .data(data.slice(0, this.n), d => d.name)
+      }
+    }
+
+    this.handleChart()
+  },
+  methods: {
+    handleChart() {
+      const svg = d3.create('svg')
+        .attr('viewBox', [0, 0, this.width, this.height])
+
+      const updateBars = this.bars(svg)
+
     }
   }
 }
