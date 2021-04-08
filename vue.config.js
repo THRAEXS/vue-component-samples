@@ -48,9 +48,22 @@ module.exports = {
         '~': resolve('src/components-plus')
       },
       extensions: ['.md']
-    }
+    }/* ,
+    externals: {
+      'vue': 'Vue',
+      'vue-router': 'VueRouter',
+      'vuex': 'Vuex',
+      'element-ui': 'ELEMENT'
+    } */
   },
   chainWebpack(config) {
+    /* config.externals({
+      'vue': 'Vue',
+      'vue-router': 'VueRouter',
+      'vuex': 'Vuex',
+      'element-ui': 'ELEMENT'
+    }) */
+
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('preload').tap(() => [
       {
