@@ -6,13 +6,11 @@ import * as d3 from 'd3'
 
 export default {
   mounted() {
-    const a = this.ii();
-
     // eslint-disable-next-line
-    (async function() { for await (const n of a) {} })()
+    (async function(ag) { for await (const n of ag) {} })(this.handleDraw())
   },
   methods: {
-    ii: async function * () {
+    handleDraw: async function * () {
       const width = 1280
 
       const w = Math.min(640, width)
@@ -32,7 +30,7 @@ export default {
       yield svg.node()
 
       await circle.transition()
-        .duration(1000 / 4)
+        .duration(1000)
         .ease(d3.easeBounce)
         .attr('fill', 'yellow')
         .attr('cx', r)
@@ -42,7 +40,7 @@ export default {
         yield svg.node()
 
         await circle.transition()
-          .duration(2000 / 4)
+          .duration(2000)
           .attr('fill', `hsl(${Math.random() * 360},100%,50%)`)
           .attr('cx', Math.random() * (w - r * 2) + r)
           .end()
