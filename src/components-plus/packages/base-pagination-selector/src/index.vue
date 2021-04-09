@@ -78,16 +78,17 @@ export default {
         this.selected = this.value ? this.multiple ? this.value.map(it => it.id) : this.value.id : null
       }
     },
+    params: {
+      immediate: true,
+      deep: true,
+      handler() {
+        Object.assign(this.list.query, { page: 1, params: this.params })
+      }
+    },
     'list.query': {
       deep: true,
       handler() {
         this.search()
-      }
-    },
-    params: {
-      immediate: true,
-      handler() {
-        Object.assign(this.list.query, { params: this.params })
       }
     }
   },
