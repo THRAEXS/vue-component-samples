@@ -18,7 +18,7 @@ export default {
       data: [],
       margin,
       barSize,
-      width: 1200,
+      width: 1600,
       height,
       duration: 250,
       n,
@@ -28,7 +28,14 @@ export default {
       color: null,
       formatDate: null,
       formatNumber: null,
-      keyframes: []
+      tickFormat: undefined,
+      names: null,
+      datevalues: null,
+      rank: null,
+      keyframes: null,
+      nameframes: null,
+      prev: null,
+      next: null
     }
   },
   created() {
@@ -53,14 +60,42 @@ export default {
 
     this.formatDate = d3.utcFormat('%Y')
     this.formatNumber = d3.format(',d')
+
+    this.names = new Set(this.data.map(d => d.name))
+
+    this.datevalues = Array.from(d3.rollup(this.data, ([d]) => d.value, d => +d.date, d => d.name))
+      .map(([date, data]) => [new Date(date), data])
+      .sort(([a], [b]) => d3.ascending(a, b))
+
+    this.rank = value => {
+      const data = Array.from(this.names, name => ({ name, value: value(name) }))
+      data.sort((a, b) => d3.descending(a.value, b.value))
+      for (let i = 0; i < data.length; ++i) data[i].rank = Math.min(this.n, i)
+      return data
+    }
+
+    this.keyframes = (() => {
+      const keyframes = []
+      let ka, a, kb, b
+      for ([[ka, a], [kb, b]] of d3.pairs(this.datevalues)) {
+        for (let i = 0; i < this.k; ++i) {
+          const t = i / this.k
+          keyframes.push([
+            new Date(ka * (1 - t) + kb * t),
+            this.rank(name => (a.get(name) || 0) * (1 - t) + (b.get(name) || 0) * t)
+          ])
+        }
+      }
+      keyframes.push([new Date(kb), this.rank(name => b.get(name) || 0)])
+      return keyframes
+    })()
+    this.nameframes = d3.groups(this.keyframes.flatMap(([, data]) => data), d => d.name)
+    this.prev = new Map(this.nameframes.flatMap(([, data]) => d3.pairs(data, (a, b) => [b, a])))
+    this.next = new Map(this.nameframes.flatMap(([, data]) => d3.pairs(data)))
   },
   mounted() {
     // eslint-disable-next-line
-    (async function(ag) {
-      for await (const n of ag) {
-        console.debug(n)
-      }
-    })(this.handleRace())
+    (async function(ag) { for await (const n of ag) { console.debug(n) } })(this.handleRace())
   },
   methods: {
     handleRace: async function * () {
@@ -91,8 +126,28 @@ export default {
         await transition.end()
       }
     },
-    bars() {
+    bars(svg) {
+      let bar = svg.append('g')
+        .attr('fill-opacity', 0.6)
+        .selectAll('rect')
 
+      return ([date, data], transition) => (bar = bar
+        .data(data.slice(0, this.n), d => d.name)
+        .join(
+          enter => enter.append('rect')
+            .attr('fill', this.color)
+            .attr('height', this.y.bandwidth())
+            .attr('x', this.x(0))
+            .attr('y', d => this.y((this.prev.get(d) || d).rank))
+            .attr('width', d => this.x((this.prev.get(d) || d).value) - this.x(0)),
+          update => update,
+          exit => exit.transition(transition).remove()
+            .attr('y', d => this.y((this.next.get(d) || d).rank))
+            .attr('width', d => this.x((this.next.get(d) || d).value) - this.x(0))
+        )
+        .call(bar => bar.transition(transition)
+          .attr('y', d => this.y(d.rank))
+          .attr('width', d => this.x(d.value) - this.x(0))))
     },
     axis(svg) {
       const g = svg.append('g')
@@ -110,8 +165,35 @@ export default {
         g.select('.domain').remove()
       }
     },
-    labels() {
+    labels(svg) {
+      let label = svg.append('g')
+        .style('font', 'bold 12px var(--sans-serif)')
+        .style('font-variant-numeric', 'tabular-nums')
+        .attr('text-anchor', 'end')
+        .selectAll('text')
 
+      return ([date, data], transition) => (label = label
+        .data(data.slice(0, this.n), d => d.name)
+        .join(
+          enter => enter.append('text')
+            .attr('transform', d => `translate(${this.x((this.prev.get(d) || d).value)},${this.y((this.prev.get(d) || d).rank)})`)
+            .attr('y', this.y.bandwidth() / 2)
+            .attr('x', -6)
+            .attr('dy', '-0.25em')
+            .text(d => d.name)
+            .call(text => text.append('tspan')
+              .attr('fill-opacity', 0.7)
+              .attr('font-weight', 'normal')
+              .attr('x', -6)
+              .attr('dy', '1.15em')),
+          update => update,
+          exit => exit.transition(transition).remove()
+            .attr('transform', d => `translate(${this.x((this.next.get(d) || d).value)},${this.y((this.next.get(d) || d).rank)})`)
+            .call(g => g.select('tspan').tween('text', d => this.textTween(d.value, (this.next.get(d) || d).value)))
+        )
+        .call(bar => bar.transition(transition)
+          .attr('transform', d => `translate(${this.x(d.value)},${this.y(d.rank)})`)
+          .call(g => g.select('tspan').tween('text', d => this.textTween((this.prev.get(d) || d).value, d.value)))))
     },
     ticker(svg) {
       const now = svg.append('text')
@@ -123,12 +205,14 @@ export default {
         .attr('dy', '0.32em')
         .text(this.formatDate(this.keyframes[0][0]))
 
-      return ([date], transition) => {
-        transition.end().then(() => now.text(this.formatDate(date)))
-      }
+      return ([date], transition) => transition.end().then(() => now.text(this.formatDate(date)))
     },
     textTween(a, b) {
-
+      const i = d3.interpolateNumber(a, b)
+      const fn = this.formatNumber
+      return function(t) {
+        this.textContent = fn(i(t))
+      }
     },
     handleLine() {
       const svg = d3.select(this.$el.querySelector('svg'))
@@ -153,9 +237,10 @@ export default {
 </script>
 <style lang="sass">
 .svg-box
+  margin: 20px
   border: 1px solid red
   svg
-    margin: 25px
+    margin: 10px
     // path
     //   fill: none
     //   stroke: #76BF8A
