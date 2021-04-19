@@ -240,6 +240,12 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/chart/race',
+    component: () => import('@/views/charts'),
+    hidden: true
+  },
+
   // {
   //   path: '/selector',
   //   component: Layout,

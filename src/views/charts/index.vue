@@ -121,7 +121,7 @@ export default {
         updateLabels(keyframe, transition)
         updateTicker(keyframe, transition)
 
-        // this.invalidation
+        // invalidation.then(() => svg.interrupt())
 
         await transition.end()
       }
@@ -196,8 +196,10 @@ export default {
           .call(g => g.select('tspan').tween('text', d => this.textTween((this.prev.get(d) || d).value, d.value)))))
     },
     ticker(svg) {
+      console.debug(`bold ${this.barSize}px var(--sans-serif)`)
       const now = svg.append('text')
         .style('font', `bold ${this.barSize}px var(--sans-serif)`)
+        .style('font-size', `${this.barSize}px`)
         .style('font-variant-numeric', 'tabular-nums')
         .attr('text-anchor', 'end')
         .attr('x', this.width - 6)
@@ -205,7 +207,9 @@ export default {
         .attr('dy', '0.32em')
         .text(this.formatDate(this.keyframes[0][0]))
 
-      return ([date], transition) => transition.end().then(() => now.text(this.formatDate(date)))
+      return ([date], transition) => {
+        transition.end().then(() => now.text(this.formatDate(date)))
+      }
     },
     textTween(a, b) {
       const i = d3.interpolateNumber(a, b)
@@ -238,7 +242,7 @@ export default {
 <style lang="sass">
 .svg-box
   margin: 20px
-  border: 1px solid red
+  // border: 1px solid red
   svg
     margin: 10px
     // path
