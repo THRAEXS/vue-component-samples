@@ -196,9 +196,10 @@ export default {
           .call(g => g.select('tspan').tween('text', d => this.textTween((this.prev.get(d) || d).value, d.value)))))
     },
     ticker(svg) {
-      console.debug(`bold ${this.barSize}px var(--sans-serif)`)
       const now = svg.append('text')
-        .style('font', `bold ${this.barSize}px var(--sans-serif)`)
+        // .style('font', `bold ${this.barSize}px var(--sans-serif)`)
+        .style('font-family', 'var(--sans-serif)')
+        .style('font-weight', 'bold')
         .style('font-size', `${this.barSize}px`)
         .style('font-variant-numeric', 'tabular-nums')
         .attr('text-anchor', 'end')
@@ -207,9 +208,7 @@ export default {
         .attr('dy', '0.32em')
         .text(this.formatDate(this.keyframes[0][0]))
 
-      return ([date], transition) => {
-        transition.end().then(() => now.text(this.formatDate(date)))
-      }
+      return ([date], transition) => transition.end().then(() => now.text(this.formatDate(date)))
     },
     textTween(a, b) {
       const i = d3.interpolateNumber(a, b)
