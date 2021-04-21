@@ -245,6 +245,24 @@ export const constantRoutes = [
     component: () => import('@/views/charts'),
     hidden: true
   },
+  {
+    path: '/chart/flow',
+    component: () => import('@/views/charts/flow'),
+    hidden: true
+  },
+
+  {
+    path: '/circle/menu',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/menus'),
+        name: 'CircleMenu',
+        meta: { title: 'Circle Menu', icon: 'el-icon-pie-chart' }
+      }
+    ]
+  },
 
   // {
   //   path: '/selector',
