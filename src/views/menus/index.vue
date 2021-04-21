@@ -1,7 +1,7 @@
 <template>
   <nav class="circle-menu">
     <div class="center">
-      <a href="#">天地科技</a>
+      <a href="#">開元通寶</a>
     </div>
     <ul>
       <li>
@@ -53,9 +53,9 @@
     width: 120px;
     height: 120px;
     border: 5px solid #FFF;
-    border-radius: 50%;
+    // border-radius: 50%;
     box-shadow: 0 0 3px #ccc;
-    background-color: #d9c50f;
+    background-color: gray;
     cursor: pointer;
     text-align: center;
   }
