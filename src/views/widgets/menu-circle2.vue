@@ -21,9 +21,16 @@
 </template>
 <style lang="scss" scoped>
 .circle-menu {
+  $sideLen: 300px;
+  $subSideLen: $sideLen / 2;
+  $linkLiaLen: $subSideLen*1.414;
+  $linkColor: rgba(53, 143, 243, 0.5);
+  $linkColorEven: rgba(53, 143, 243, 0.75);
+  $linkColorHover: rgba(53, 143, 243, 1);
+
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: $sideLen;
+  height: $sideLen;
   // border-radius: 50%;
   // border: 1px solid red;
   // box-shadow: 0 0 10px #ccc;
@@ -35,10 +42,13 @@
   align-items: center;
 
   .center {
-    width: 200px;
-    height: 200px;
+    $border: 8px;
+    $linkSideLen: $subSideLen - $border * 2;
+
+    width: $subSideLen;
+    height: $subSideLen;
     z-index: 1000;
-    border: 8px solid #fff;
+    border: $border solid #fff;
     // background-color: #d9c50f;
     border-radius: 50%;
     // display: none;
@@ -46,52 +56,57 @@
     a {
       display: block;
       // border: 1px solid;
-      width: 184px;
-      height: 184px;
+      width: $linkSideLen;
+      height: $linkSideLen;
       border-radius: 50%;
-      background-color: #d9c50f;
+      // background-color: #d9c50f;
+      // background-color: rgba(53, 143, 200, 1);
+      background: linear-gradient(to right, rgba(53, 143, 243, 1), rgb(63, 91, 122));
       transition: background-color .5s;
     }
     a:hover {
-        background-color: #f1c40f;
-      }
+      background-color: $linkColorHover;
+      box-shadow: 0 0 20px #ccc;
+    }
   }
 
   ul {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: $sideLen;
+    height: $sideLen;
     list-style: none;
     overflow: hidden;
     // border: 1px solid blue;
     border-radius: 50%;
+    box-shadow: 0 0 10px #ccc;
 
     li:nth-child(even) a {
-      background-color: rgba(241, 196, 15, 0.75);
+      background-color: $linkColorEven;
     }
 
     li {
       position: absolute;
       top: 0;
       left: 0;
-      width: 200px;
-      height: 200px;
+      width: $subSideLen;
+      height: $subSideLen;
       overflow: hidden;
       transform-origin: 100% 100%;
 
-      // border: 1px solid;
+      border-bottom: 2px solid #fff;
 
       a {
         display: block;
-        width: 282.2px;
-        height: 282.2px;
-        background: rgba(241, 196, 15, 0.5) url('http://htmlacademy.ru/assets/icons/monitor-4x.png') no-repeat 50% 25%;
+        width: $linkLiaLen;
+        height: $linkLiaLen;
+        background: $linkColor url('http://htmlacademy.ru/assets/icons/monitor-4x.png') no-repeat 50% 25%;
         transform: rotate(-45deg);
         transition: background-color .5s;
       }
 
       a:hover {
-        background-color: #f1c40f;
+        background-color: $linkColorHover;
+        // box-shadow: 0 0 10px #ccc;
       }
     }
 
