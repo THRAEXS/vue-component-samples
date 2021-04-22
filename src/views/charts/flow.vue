@@ -58,7 +58,7 @@ export default {
   },
   mounted() {
     // this.handleRace()
-    this.getData().then(data => (this.data = data)).then(() => {
+    this.getData().then(data => (this.data = data.sort((a, b) => b.value - a.value))).then(() => {
       // this.names = new Set(this.data.map(d => d.name))
 
       this.handleRace()
@@ -76,8 +76,8 @@ export default {
       //   .ease(d3.easeLinear)
 
       // console.debug()
-      // this.x.domain([0, Math.max(...this.data.map(({ value }) => value))])
-      this.x.domain([0, this.data[0].value])
+      this.x.domain([0, Math.max(...this.data.map(({ value }) => value))])
+      // this.x.domain([0, this.data[0].value])
 
       this.bars(svg)
       this.labels(svg)
@@ -130,7 +130,7 @@ export default {
               .attr('fill-opacity', 0.7)
               .attr('font-weight', 'normal')
               .attr('x', -6)
-              .attr('dy', '1.15em').text('Placeholder'))
+              .attr('dy', '1.15em'))
         )
     },
     async getData() {

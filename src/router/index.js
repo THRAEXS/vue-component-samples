@@ -252,12 +252,13 @@ export const constantRoutes = [
   },
 
   {
-    path: '/circle/menu',
+    path: '/widgets',
     component: Layout,
+    meta: { title: 'Widgets', icon: 'el-icon-pie-chart' },
     children: [
       {
         path: '',
-        component: () => import('@/views/menus'),
+        component: () => import('@/views/widgets'),
         name: 'CircleMenu',
         meta: { title: 'Circle Menu', icon: 'el-icon-pie-chart' }
       }
