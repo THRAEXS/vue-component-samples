@@ -25,8 +25,11 @@
   $subSideLen: $sideLen / 2;
   $linkLiaLen: $subSideLen*1.414;
   $linkColor: rgba(14, 40, 62, 0.5);
+  // $linkColor: rgb(14, 40, 62);
   $linkColorEven: rgba(14, 40, 62, 0.75);
+  // $linkColorEven: rgb(80, 112, 137);
   $linkColorHover: rgba(14, 40, 62, 1);
+  // $linkColorHover: rgb(160, 185, 208);
 
   position: relative;
   width: $sideLen;
@@ -42,7 +45,7 @@
   align-items: center;
 
   .center {
-    $border: 8px;
+    $border: 2px;
     $linkSideLen: $subSideLen - $border * 2;
 
     width: $subSideLen;
@@ -67,7 +70,7 @@
     }
     a:hover {
       background-color: $linkColorHover;
-      box-shadow: 0 0 20px red;
+      box-shadow: 0 0 20px rgb(33, 82, 128);
     }
   }
 
@@ -79,7 +82,8 @@
     overflow: hidden;
     // border: 1px solid blue;
     border-radius: 50%;
-    box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 15px #ccc;
+    background-color: rgb(179, 188, 196);
 
     li:nth-child(even) a {
       background-color: $linkColorEven;
