@@ -24,9 +24,9 @@
   $sideLen: 300px;
   $subSideLen: $sideLen / 2;
   $linkLiaLen: $subSideLen*1.414;
-  $linkColor: rgba(53, 143, 243, 0.5);
-  $linkColorEven: rgba(53, 143, 243, 0.75);
-  $linkColorHover: rgba(53, 143, 243, 1);
+  $linkColor: rgba(14, 40, 62, 0.5);
+  $linkColorEven: rgba(14, 40, 62, 0.75);
+  $linkColorHover: rgba(14, 40, 62, 1);
 
   position: relative;
   width: $sideLen;
@@ -61,12 +61,13 @@
       border-radius: 50%;
       // background-color: #d9c50f;
       // background-color: rgba(53, 143, 200, 1);
-      background: linear-gradient(to right, rgba(53, 143, 243, 1), rgb(63, 91, 122));
+      background-color: rgb(14, 40, 62);
+      // background: linear-gradient(to right, rgba(53, 143, 243, 1), rgb(63, 91, 122));
       transition: background-color .5s;
     }
     a:hover {
       background-color: $linkColorHover;
-      box-shadow: 0 0 20px #ccc;
+      box-shadow: 0 0 20px red;
     }
   }
 
@@ -100,8 +101,10 @@
         width: $linkLiaLen;
         height: $linkLiaLen;
         background: $linkColor url('http://htmlacademy.ru/assets/icons/monitor-4x.png') no-repeat 50% 25%;
+        // background: linear-gradient(90deg, rgb(160, 185, 208), rgb(14, 40, 62), rgb(160, 185, 208));
+        // background: linear-gradient(90deg, rgb(160, 185, 208), 20%, rgb(14, 40, 62), 80%, rgb(160, 185, 208));
         transform: rotate(-45deg);
-        transition: background-color .5s;
+        transition: background-image .5s;
       }
 
       a:hover {
