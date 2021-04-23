@@ -108,7 +108,7 @@
         // background: linear-gradient(90deg, rgb(160, 185, 208), rgb(14, 40, 62), rgb(160, 185, 208));
         // background: linear-gradient(90deg, rgb(160, 185, 208), 20%, rgb(14, 40, 62), 80%, rgb(160, 185, 208));
         transform: rotate(-45deg);
-        transition: background-image .5s;
+        transition: background-color .5s;
       }
 
       a:hover {

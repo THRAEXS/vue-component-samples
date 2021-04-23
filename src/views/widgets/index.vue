@@ -11,6 +11,14 @@
       </el-col>
     </el-row>
     <el-row>
+      <el-col :span="12" class="mc-3">
+        <menu-circle3 />
+      </el-col>
+      <el-col :span="12" class="mc-3">
+        <menu-circle3 />
+      </el-col>
+    </el-row>
+    <el-row>
       <el-col :span="12">
         <menu-circle1 />
       </el-col>
@@ -24,7 +32,8 @@
 export default {
   components: {
     MenuCircle1: () => import('./menu-circle1'),
-    MenuCircle2: () => import('./menu-circle2')
+    MenuCircle2: () => import('./menu-circle2'),
+    MenuCircle3: () => import('./menu-circle3')
   }
 }
 </script>
@@ -34,6 +43,13 @@ export default {
 }
 .mc-2 {
   padding: 50px;
+}
+.mc-3 {
+  padding: 20px;
+}
+.mc-3:nth-child(2) {
+  /* background-color: #60656b; */
+  background-color: green;
 }
 .bc {
   width: 200px;
