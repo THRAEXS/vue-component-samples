@@ -15,7 +15,7 @@ export default {
     const height = margin.top + barSize * n + margin.bottom
 
     return {
-      data: null,
+      data: [],
       margin,
       barSize,
       width: 1600,
@@ -57,15 +57,55 @@ export default {
     // }
   },
   mounted() {
-    // this.handleRace()
-    this.getData().then(data => (this.data = data.sort((a, b) => b.value - a.value))).then(() => {
+    // this.handleRaceV1()
+    // this.getData().then(data => (this.data = data.sort((a, b) => b.value - a.value))).then(() => {
+    this.getData().then(data => {
+      // for (let i = 0; i < 100; i++) {
+      //   data.push({
+      //     key: `key-name-${i}`,
+      //     name: `Name-${i}`,
+      //     value: Math.random() * 20000
+      //   })
+      // }
       // this.names = new Set(this.data.map(d => d.name))
+      this.data.push(data.sort((a, b) => b.value - a.value))
+      for (let i = 0; i < 20; i++) {
+        this.data.push(data.map(it => {
+          const { value, ...other } = it
+          return { ...other, value: value * Math.random() * 1000 }
+        }).sort((a, b) => b.value - a.value))
+      }
 
-      this.handleRace()
+      // this.handleRaceV1()
+
+      // eslint-disable-next-line
+      (async function(ag) { for await (const n of ag) { console.debug(n) } })(this.handleRace())
     })
   },
   methods: {
-    handleRace() {
+    handleRace: async function * () {
+      const svg = d3.select(this.$el.querySelector('svg'))
+      svg.attr('viewBox', [0, 0, this.width, this.height])
+
+      const updateBars = this.bars(svg)
+      // const updateLabels = this.labelsV1(svg)
+
+      yield svg.node()
+
+      for (const data of this.data) {
+        const transition = svg.transition()
+          .duration(this.duration)
+          .ease(d3.easeLinear)
+
+        this.x.domain([0, data[0].value])
+
+        updateBars(data, transition)
+        // updateLabels(data, transition)
+
+        await transition.end()
+      }
+    },
+    handleRaceV1() {
       const svg = d3.select(this.$el.querySelector('svg'))
       svg.attr('viewBox', [0, 0, this.width, this.height])
 
@@ -76,18 +116,43 @@ export default {
       //   .ease(d3.easeLinear)
 
       // console.debug()
-      this.x.domain([0, Math.max(...this.data.map(({ value }) => value))])
+      const d = this.data[0]
+      this.x.domain([0, Math.max(...d.map(({ value }) => value))])
       // this.x.domain([0, this.data[0].value])
 
-      this.bars(svg)
-      this.labels(svg)
+      this.barsV1(svg)
+      this.labelsV1(svg)
       // transition.end()
     },
     bars(svg) {
       let bar = svg.append('g')
         .attr('fill-opacity', 0.6)
         .selectAll('rect')
-        .data(this.data, d => d.name)
+
+      return (data, transition) => (bar = bar
+        .data(data.slice(0, this.n), d => d.name)
+        .join(
+          enter => enter.append('rect')
+            .attr('fill', this.color)
+            .attr('height', this.y.bandwidth())
+            .attr('x', this.x(0))
+            .attr('y', (_, i) => this.y(i))
+            .attr('width', d => this.x(d.value) - this.x(0)),
+          update => update,
+          exit => exit.transition(transition).remove()
+            .attr('y', (_, i) => this.y(i))
+            .attr('width', d => this.x(d.value) - this.x(0))
+        ).call(bar => bar.transition(transition)
+          .attr('y', (_, i) => this.y(i))
+          .attr('width', d => this.x(d.value) - this.x(0))
+        )
+      )
+    },
+    barsV1(svg) {
+      let bar = svg.append('g')
+        .attr('fill-opacity', 0.6)
+        .selectAll('rect')
+        .data(this.data[0], d => d.name)
         .join(
           enter => enter.append('rect')
             .attr('fill', this.color)
@@ -112,13 +177,13 @@ export default {
         //   .attr('y', d => this.y(d.rank))
         //   .attr('width', d => this.x(d.value) - this.x(0)))
     },
-    labels(svg) {
+    labelsV1(svg) {
       let label = svg.append('g')
         .style('font', 'bold 12px var(--sans-serif)')
         .style('font-variant-numeric', 'tabular-nums')
         .attr('text-anchor', 'end')
         .selectAll('text')
-        .data(this.data, d => d.name)
+        .data(this.data[0], d => d.name)
         .join(
           enter => enter.append('text')
             .attr('transform', (d, i) => `translate(${this.x(d.value)},${this.y(i)})`)
@@ -130,7 +195,9 @@ export default {
               .attr('fill-opacity', 0.7)
               .attr('font-weight', 'normal')
               .attr('x', -6)
-              .attr('dy', '1.15em'))
+              .attr('dy', '1.15em')),
+          update => update,
+          // exit => exit.call(g => g.select('tspan').tween('text', d => d.value))
         )
     },
     async getData() {
