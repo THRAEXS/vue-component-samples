@@ -277,6 +277,19 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/demos',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/demo'),
+        name: 'DemoDownload',
+        meta: { title: 'Download', icon: 'el-icon-pie-chart' }
+      }
+    ]
+  },
+
   // {
   //   path: '/selector',
   //   component: Layout,
