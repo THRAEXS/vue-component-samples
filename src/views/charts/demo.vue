@@ -76,6 +76,11 @@ export default {
     }
 
     this.data = dd.slice(0, 3)
+
+    this.data.forEach(it => {
+      console.debug(it.reduce((a, b) => `${a} => ${b.name}[${b.rank}](${b.value})`, ''))
+      it.forEach((t, i) => console.debug(t.rank, i, t.rank === i))
+    })
   },
   mounted() {
     // eslint-disable-next-line

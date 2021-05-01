@@ -28,6 +28,8 @@
   </div>
 </template>
 <script>
+import Popover from './popver'
+
 export default {
   data() {
     return {
@@ -37,7 +39,8 @@ export default {
   methods: {
     download(fid) {
       // console.debug('Download:', arguments)
-      this.popver(fid)
+      // this.popver(fid)
+      Popover.show(`#preview?fid=${fid}`, `#download?fid=${fid}`)
     },
     popver(fid) {
       // console.debug('Popver:', arguments)
