@@ -8,8 +8,8 @@
           width="200"
           content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
         >
-          <!-- <el-button slot="reference">hover 激活</el-button> -->
-          <a slot="reference" href="#">hover 激活</a>
+          <el-button slot="reference">hover 激活</el-button>
+          <!-- <a slot="reference" href="#">hover 激活</a> -->
         </el-popover>
       </el-col>
     </el-row>

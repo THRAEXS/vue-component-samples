@@ -13,22 +13,24 @@ class Popver {
     style.top = 0
     style.left = 0
 
+    const none = _ => (popver.style.display = 'none')
+
     const preview = document.createElement('a')
+    preview.addEventListener('click', none, false)
     preview.href = '#'
     preview.text = 'Preview'
     preview.style.marginRight = '10px'
     popver.appendChild(preview)
 
     const download = document.createElement('a')
+    download.addEventListener('click', none, false)
     download.href = `#`
     download.text = 'Download'
     popver.appendChild(download)
 
-    document.body.appendChild(popver)
-    document.body.addEventListener('click', _ => {
-      console.debug('body click', arguments)
-      popver.style.display = 'none'
-    }, false)
+    const body = document.body
+    body.appendChild(popver)
+    body.addEventListener('click', none, false)
 
     this.elem = popver
   }
@@ -37,12 +39,15 @@ class Popver {
     const event = window.event
     event.stopPropagation()
 
+    const target = event.target
+    const [tw, th] = [target.offsetWidth, target.offsetHeight]
+
     !this.elem && this.create()
 
     const style = this.elem.style
     style.display = 'block'
-    style.top = `${event.clientY + event.offsetY}px`
-    style.left = `${event.clientX}px`
+    style.top = `${event.clientY + (th - event.offsetY) + 2}px`
+    style.left = `${event.clientX + (tw / 2 - event.offsetX)}px`
 
     this.elem.childNodes.forEach((it, ind) => (it.href = ind ? dlink : plink))
   }
