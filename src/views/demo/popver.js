@@ -9,7 +9,7 @@ class Popver {
     style.padding = '10px 5px'
     style.backgroundColor = '#fff'
     style.display = 'none'
-    style.position = 'absolute'
+    style.position = 'fixed'
     style.top = 0
     style.left = 0
 
