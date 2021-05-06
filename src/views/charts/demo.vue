@@ -24,7 +24,9 @@ export default {
       n,
       x: null,
       y: null,
-      color: null
+      color: null,
+      prev: null,
+      next: null
     }
   },
   created() {
@@ -68,19 +70,14 @@ export default {
       keyframes.push([new Date(kb), rank(name => b.get(name) || 0)])
       return keyframes
     })()
-    // console.debug(keyframes)
-    const dd = []
+
     for (const [, d] of keyframes) {
-      // console.debug(date, d)
-      dd.push(d.slice(0, this.n))
+      this.data.push(d)
     }
 
-    this.data = dd.slice(0, 3)
-
-    this.data.forEach(it => {
-      console.debug(it.reduce((a, b) => `${a} => ${b.name}[${b.rank}](${b.value})`, ''))
-      it.forEach((t, i) => console.debug(t.rank, i, t.rank === i))
-    })
+    const nameframes = d3.groups(keyframes.flatMap(([, data]) => data), d => d.name)
+    this.prev = new Map(nameframes.flatMap(([, data]) => d3.pairs(data, (a, b) => [b, a])))
+    this.next = new Map(nameframes.flatMap(([, data]) => d3.pairs(data)))
   },
   mounted() {
     // eslint-disable-next-line
@@ -92,6 +89,8 @@ export default {
       svg.attr('viewBox', [0, 0, this.width, this.height])
 
       const updateBars = this.bars(svg)
+      const updateAxis = this.axis(svg)
+      const updateLabels = this.labels(svg)
 
       yield svg.node()
 
@@ -103,6 +102,8 @@ export default {
         this.x.domain([0, data[0].value])
 
         updateBars(data, transition)
+        updateAxis(data, transition)
+        updateLabels(data, transition)
 
         await transition.end()
       }
@@ -113,28 +114,81 @@ export default {
         .selectAll('rect')
 
       return (data, transition) => (bar = bar
-        .data(data, d => d.name)
+        .data(data.slice(0, this.n), d => d.name)
         .join(
           enter => enter.append('rect')
             .attr('fill', this.color)
             .attr('height', this.y.bandwidth())
             .attr('x', this.x(0))
-            // .attr('y', d => this.y((this.prev.get(d) || d).rank))
-            .attr('y', (_, i) => this.y(i))
-            // .attr('width', d => this.x((this.prev.get(d) || d).value) - this.x(0)),
-            .attr('width', d => this.x(d.value) - this.x(0)),
+            .attr('y', d => this.y((this.prev.get(d) || d).rank))
+            // .attr('y', (_, i) => this.y(i))
+            .attr('width', d => this.x((this.prev.get(d) || d).value) - this.x(0)),
+            // .attr('width', d => this.x(d.value) - this.x(0)),
           update => update,
           exit => exit.transition(transition).remove()
-            // .attr('y', d => this.y((this.next.get(d) || d).rank))
-            .attr('y', (_, i) => this.y(i))
-            // .attr('width', d => this.x((this.next.get(d) || d).value) - this.x(0))
-            .attr('width', d => this.x(d.value) - this.x(0))
+            .attr('y', d => this.y((this.next.get(d) || d).rank))
+            // .attr('y', (_, i) => this.y(i))
+            .attr('width', d => this.x((this.next.get(d) || d).value) - this.x(0))
+            // .attr('width', d => this.x(d.value) - this.x(0))
         )
         .call(bar => bar.transition(transition)
-          // .attr('y', d => this.y(d.rank))
-          .attr('y', (_, i) => this.y(i))
-          // .attr('width', d => this.x(d.value) - this.x(0))))
+          .attr('y', d => this.y(d.rank))
+          // .attr('y', (_, i) => this.y(i))
           .attr('width', d => this.x(d.value) - this.x(0))))
+          // .attr('width', d => this.x(d.value) - this.x(0))))
+    },
+    axis(svg) {
+      const g = svg.append('g')
+        .attr('transform', `translate(0,${this.margin.top})`)
+
+      const axis = d3.axisTop(this.x)
+        .ticks(this.width / 160)
+        .tickSizeOuter(0)
+        .tickSizeInner(-this.barSize * (this.n + this.y.padding()))
+
+      return (_, transition) => {
+        g.transition(transition).call(axis)
+        g.select('.tick:first-of-type text').remove()
+        g.selectAll('.tick:not(:first-of-type) line').attr('stroke', 'white')
+        g.select('.domain').remove()
+      }
+    },
+    labels(svg) {
+      let label = svg.append('g')
+        .style('font', 'bold 12px var(--sans-serif)')
+        .style('font-variant-numeric', 'tabular-nums')
+        .attr('text-anchor', 'end')
+        .selectAll('text')
+
+      return (data, transition) => (label = label
+        .data(data.slice(0, this.n), d => d.name)
+        .join(
+          enter => enter.append('text')
+            .attr('transform', d => `translate(${this.x((this.prev.get(d) || d).value)},${this.y((this.prev.get(d) || d).rank)})`)
+            .attr('y', this.y.bandwidth() / 2)
+            .attr('x', -6)
+            .attr('dy', '-0.25em')
+            .text(d => d.name)
+            .call(text => text.append('tspan')
+              .attr('fill-opacity', 0.7)
+              .attr('font-weight', 'normal')
+              .attr('x', -6)
+              .attr('dy', '1.15em')),
+          update => update,
+          exit => exit.transition(transition).remove()
+            .attr('transform', d => `translate(${this.x((this.next.get(d) || d).value)},${this.y((this.next.get(d) || d).rank)})`)
+            .call(g => g.select('tspan').tween('text', d => this.textTween(d.value, (this.next.get(d) || d).value)))
+        )
+        .call(bar => bar.transition(transition)
+          .attr('transform', d => `translate(${this.x(d.value)},${this.y(d.rank)})`)
+          .call(g => g.select('tspan').tween('text', d => this.textTween((this.prev.get(d) || d).value, d.value)))))
+    },
+    textTween(a, b) {
+      const i = d3.interpolateNumber(a, b)
+      const fn = d3.format(',d')
+      return function(t) {
+        this.textContent = fn(i(t))
+      }
     },
     mock() {
       const mockData = []
