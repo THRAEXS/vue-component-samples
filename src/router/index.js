@@ -208,6 +208,88 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/charts',
+    component: Layout,
+    meta: { title: 'Charts', icon: 'el-icon-pie-chart' },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/charts'),
+        name: 'BarChartRace',
+        meta: { title: 'Bar Chart Race', icon: 'el-icon-pie-chart' }
+      },
+      {
+        path: 'flow',
+        component: () => import('@/views/charts/flow'),
+        name: 'BarChartFlow',
+        meta: { title: 'Bar Chart Flow', icon: 'el-icon-pie-chart' }
+      },
+      {
+        path: 'demo',
+        component: () => import('@/views/charts/demo'),
+        name: 'BarChartDemo',
+        meta: { title: 'Bar Chart Demo', icon: 'el-icon-pie-chart' }
+      },
+      {
+        path: 'sample/1',
+        component: () => import('@/views/charts/sample1'),
+        name: 'Sample1',
+        meta: { title: 'Sample-1', icon: 'el-icon-pie-chart' }
+      },
+      {
+        path: 'sample/2',
+        component: () => import('@/views/charts/sample2'),
+        name: 'Sample2',
+        meta: { title: 'Sample-2', icon: 'el-icon-pie-chart' }
+      },
+      {
+        path: 'sample/3',
+        component: () => import('@/views/charts/sample3'),
+        name: 'Sample3',
+        meta: { title: 'Sample-3', icon: 'el-icon-pie-chart' }
+      }
+    ]
+  },
+
+  {
+    path: '/chart/race',
+    component: () => import('@/views/charts'),
+    hidden: true
+  },
+  {
+    path: '/chart/flow',
+    component: () => import('@/views/charts/flow'),
+    hidden: true
+  },
+
+  {
+    path: '/widgets',
+    component: Layout,
+    meta: { title: 'Widgets', icon: 'el-icon-pie-chart' },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/widgets'),
+        name: 'CircleMenu',
+        meta: { title: 'Circle Menu', icon: 'el-icon-pie-chart' }
+      }
+    ]
+  },
+
+  {
+    path: '/demos',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/demo'),
+        name: 'DemoDownload',
+        meta: { title: 'Download', icon: 'el-icon-pie-chart' }
+      }
+    ]
+  },
+
   // {
   //   path: '/selector',
   //   component: Layout,

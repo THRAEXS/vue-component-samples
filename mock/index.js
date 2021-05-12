@@ -5,12 +5,14 @@ const user = require('./user')
 const table = require('./table')
 const selector = require('./selector')
 const funding = require('./funding')
+const charts = require('./charts')
 
 const mocks = [
   ...user,
   ...table,
   ...selector,
-  ...funding
+  ...funding,
+  ...charts
 ]
 
 // for front mock

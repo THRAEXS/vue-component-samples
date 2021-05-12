@@ -17,7 +17,42 @@
   >
     <template v-slot:condition>
       <el-form :inline="true">
-        <el-row>
+        <el-form-item v-if="conditions.projectOrgId.visible" label="所级单位:">
+          <thx-org-cascader
+            :value.sync="params.projectOrgId"
+            :disabled="conditions.projectOrgId.disabled"
+            :cascader-style="conditionStyle"
+          />
+        </el-form-item>
+        <el-form-item v-if="conditions.projectName.visible" label="项目名称:">
+          <el-input
+            v-model="params.projectName"
+            size="mini"
+            clearable
+            :disabled="conditions.projectName.disabled"
+            placeholder="请输入项目名称"
+            :style="conditionStyle"
+          />
+        </el-form-item>
+        <el-form-item v-if="conditions.dictProjectStatisticsTypeList.visible" label="业务类型:">
+          <el-select
+            v-model="params.dictProjectStatisticsTypeList"
+            size="mini"
+            multiple
+            clearable
+            placeholder="请选择业务类型"
+            :style="conditionStyle"
+          >
+            <el-option
+              v-for="item in types"
+              :key="item.id"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+
+        <!-- <el-row>
           <el-col v-if="conditions.projectOrgId.visible" :span="8">
             <el-form-item label="所级单位:">
               <thx-org-cascader
@@ -58,7 +93,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
     </template>
 
