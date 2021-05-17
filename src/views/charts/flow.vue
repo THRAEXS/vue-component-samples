@@ -86,10 +86,15 @@ export default {
     bars(svg) {
       let bar = svg.append('g')
         .attr('fill-opacity', 0.6)
+        .attr('cursor', 'pointer')
         .selectAll('rect')
 
       return (data, transition) => (bar = bar
         .data(data.slice(0, this.n), d => d.name)
+        .on('click', (_, d) => {
+          console.debug(_)
+          console.debug(d)
+        })
         .join(
           enter => enter.append('rect')
             .attr('fill', this.color)
