@@ -92,8 +92,9 @@ export default {
       return (data, transition) => (bar = bar
         .data(data.slice(0, this.n), d => d.name)
         .on('click', (_, d) => {
-          console.debug(_)
-          console.debug(d)
+          // console.debug(_)
+          // console.debug(d)
+          this.$router.push({ name: 'BarChartFlowStep', params: { data: d }})
         })
         .join(
           enter => enter.append('rect')

@@ -226,6 +226,13 @@ export const constantRoutes = [
         meta: { title: 'Bar Chart Flow', icon: 'el-icon-pie-chart' }
       },
       {
+        path: 'flow/step',
+        component: () => import('@/views/charts/flow-step'),
+        name: 'BarChartFlowStep',
+        hidden: true,
+        meta: { title: 'Bar Chart Flow Step', icon: 'el-icon-pie-chart' }
+      },
+      {
         path: 'demo',
         component: () => import('@/views/charts/demo'),
         name: 'BarChartDemo',
