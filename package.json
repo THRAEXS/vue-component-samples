@@ -18,6 +18,7 @@
     "clusterize.js": "^0.18.1",
     "core-js": "3.6.5",
     "d3": "^6.6.1",
+    "dhtmlx-scheduler": "^5.3.11",
     "element-ui": "2.13.2",
     "element-widgets": "file:../element-widgets",
     "js-cookie": "2.2.0",

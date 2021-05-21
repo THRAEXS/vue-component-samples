@@ -319,6 +319,26 @@ export const constantRoutes = [
   // },
 
   {
+    path: '/scheduler',
+    component: Layout,
+    meta: { title: 'Scheduler', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: '',
+        name: 'SchedulerDhtmlx',
+        component: () => import('@/views/scheduler'),
+        meta: { title: 'DHTMLX Scheduler', icon: 'el-icon-s-help' }
+      }
+    ]
+  },
+
+  {
+    path: '/scheduler/a',
+    component: () => import('@/views/scheduler'),
+    hidden: true
+  },
+
+  {
     path: '/components/plus',
     component: Layout,
     meta: { title: 'Components Plus', icon: 'el-icon-finished' },
