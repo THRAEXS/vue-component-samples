@@ -86,6 +86,14 @@ module.exports = [
       const { processInsts: instance } = model
       const data = instance
         ? instance.map(({ processInstId: id, data: tasks }) => ({ id, tasks })) : []
+      data.forEach(it => {
+        const { tasks } = it
+        const timestamps = tasks.map(({ handleTime: time }) => Date.parse(time))
+        const start = timestamps.slice(0, timestamps.length - 1)
+        const end = timestamps.slice(1)
+        const diffs = end.map((e, i) => e - start[i])
+        it.diffs = diffs
+      })
 
       return { code: 20000, data }
     }
