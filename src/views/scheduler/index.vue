@@ -1,15 +1,19 @@
 <template>
-  <div class="container">
-    <scheduler class="left-container" :events="events" @event-updated="logEventUpdate" />
-    <div class="right-container">
-      <ul class="scheduler-messages">
-        <li
-          v-for="message in messages"
-          :key="message"
-          class="scheduler-message"
-        >{{ message }}</li>
-      </ul>
-    </div>
+  <div class="app-container">
+    <el-row :gutter="10">
+      <el-col :span="20">
+        <scheduler class="left-container" :events="events" @event-updated="logEventUpdate" />
+      </el-col>
+      <el-col :span="4">
+        <ul class="scheduler-messages">
+          <li
+            v-for="message in messages"
+            :key="message"
+            class="scheduler-message"
+          >{{ message }}</li>
+        </ul>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -23,7 +27,7 @@ export default {
         { id: 1, start_date: '2020-01-20 6:00', end_date: '2020-01-20 15:00', text: 'Event 1' },
         { id: 2, start_date: '2020-01-23 6:00', end_date: '2020-01-23 20:00', text: 'Event 2' }
       ],
-      messages: ['asdf']
+      messages: []
     }
   },
   methods: {
@@ -41,7 +45,6 @@ export default {
   }
 }
 </script>
-
 <style>
   html, body {
     height: 100%;
@@ -57,7 +60,8 @@ export default {
     position: relative;
     height: 100vh;
     display: inline-block;
-    width: 82vw;
+    /* width: 72vw; */
+    width: 100%;
   }
   .right-container {
     border-right: 1px solid #cecece;

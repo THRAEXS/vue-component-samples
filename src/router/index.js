@@ -333,12 +333,6 @@ export const constantRoutes = [
   },
 
   {
-    path: '/scheduler/a',
-    component: () => import('@/views/scheduler'),
-    hidden: true
-  },
-
-  {
     path: '/components/plus',
     component: Layout,
     meta: { title: 'Components Plus', icon: 'el-icon-finished' },
