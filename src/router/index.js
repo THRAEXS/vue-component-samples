@@ -328,6 +328,12 @@ export const constantRoutes = [
         name: 'SchedulerDhtmlx',
         component: () => import('@/views/scheduler'),
         meta: { title: 'DHTMLX Scheduler', icon: 'el-icon-s-help' }
+      },
+      {
+        path: 'preview',
+        name: 'SchedulerPreview',
+        component: () => import('@/views/scheduler/samples/preview'),
+        meta: { title: 'Scheduler Preview', icon: 'el-icon-s-help' }
       }
     ]
   },
