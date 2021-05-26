@@ -19,15 +19,16 @@
   </el-row>
 </template>
 <script>
-/* global scheduler */
-// import '../../../../public/static/dhtmlxScheduler/locale_cn'
+import Scheduler from '@/components/scheduler'
 
 export default {
   mounted() {
-    this.init()
+    Scheduler().then(this.init)
+    // this.init(scheduler)
   },
   methods: {
-    init() {
+    init(scheduler) {
+      console.debug('init...', scheduler)
       scheduler.locale.labels.timeline_tab = 'Timeline'
       scheduler.locale.labels.section_custom = 'Section'
       scheduler.config.details_on_create = true
@@ -97,5 +98,5 @@ export default {
 }
 </script>
 <style scoped>
-@import '/static/dhtmlxScheduler/dhtmlxscheduler.css';
+@import '/static/dhtmlxScheduler/scheduler.css';
 </style>

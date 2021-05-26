@@ -1,32 +1,26 @@
-// Ignore IE
+// ignore IE
 
-/*
-In the index.html file:
+const src = name => `/static/dhtmlxScheduler/${name}.js`
 
-<script src="/static/dhtmlxScheduler/scheduler.js"></script>
-<script src="/static/dhtmlxScheduler/timeline.js"></script>
-<script src="/static/dhtmlxScheduler/treetimeline.js"></script>
-<script src="/static/dhtmlxScheduler/locale_cn.js"></script>
-
-or
-
-<script src="/static/dhtmlxScheduler/index.js"></script>
-*/
-
-function loadScript(src, onload) {
-  var script = document.createElement('script');
-  script.src = src;
-  script.type = 'text\/javascript';
-  script.onload = onload;
-  document.body.appendChild(script);
+async function loadScript(name) {
+  await new Promise(resolve => {
+    const script = document.createElement('script')
+    script.type = 'text\/javascript'
+    script.src = src(name)
+    script.onload = resolve
+    document.body.appendChild(script)
+  })
 }
 
-loadScript('/static/dhtmlxScheduler/scheduler.js', function() {
-  scheduler.config.default_date = '%Y年%M月%d日';
-  scheduler.config.day_date = '%M %d日 %D';
-  scheduler.config.month_date = '%Y年%M月';
+/* global scheduler */
+function locale() {
+  const sr = scheduler
 
-  scheduler.locale = {
+  sr.config.default_date = '%Y年%M月%d日'
+  sr.config.day_date = '%M %d日 %D'
+  sr.config.month_date = '%Y年%M月'
+
+  sr.locale = {
     date: {
       month_full: [
         '一月',
@@ -79,7 +73,15 @@ loadScript('/static/dhtmlxScheduler/scheduler.js', function() {
       message_ok: '确定',
       message_cancel: '取消'
     }
-  };
-});
-loadScript('/static/dhtmlxScheduler/timeline.js');
-loadScript('/static/dhtmlxScheduler/treetimeline.js');
+  }
+
+  return sr
+}
+
+export default async() => {
+  return await loadScript('scheduler')
+    .then(_ => loadScript('timeline'))
+    .then(_ => loadScript('treetimeline'))
+    .then(locale)
+}
+
