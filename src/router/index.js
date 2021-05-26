@@ -334,6 +334,12 @@ export const constantRoutes = [
         name: 'SchedulerPreview',
         component: () => import('@/views/scheduler/samples/preview'),
         meta: { title: 'Scheduler Preview', icon: 'el-icon-s-help' }
+      },
+      {
+        path: 'booking',
+        name: 'SchedulerBooking',
+        component: () => import('@/views/scheduler/samples/booking'),
+        meta: { title: 'Scheduler Booking', icon: 'el-icon-s-help' }
       }
     ]
   },

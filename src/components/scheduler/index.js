@@ -12,15 +12,12 @@ async function loadScript(name) {
   })
 }
 
-/* global scheduler */
-function locale() {
-  const sr = scheduler
+function locale(scheduler) {
+  scheduler.config.default_date = '%Y年%M月%d日'
+  scheduler.config.day_date = '%M %d日 %D'
+  scheduler.config.month_date = '%Y年%M月'
 
-  sr.config.default_date = '%Y年%M月%d日'
-  sr.config.day_date = '%M %d日 %D'
-  sr.config.month_date = '%Y年%M月'
-
-  sr.locale = {
+  scheduler.locale = {
     date: {
       month_full: [
         '一月',
@@ -74,14 +71,14 @@ function locale() {
       message_cancel: '取消'
     }
   }
-
-  return sr
 }
 
 export default async() => {
-  return await loadScript('scheduler')
+  !window.scheduler && await loadScript('scheduler')
     .then(_ => loadScript('timeline'))
     .then(_ => loadScript('treetimeline'))
-    .then(locale)
+    .then(_ => locale(window.scheduler))
+
+  return window.scheduler
 }
 

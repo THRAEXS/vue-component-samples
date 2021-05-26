@@ -24,11 +24,10 @@ import Scheduler from '@/components/scheduler'
 export default {
   mounted() {
     Scheduler().then(this.init)
-    // this.init(scheduler)
   },
   methods: {
     init(scheduler) {
-      console.debug('init...', scheduler)
+      console.debug('init...', window.scheduler === scheduler, scheduler)
       scheduler.locale.labels.timeline_tab = 'Timeline'
       scheduler.locale.labels.section_custom = 'Section'
       scheduler.config.details_on_create = true
@@ -78,6 +77,7 @@ export default {
       ]
 
       scheduler.init('scheduler_here', new Date(2020, 5, 30), 'timeline')
+      // scheduler.clearAll()
       scheduler.parse([
         { start_date: '2020-06-30 09:00', end_date: '2020-06-30 12:00', text: 'Task A-12458', section_id: 20 },
         { start_date: '2020-06-30 10:00', end_date: '2020-06-30 16:00', text: 'Task A-89411', section_id: 20 },

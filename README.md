@@ -18,6 +18,9 @@ Plugins(`public/static/dhtmlxScheduler`):
 
 Unified import: `index.js`
   - Manual refresh of the page occurs'ReferenceError: scheduler is not defined'
-  - Scheduler event repeated rendering
 
 ES6 import: `components/scheduler/index.js`
+
+Bugs:
+- `scheduler` global sharing
+- `scheduler` event repeated rendering
