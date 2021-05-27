@@ -1,19 +1,3 @@
-<template>
-  <div id="scheduler_here" class="dhx_cal_container">
-    <div class="dhx_cal_navline">
-      <div class="dhx_cal_prev_button">&nbsp;</div>
-      <div class="dhx_cal_next_button">&nbsp;</div>
-      <div class="dhx_cal_today_button" />
-      <div class="dhx_cal_date" />
-      <!-- <div class="dhx_cal_tab" name="day_tab" style="right:204px;" />
-      <div class="dhx_cal_tab" name="week_tab" style="right:140px;" />
-      <div class="dhx_cal_tab" name="timeline_tab" style="right:280px;" />
-      <div class="dhx_cal_tab" name="month_tab" style="right:76px;" /> -->
-    </div>
-    <div class="dhx_cal_header" />
-    <div class="dhx_cal_data" />
-  </div>
-</template>
 <script>
 import Scheduler from '@/components/scheduler'
 
@@ -69,7 +53,7 @@ export default {
         dy: 40
       })
 
-      scheduler.init('scheduler_here', new Date(2020, 8, 30), 'timeline')
+      scheduler.init(this.$refs.scheduler, new Date(2020, 8, 30), 'timeline')
     },
     initV1(scheduler) {
       console.debug('init...', window.scheduler === scheduler, scheduler)
@@ -139,6 +123,23 @@ export default {
         { start_date: '2020-06-30 12:00', end_date: '2020-06-30 18:00', text: 'Task D-12458', section_id: 60 }
       ], 'json')
     }
+  },
+  render(h) {
+    const tag = 'div'
+
+    return h(tag, {
+      ref: 'scheduler',
+      class: 'dhx_cal_container'
+    }, [
+      h(tag, { class: 'dhx_cal_navline' }, [
+        h(tag, { class: 'dhx_cal_prev_button' }),
+        h(tag, { class: 'dhx_cal_next_button' }),
+        h(tag, { class: 'dhx_cal_today_button' }),
+        h(tag, { class: 'dhx_cal_date' })
+      ]),
+      h(tag, { class: 'dhx_cal_header' }),
+      h(tag, { class: 'dhx_cal_data' })
+    ])
   }
 }
 </script>
