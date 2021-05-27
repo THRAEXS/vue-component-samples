@@ -1,32 +1,77 @@
 <template>
-  <el-row>
-    <el-col style="height: 600px;">
-      <div id="scheduler_here" class="dhx_cal_container" style="width:100%; height:100%;">
-        <div class="dhx_cal_navline">
-          <div class="dhx_cal_prev_button">&nbsp;</div>
-          <div class="dhx_cal_next_button">&nbsp;</div>
-          <div class="dhx_cal_today_button" />
-          <div class="dhx_cal_date" />
-          <div class="dhx_cal_tab" name="day_tab" style="right:204px;" />
-          <div class="dhx_cal_tab" name="week_tab" style="right:140px;" />
-          <div class="dhx_cal_tab" name="timeline_tab" style="right:280px;" />
-          <div class="dhx_cal_tab" name="month_tab" style="right:76px;" />
-        </div>
-        <div class="dhx_cal_header" />
-        <div class="dhx_cal_data" />
-      </div>
-    </el-col>
-  </el-row>
+  <div id="scheduler_here" class="dhx_cal_container">
+    <div class="dhx_cal_navline">
+      <div class="dhx_cal_prev_button">&nbsp;</div>
+      <div class="dhx_cal_next_button">&nbsp;</div>
+      <div class="dhx_cal_today_button" />
+      <div class="dhx_cal_date" />
+      <!-- <div class="dhx_cal_tab" name="day_tab" style="right:204px;" />
+      <div class="dhx_cal_tab" name="week_tab" style="right:140px;" />
+      <div class="dhx_cal_tab" name="timeline_tab" style="right:280px;" />
+      <div class="dhx_cal_tab" name="month_tab" style="right:76px;" /> -->
+    </div>
+    <div class="dhx_cal_header" />
+    <div class="dhx_cal_data" />
+  </div>
 </template>
 <script>
 import Scheduler from '@/components/scheduler'
 
 export default {
   mounted() {
+    /*
+      1.获取系统时间
+      2.获取会议室分类数据(剔除预留和维护中)
+      3.获取占用时间段
+    */
     Scheduler().then(this.init)
   },
   methods: {
     init(scheduler) {
+      // scheduler.config.readonly = true
+      scheduler.config.edit_on_create = false
+
+      const elements = [
+        {
+          key: 10, label: 'Web Testing Dep.', open: true, children: [
+            { key: 20, label: 'Elizabeth Taylor' },
+            { key: 30, label: 'Managers' },
+            { key: 60, label: 'Linda Brown' },
+            { key: 70, label: 'George Lucas' }
+          ]
+        },
+        {
+          key: 110, label: 'Human Relations Dep.', open: true, children: [
+            { key: 80, label: 'Kate Moss' },
+            { key: 90, label: 'Dian Fossey' }
+          ]
+        }
+      ]
+
+      scheduler.createTimelineView({
+        name:	'timeline',
+        x_unit:	'minute',
+        x_date:	'%i',
+        x_start: 16,
+        x_step:	30,
+        x_size: 22,
+        dx: 300,
+        y_unit: elements,
+        y_property:	'section_id',
+        event_dy: 'full',
+        render: 'tree',
+        second_scale: {
+          x_unit: 'hour',
+          x_date: '%H点'
+        },
+        section_autoheight: false,
+        folder_dy: 40,
+        dy: 40
+      })
+
+      scheduler.init('scheduler_here', new Date(2020, 8, 30), 'timeline')
+    },
+    initV1(scheduler) {
       console.debug('init...', window.scheduler === scheduler, scheduler)
       scheduler.locale.labels.timeline_tab = 'Timeline'
       scheduler.locale.labels.section_custom = 'Section'
@@ -99,4 +144,10 @@ export default {
 </script>
 <style scoped>
 @import '/static/dhtmlxScheduler/scheduler.css';
+
+.dhx_cal_container {
+  width: 100%;
+  height: 600px;
+  border: 1px solid red;
+}
 </style>

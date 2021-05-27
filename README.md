@@ -24,3 +24,4 @@ ES6 import: `components/scheduler/index.js`
 Bugs:
 - `scheduler` global sharing
 - `scheduler` event repeated rendering
+  - fix: `scheduler.clearAll()`
