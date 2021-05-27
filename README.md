@@ -21,7 +21,7 @@ Unified import: `index.js`
 
 ES6 import: `components/scheduler/index.js`
 
-Bugs:
+Bugs(fix: reload `scheduler`):
 - `scheduler` global sharing
 - `scheduler` event repeated rendering
   - fix: `scheduler.clearAll()`

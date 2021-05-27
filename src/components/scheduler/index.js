@@ -1,11 +1,14 @@
 // ignore IE
 
+const identifier = 'script-dhtmlx-scheduler'
 const src = name => `/static/dhtmlxScheduler/${name}.js`
 
 async function loadScript(name) {
   await new Promise(resolve => {
     const script = document.createElement('script')
     script.type = 'text\/javascript'
+    script.className = `${identifier} data-v-${new Date().getTime()}`
+    document.getE
     script.src = src(name)
     script.onload = resolve
     document.body.appendChild(script)
@@ -73,8 +76,20 @@ function locale(scheduler) {
   }
 }
 
+/*
+  Fixs:
+  - `scheduler` global sharing
+  - `scheduler` event repeated rendering
+    - fix: `scheduler.clearAll()`
+
+  TODO:
+  - Performance optimization
+*/
 export default async() => {
-  !window.scheduler && await loadScript('scheduler')
+  const scripts = document.body.getElementsByClassName(identifier)
+  Array.from(scripts).forEach(n => n.remove())
+
+  /* !window.scheduler &&  */await loadScript('scheduler')
     .then(_ => loadScript('timeline'))
     .then(_ => loadScript('treetimeline'))
     .then(_ => locale(window.scheduler))
