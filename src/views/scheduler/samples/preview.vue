@@ -6,8 +6,7 @@ export default {
   data() {
     return {
       scheduler: null,
-      now: new Date(2021, 3, 2),
-      // now: null,
+      now: new Date(),
       units: [],
       props: {
         key: 'id',
@@ -17,7 +16,7 @@ export default {
     }
   },
   created() {
-    serverTime().then(({ data }) => (this.now = new Date(data)))
+    /* serverTime().then(({ data }) => (this.now = new Date(data)))
     boardrooms().then(({ data }) => {
       this.units = data.map(({
         [this.props.key]: key,
@@ -32,7 +31,7 @@ export default {
           [this.props.label]: label
         }) => ({ key, label }))
       }))
-    })
+    }) */
   },
   mounted() {
     /*
@@ -40,13 +39,35 @@ export default {
       2.获取会议室分类数据(剔除预留和维护中)
       3.获取占用时间段
     */
-    Scheduler().then(this.init)
+    Promise.all([
+      serverTime(),
+      boardrooms()
+    ]).then(([{ data: now }, { data }]) => {
+      this.now = new Date(now)
+      this.units = data.map(({
+        [this.props.key]: key,
+        [this.props.label]: label,
+        [this.props.children]: children
+      }) => ({
+        key,
+        label,
+        open: true,
+        children: children.map(({
+          [this.props.key]: key,
+          [this.props.label]: label
+        }) => ({ key, label }))
+      }))
+    }).finally(this.start)
   },
   methods: {
+    start() {
+      Scheduler().then(this.init)
+    },
     init(scheduler) {
       this.scheduler = scheduler
-      // scheduler.config.readonly = true
-      this.scheduler.config.edit_on_create = false
+      this.scheduler.config.readonly = true
+      // this.scheduler.config.edit_on_create = false
+      this.scheduler.config.xml_date = '%Y-%m-%d %H:%i'
 
       this.scheduler.createTimelineView({
         name:	'timeline',
@@ -70,6 +91,16 @@ export default {
       })
 
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
+      this.scheduler.parse([
+        { start_date: '2021-05-27 09:00:00', end_date: '2021-05-27 12:00:00', text: 'Event 0', section_id: 'room-0'
+        },
+        { start_date: '2021-05-27 09:00', end_date: '2021-05-27 12:00', text: 'Event 1', section_id: 'room-2'
+        },
+        { start_date: new Date(2021, 4, 27, 9), end_date: new Date(2021, 4, 27, 12), text: 'Event 2', section_id: 'room-3'
+        },
+        { start_date: new Date(2021, 4, 27, 9).getTime(), end_date: new Date(2021, 4, 27, 12).getTime(), text: 'Event 3', section_id: 'room-4'
+        }
+      ], 'json')
     },
     initV1(scheduler) {
       console.debug('init...', window.scheduler === scheduler, scheduler)
@@ -121,7 +152,7 @@ export default {
         { name: 'time', height: 72, type: 'time', map_to: 'auto' }
       ]
 
-      scheduler.init('scheduler_here', new Date(2020, 5, 30), 'timeline')
+      scheduler.init(this.$refs.scheduler, new Date(2020, 5, 30), 'timeline')
       // scheduler.clearAll()
       scheduler.parse([
         { start_date: '2020-06-30 09:00', end_date: '2020-06-30 12:00', text: 'Task A-12458', section_id: 20 },
@@ -165,6 +196,6 @@ export default {
 .dhx_cal_container {
   width: 100%;
   height: 600px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 </style>
