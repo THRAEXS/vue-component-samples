@@ -37,7 +37,8 @@ export default {
     /*
       1.获取系统时间
       2.获取会议室分类数据(剔除预留和维护中)
-      3.获取占用时间段
+      3.渲染scheduler
+      4.获取预定时间段
     */
     Promise.all([
       serverTime(),
@@ -47,10 +48,11 @@ export default {
       this.units = data.map(({
         [this.props.key]: key,
         [this.props.label]: label,
-        [this.props.children]: children
+        [this.props.children]: children,
+        remark = ''
       }) => ({
         key,
-        label,
+        label: remark ? `${label} <label style="color: red;">(${remark})</label>` : label,
         open: true,
         children: children.map(({
           [this.props.key]: key,
@@ -76,7 +78,7 @@ export default {
         x_start: 16,
         x_step:	30,
         x_size: 22,
-        dx: 300,
+        dx: 500,
         y_unit: this.units,
         y_property:	'section_id',
         event_dy: 'full',
