@@ -1,7 +1,39 @@
 <script>
 import Scheduler from '@/components/scheduler'
+import { serverTime, boardrooms } from '@/api/boardroom'
 
 export default {
+  data() {
+    return {
+      scheduler: null,
+      now: new Date(2021, 3, 2),
+      // now: null,
+      units: [],
+      props: {
+        key: 'id',
+        label: 'name',
+        children: 'children'
+      }
+    }
+  },
+  created() {
+    serverTime().then(({ data }) => (this.now = new Date(data)))
+    boardrooms().then(({ data }) => {
+      this.units = data.map(({
+        [this.props.key]: key,
+        [this.props.label]: label,
+        [this.props.children]: children
+      }) => ({
+        key,
+        label,
+        open: true,
+        children: children.map(({
+          [this.props.key]: key,
+          [this.props.label]: label
+        }) => ({ key, label }))
+      }))
+    })
+  },
   mounted() {
     /*
       1.获取系统时间
@@ -12,27 +44,11 @@ export default {
   },
   methods: {
     init(scheduler) {
+      this.scheduler = scheduler
       // scheduler.config.readonly = true
-      scheduler.config.edit_on_create = false
+      this.scheduler.config.edit_on_create = false
 
-      const elements = [
-        {
-          key: 10, label: 'Web Testing Dep.', open: true, children: [
-            { key: 20, label: 'Elizabeth Taylor' },
-            { key: 30, label: 'Managers' },
-            { key: 60, label: 'Linda Brown' },
-            { key: 70, label: 'George Lucas' }
-          ]
-        },
-        {
-          key: 110, label: 'Human Relations Dep.', open: true, children: [
-            { key: 80, label: 'Kate Moss' },
-            { key: 90, label: 'Dian Fossey' }
-          ]
-        }
-      ]
-
-      scheduler.createTimelineView({
+      this.scheduler.createTimelineView({
         name:	'timeline',
         x_unit:	'minute',
         x_date:	'%i',
@@ -40,7 +56,7 @@ export default {
         x_step:	30,
         x_size: 22,
         dx: 300,
-        y_unit: elements,
+        y_unit: this.units,
         y_property:	'section_id',
         event_dy: 'full',
         render: 'tree',
@@ -53,7 +69,7 @@ export default {
         dy: 40
       })
 
-      scheduler.init(this.$refs.scheduler, new Date(2020, 8, 30), 'timeline')
+      this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
     },
     initV1(scheduler) {
       console.debug('init...', window.scheduler === scheduler, scheduler)
