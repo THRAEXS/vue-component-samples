@@ -74,11 +74,21 @@ const rooms = [
 const data = locations.map(it => Object.assign(it,
   { children: rooms.filter(({ roomId }) => roomId === it.id) }))
 
+// eslint-disable-next-line
+function sleep(delay) {
+  for (var t = Date.now(); Date.now() - t <= delay;);
+}
+
 module.exports = [
   {
     url: '/api/thraex/server/time',
     type: 'get',
     response: _ => ({ code: 20000, data: Date.now() })
+    // response: _ => ({ code: 20000, data: new Date(2021, 4, 29).getTime() })
+    // response: _ => {
+    //   sleep(5000 * 2)
+    //   return { code: 20000, data: new Date(2021, 4, 29).getTime() }
+    // }
   },
   {
     url: '/api/thraex/boardrooms/events',

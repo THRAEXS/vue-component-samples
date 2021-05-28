@@ -10,11 +10,13 @@ export default {
       type: String,
       default: '%Y-%m-%d %H:%i'
     },
+    markNow: Boolean,
     // scheduler style
     height: {
       type: String,
       default: '600px'
     },
+    now: Date,
     // timeline config
     dx: {
       type: Number,
@@ -27,8 +29,6 @@ export default {
         return ['bar', 'tree'].indexOf(val) !== -1
       }
     },
-
-    now: Date,
     units: {
       type: Array,
       default() {
@@ -47,7 +47,7 @@ export default {
         x_step:	30,
         x_size: 32,
         // dx: 120,
-        y_unit: this.units,
+        // y_unit: this.units,
         y_property:	'section_id',
         event_dy: 'full',
         // render: 'bar',
@@ -63,12 +63,22 @@ export default {
   },
   computed: {
     schedulerCfg() {
-      const { readonly, editOnCreate: edit_on_create, xmlDate: xml_date } = this.$props
-      return { readonly, edit_on_create, xml_date }
+      const {
+        readonly,
+        editOnCreate: edit_on_create,
+        xmlDate: xml_date,
+        markNow: mark_now
+      } = this.$props
+      return {
+        readonly,
+        edit_on_create,
+        xml_date,
+        mark_now
+      }
     },
     timelineCfg() {
-      const { dx, render } = this.$props
-      return Object.assign({}, this.defaultConfig, { dx, render })
+      const { dx, render, units: y_unit } = this.$props
+      return Object.assign({}, this.defaultConfig, { dx, render, y_unit })
     }
   },
   mounted() {
@@ -78,9 +88,56 @@ export default {
     init(scheduler) {
       this.scheduler = scheduler
 
+      Object.assign(this.scheduler._click, this.handleButtonEvent(this.scheduler, this.now))
       Object.assign(this.scheduler.config, this.schedulerCfg)
       this.scheduler.createTimelineView(this.timelineCfg)
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
+
+      if (this.now) {
+        const [y, m, d] = [this.now.getFullYear(), this.now.getMonth(), this.now.getDate()]
+        this.scheduler.addMarkedTimespan({
+          start_date: new Date(y, m, d, 12),
+          end_date: new Date(y, m, d, 14),
+          type: 'dhx_time_block',
+          // css: 'doing',
+          sections: { timeline: ['room-4', 'room-5', 'room-8'] }
+        })
+        this.scheduler.updateView()
+      }
+    },
+    handleButtonEvent(scheduler, now = new Date()) {
+      return {
+        // dhtmlxscheduler.js line: 2196
+        dhx_cal_today_button() {
+          console.debug('dhx_cal_today_button')
+          // console.debug(scheduler)
+          console.debug(scheduler.getState())
+          console.debug(scheduler._currentDate())
+          scheduler.setCurrentView(now)
+          // scheduler.setCurrentView(scheduler._currentDate())
+          // scheduler.setCurrentView(now)
+          // console.debug(scheduler.date)
+          // // console.debug(scheduler._mode)
+          // const t = scheduler.callEvent('onBeforeTodayDisplayed', [])
+          // console.debug(t)
+        },
+        dhx_cal_prev_button() {
+          console.debug('dhx_cal_prev_button')
+          const { date } = scheduler.getState()
+          console.debug(date)
+          const next = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1)
+          console.debug('prev', next)
+          scheduler.setCurrentView(next)
+        },
+        dhx_cal_next_button() {
+          console.debug('dhx_cal_next_button')
+          const { date } = scheduler.getState()
+          console.debug(date)
+          const next = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
+          console.debug('next', next)
+          scheduler.setCurrentView(next)
+        }
+      }
     }
   },
   render(h) {
@@ -110,6 +167,10 @@ export default {
 
 .dhx_cal_container {
   width: 100%;
-  border: 1px solid red;
+  /* border: 1px solid red; */
+}
+.doing {
+  background-color: red;
+  opacity: 0.5;
 }
 </style>

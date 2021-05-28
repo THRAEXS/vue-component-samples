@@ -90,6 +90,7 @@ export default async() => {
   Array.from(scripts).forEach(n => n.remove())
 
   /* !window.scheduler &&  */await loadScript('scheduler')
+    .then(_ => loadScript('limit'))
     .then(_ => loadScript('timeline'))
     .then(_ => loadScript('treetimeline'))
     .then(_ => locale(window.scheduler))

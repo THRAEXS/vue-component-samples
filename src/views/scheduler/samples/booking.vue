@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-card>
+    <el-card class="timeline">
       <timeline
         height="300px"
         :units="units"
@@ -32,3 +32,10 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.el-card.timeline {
+  ::v-deep .el-card__body {
+    padding: 0;
+  }
+}
+</style>
