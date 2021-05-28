@@ -1,39 +1,78 @@
-<template>
-  <el-row>
-    <el-col style="height: 600px;">
-      <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;'>
-		<div class="dhx_cal_navline">
-			<div class="dhx_cal_prev_button">&nbsp;</div>
-			<div class="dhx_cal_next_button">&nbsp;</div>
-			<div class="dhx_cal_today_button"></div>
-			<div class="dhx_cal_date"></div>
-			<div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
-			<div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
-			<div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
-		</div>
-		<div class="dhx_cal_header">
-		</div>
-		<div class="dhx_cal_data">
-		</div>
-	</div>
-    </el-col>
-  </el-row>
-</template>
 <script>
 import Scheduler from '@/components/scheduler'
 
 export default {
+  data() {
+    return {
+      scheduler: null,
+      now: new Date(),
+      units: []
+    }
+  },
   mounted() {
+    for (let i = 0; i < 3; i++) {
+      this.units.push({
+        key: `key-${i}`,
+        label: `label-${i}`
+      })
+    }
+
     Scheduler().then(this.init)
   },
   methods: {
     init(scheduler) {
-      scheduler.config.xml_date="%Y-%m-%d %H:%i";
-		scheduler.init('scheduler_here',new Date(2010,1,10),"week");
+      this.scheduler = scheduler
+      this.scheduler.config.edit_on_create = false
+
+      this.scheduler.createTimelineView({
+        name:	'timeline',
+        x_unit:	'minute',
+        x_date:	'%i',
+        x_start: 14,
+        x_step:	30,
+        x_size: 32,
+        dx: 500,
+        y_unit: this.units,
+        y_property:	'section_id',
+        event_dy: 'full',
+        render: 'bar',
+        second_scale: {
+          x_unit: 'hour',
+          x_date: '%H点'
+        },
+        section_autoheight: false,
+        folder_dy: 40,
+        dy: 40
+      })
+
+      this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
     }
+  },
+  render(h) {
+    const tag = 'div'
+
+    return h(tag, {
+      ref: 'scheduler',
+      class: 'dhx_cal_container'
+    }, [
+      h(tag, { class: 'dhx_cal_navline' }, [
+        h(tag, { class: 'dhx_cal_prev_button' }),
+        h(tag, { class: 'dhx_cal_next_button' }),
+        h(tag, { class: 'dhx_cal_today_button' }),
+        h(tag, { class: 'dhx_cal_date' })
+      ]),
+      h(tag, { class: 'dhx_cal_header' }),
+      h(tag, { class: 'dhx_cal_data' })
+    ])
   }
 }
 </script>
 <style scoped>
 @import '/static/dhtmlxScheduler/scheduler.css';
+
+.dhx_cal_container {
+  width: 100%;
+  height: 300px;
+  border: 1px solid red;
+}
 </style>

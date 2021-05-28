@@ -7,9 +7,17 @@ export function serverTime() {
   })
 }
 
-export function boardrooms() {
+export function getBoardrooms() {
   return request({
     url: '/api/thraex/boardrooms',
     method: 'get'
+  })
+}
+
+export function getEvents(date) {
+  return request({
+    url: '/api/thraex/boardrooms/events',
+    method: 'get',
+    params: { date }
   })
 }

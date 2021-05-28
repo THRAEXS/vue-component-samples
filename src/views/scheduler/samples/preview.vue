@@ -1,6 +1,6 @@
 <script>
 import Scheduler from '@/components/scheduler'
-import { serverTime, boardrooms } from '@/api/boardroom'
+import { serverTime, getBoardrooms } from '@/api/boardroom'
 
 export default {
   data() {
@@ -17,7 +17,7 @@ export default {
   },
   created() {
     /* serverTime().then(({ data }) => (this.now = new Date(data)))
-    boardrooms().then(({ data }) => {
+    getBoardrooms().then(({ data }) => {
       this.units = data.map(({
         [this.props.key]: key,
         [this.props.label]: label,
@@ -40,11 +40,21 @@ export default {
       3.渲染scheduler
       4.获取预定时间段
     */
+    const start = () => Scheduler().then(this.init)
     Promise.all([
       serverTime(),
-      boardrooms()
+      getBoardrooms()
     ]).then(([{ data: now }, { data }]) => {
       this.now = new Date(now)
+
+      const label0 = (l, r) => r ? `${l} <label style="color: red;">(${r})</label>` : l
+      const label1 = (k, l) => `<a href="/scheduler/booking?id=${k}">${l}</a>`
+      /* const label1 = l => {
+        const link = document.createElement('a')
+        link.href = '/scheduler/booking'
+        link.innerText = l
+        return link.outerHTML
+      } */
       this.units = data.map(({
         [this.props.key]: key,
         [this.props.label]: label,
@@ -52,19 +62,16 @@ export default {
         remark = ''
       }) => ({
         key,
-        label: remark ? `${label} <label style="color: red;">(${remark})</label>` : label,
+        label: label0(label, remark),
         open: true,
         children: children.map(({
           [this.props.key]: key,
           [this.props.label]: label
-        }) => ({ key, label }))
+        }) => ({ key, label: label1(key, label) }))
       }))
-    }).finally(this.start)
+    }).finally(start)
   },
   methods: {
-    start() {
-      Scheduler().then(this.init)
-    },
     init(scheduler) {
       this.scheduler = scheduler
       this.scheduler.config.readonly = true
@@ -75,9 +82,9 @@ export default {
         name:	'timeline',
         x_unit:	'minute',
         x_date:	'%i',
-        x_start: 16,
+        x_start: 14,
         x_step:	30,
-        x_size: 22,
+        x_size: 32,
         dx: 500,
         y_unit: this.units,
         y_property:	'section_id',
@@ -93,14 +100,18 @@ export default {
       })
 
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
+
+      const year = this.now.getFullYear()
+      const month = this.now.getMonth()
+      const day = this.now.getDate()
       this.scheduler.parse([
-        { start_date: '2021-05-27 09:00:00', end_date: '2021-05-27 12:00:00', text: 'Event 0', section_id: 'room-0'
+        { start_date: `${year}-${month + 1}-${day} 09:00:00`, end_date: `${year}-${month + 1}-${day} 12:00:00`, text: 'Event 0', section_id: 'room-0'
         },
-        { start_date: '2021-05-27 09:00', end_date: '2021-05-27 12:00', text: 'Event 1', section_id: 'room-2'
+        { start_date: `${year}-${month + 1}-${day} 09:00`, end_date: `${year}-${month + 1}-${day} 12:00`, text: 'Event 1', section_id: 'room-2'
         },
-        { start_date: new Date(2021, 4, 27, 9), end_date: new Date(2021, 4, 27, 12), text: 'Event 2', section_id: 'room-3'
+        { start_date: new Date(year, month, day, 9), end_date: new Date(year, month, day, 12), text: 'Event 2', section_id: 'room-3'
         },
-        { start_date: new Date(2021, 4, 27, 9).getTime(), end_date: new Date(2021, 4, 27, 12).getTime(), text: 'Event 3', section_id: 'room-4'
+        { start_date: new Date(year, month, day, 9).getTime(), end_date: new Date(year, month, day, 12).getTime(), text: 'Event 3', section_id: 'room-4'
         }
       ], 'json')
     },
@@ -171,6 +182,9 @@ export default {
         { start_date: '2020-06-30 11:40', end_date: '2020-06-30 16:30', text: 'Task D-46588', section_id: 60 },
         { start_date: '2020-06-30 12:00', end_date: '2020-06-30 18:00', text: 'Task D-12458', section_id: 60 }
       ], 'json')
+    },
+    handleLink() {
+      console.debug('link:', arguments)
     }
   },
   render(h) {
@@ -197,7 +211,7 @@ export default {
 
 .dhx_cal_container {
   width: 100%;
-  height: 600px;
+  height: 800px;
   /* border: 1px solid red; */
 }
 </style>
