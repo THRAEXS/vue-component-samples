@@ -13,7 +13,7 @@
 </template>
 <script>
 export default {
-  components: { timeline: () => import('./timeline') },
+  components: { Timeline: () => import('./timeline') },
   data() {
     return {
       units: []

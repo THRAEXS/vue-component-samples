@@ -3,27 +3,36 @@ import Scheduler from '@/components/scheduler'
 
 export default {
   props: {
+    // scheduler config
     readonly: Boolean,
     editOnCreate: Boolean,
     xmlDate: {
       type: String,
       default: '%Y-%m-%d %H:%i'
     },
+    // scheduler style
+    height: {
+      type: String,
+      default: '600px'
+    },
+    // timeline config
+    dx: {
+      type: Number,
+      default: 120
+    },
+    render: {
+      type: String,
+      default: 'bar',
+      validator(val) {
+        return ['bar', 'tree'].indexOf(val) !== -1
+      }
+    },
+
     now: Date,
     units: {
       type: Array,
       default() {
         return []
-      }
-    },
-    height: {
-      type: String,
-      default: '600px'
-    },
-    config: {
-      type: Object,
-      default() {
-        return {}
       }
     }
   },
@@ -37,25 +46,29 @@ export default {
         x_start: 14,
         x_step:	30,
         x_size: 32,
-        dx: 120,
+        // dx: 120,
         y_unit: this.units,
         y_property:	'section_id',
         event_dy: 'full',
-        render: 'bar',
+        // render: 'bar',
         second_scale: {
           x_unit: 'hour',
           x_date: '%H点'
         },
         section_autoheight: false,
-        folder_dy: 40,
+        folder_dy: 40, // Only valid for tree
         dy: 40
       }
     }
   },
   computed: {
-    timelineView() {
-      // ignore second_scale
-      return Object.assign({}, this.defaultConfig, this.config)
+    schedulerCfg() {
+      const { readonly, editOnCreate: edit_on_create, xmlDate: xml_date } = this.$props
+      return { readonly, edit_on_create, xml_date }
+    },
+    timelineCfg() {
+      const { dx, render } = this.$props
+      return Object.assign({}, this.defaultConfig, { dx, render })
     }
   },
   mounted() {
@@ -65,10 +78,8 @@ export default {
     init(scheduler) {
       this.scheduler = scheduler
 
-      const { readonly, editOnCreate: edit_on_create, xmlDate: xml_date } = this.$props
-      Object.assign(this.scheduler.config, { readonly, edit_on_create, xml_date })
-
-      this.scheduler.createTimelineView(this.timelineView)
+      Object.assign(this.scheduler.config, this.schedulerCfg)
+      this.scheduler.createTimelineView(this.timelineCfg)
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
     }
   },
