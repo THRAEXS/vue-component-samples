@@ -16,7 +16,7 @@ async function loadScript(name) {
 }
 
 function locale(scheduler) {
-  scheduler.config.default_date = '%Y年%M月%d日'
+  scheduler.config.default_date = '%Y年%M月%j日'
   scheduler.config.day_date = '%M %d日 %D'
   scheduler.config.month_date = '%Y年%M月'
 
