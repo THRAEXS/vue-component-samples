@@ -16,6 +16,10 @@ export default {
       type: String,
       default: '600px'
     },
+    navline: {
+      type: Boolean,
+      default: true
+    },
     now: Date,
     // timeline config
     dx: {
@@ -95,6 +99,9 @@ export default {
         dhx_cal_today_button: () => this.handleButtonClick()
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
+
+      !this.navline && (this.scheduler.xy.nav_height = 5)
+
       this.scheduler.createTimelineView(this.timelineCfg)
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
 
@@ -131,6 +138,13 @@ export default {
   render(h) {
     const tag = 'div'
 
+    const navs = this.navline ? [
+      h(tag, { class: 'dhx_cal_prev_button' }),
+      h(tag, { class: 'dhx_cal_next_button' }),
+      h(tag, { class: 'dhx_cal_today_button' }),
+      h(tag, { class: 'dhx_cal_date' })
+    ] : [h(tag, { class: 'dhx_cal_date', style: { display: 'none' }})]
+
     return h(tag, {
       ref: 'scheduler',
       class: 'dhx_cal_container',
@@ -138,12 +152,7 @@ export default {
         height: this.height
       }
     }, [
-      h(tag, { class: 'dhx_cal_navline' }, [
-        h(tag, { class: 'dhx_cal_prev_button' }),
-        h(tag, { class: 'dhx_cal_next_button' }),
-        h(tag, { class: 'dhx_cal_today_button' }),
-        h(tag, { class: 'dhx_cal_date' })
-      ]),
+      h(tag, { class: 'dhx_cal_navline' }, navs),
       h(tag, { class: 'dhx_cal_header' }),
       h(tag, { class: 'dhx_cal_data' })
     ])
