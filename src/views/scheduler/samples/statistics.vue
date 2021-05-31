@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card>
-      <timeline
+      <br-timeline
         render="tree"
         height="800px"
         readonly
@@ -16,7 +16,7 @@
 import { serverTime, getBoardrooms } from '@/api/boardroom'
 
 export default {
-  components: { Timeline: () => import('./timeline') },
+  components: { BrTimeline: () => import('./components/timeline') },
   data() {
     return {
       now: new Date(),

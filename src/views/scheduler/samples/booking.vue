@@ -5,7 +5,7 @@
         <label>{{ boardroom.name }}</label>
       </div>
 
-      <timeline
+      <br-timeline
         height="135px"
         :units="units"
         :navline="false"
@@ -15,20 +15,12 @@
     <el-row :gutter="5">
       <el-col :span="18">
         <el-card>
-          <el-form :style="calcStyle">
-            <div v-for="i in 100" :key="i">
-              Form...{{ i }}
-            </div>
-          </el-form>
+          <br-edit :style="calcStyle" />
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card>
-          <div class="content" :style="calcStyle">
-            <div v-for="i in 100" :key="i">
-              Base Info...{{ i }}
-            </div>
-          </div>
+          <br-view :style="calcStyle" />
         </el-card>
       </el-col>
     </el-row>
@@ -41,7 +33,11 @@
 </template>
 <script>
 export default {
-  components: { Timeline: () => import('./timeline') },
+  components: {
+    BrTimeline: () => import('./components/timeline'),
+    BrEdit: () => import('./components/edit'),
+    BrView: () => import('./components/view')
+  },
   data() {
     return {
       height: 0,
@@ -71,7 +67,7 @@ export default {
       })
     }
   },
-  mounted() {
+  updated() {
     this.$nextTick(() => {
       const bodyHeight = document.body.clientHeight
       const navHeight = document.querySelector('.navbar').clientHeight
