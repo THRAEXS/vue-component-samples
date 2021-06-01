@@ -1,13 +1,47 @@
 <template>
-  <div>
-    <div
-      v-for="(option, ind) in node.options"
-      :key="`${node.prop}-${ind}`"
-      style="margin-bottom: 5px;"
+  <el-radio-group v-if="Array.isArray(options)" v-model="form[prop]">
+    <el-radio-button
+      v-for="(item, ind) in options"
+      :key="`${prop}-${ind}`"
+      :label="item"
     >
-      <div v-if="ind === 1 && node.tips"><b>{{ node.tips }}</b></div>
-      <el-radio v-model="form[node.prop]" :label="option" border>{{ option }}</el-radio>
-    </div>
+      {{ item }}
+    </el-radio-button>
+  </el-radio-group>
+  <div v-else>
+    <el-radio
+      v-model="form[prop]"
+      :label="options.major"
+      border
+      @change="handleRadioChange"
+    >{{ options.major }}</el-radio>
+
+    <div><b>{{ options.tips }}</b></div>
+
+    <el-checkbox-group
+      v-if="isCheckbox"
+      v-model="boxes[prop]"
+      @change="handleCheckboxChange"
+    >
+      <el-checkbox
+        v-for="(item, ind) in options.minor"
+        :key="`${prop}-${ind}`"
+        :label="item"
+        border
+      />
+    </el-checkbox-group>
+    <el-radio-group
+      v-else
+      v-model="form[prop]"
+    >
+      <div
+        v-for="(item, ind) in options.minor"
+        :key="`${prop}-${ind}`"
+        style="margin-bottom: 5px;"
+      >
+        <el-radio :label="item" border>{{ item }}</el-radio>
+      </div>
+    </el-radio-group>
   </div>
 </template>
 <script>
@@ -24,6 +58,31 @@ export default {
       default() {
         return {}
       }
+    },
+    boxes: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  computed: {
+    prop() {
+      return this.node.prop
+    },
+    options() {
+      return this.node.options
+    },
+    isCheckbox() {
+      return this.options.type === 'checkbox'
+    }
+  },
+  methods: {
+    handleRadioChange() {
+      this.isCheckbox && this.$set(this.boxes, this.prop, [])
+    },
+    handleCheckboxChange() {
+      this.$set(this.form, this.prop, null)
     }
   }
 }

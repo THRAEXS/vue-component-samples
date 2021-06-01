@@ -80,7 +80,9 @@ export default {
   methods: {
     handleSubmit() {
       console.debug('submit...')
+      console.debug(this.$refs.brEdit.getFormData() === this.$refs.brEdit.form)
       console.debug(JSON.stringify(this.$refs.brEdit.getFormData()))
+      console.debug(JSON.stringify(this.$refs.brEdit.form))
     }
   }
 }
