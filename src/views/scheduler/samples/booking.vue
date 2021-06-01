@@ -31,8 +31,8 @@
     </el-row>
 
     <footer>
-      <el-button type="primary" @click="handleSubmit">提交</el-button>
-      <el-button @click="$router.go(-1)">返回</el-button>
+      <el-button size="small" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button size="small" @click="$router.go(-1)">返回</el-button>
     </footer>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
   data() {
     return {
       height: 0,
+      occupy: 5 * 2 + 20 * 2 + 10 * 2 + 4,
       units: [],
       boardroom: {}
     }
@@ -63,17 +64,16 @@ export default {
       1. room id
       2. timestamp param
     */
-    const { roomId } = this.$route.query
-    getBoardroom(roomId).then(({ data }) => (this.boardroom = data))
+    const { rid, start } = this.$route.query
+    getBoardroom(rid).then(({ data }) => (this.boardroom = data))
 
-    const now = new Date()
-    for (let i = 0; i < 2; i++) {
-      const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i)
-      const [y, m, d] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-      this.units.push({
-        key: `${y}-${m}-${d}`,
-        label: `${y}年${m}月${d}日`
-      })
+    const begin = new Date(Number.parseInt(start))
+    const [year, month, date] = [begin.getFullYear(), begin.getMonth(), begin.getDate()]
+    this.units.push({ key: `${year}-${month + 1}-${date}`, label: `${year}年${month + 1}月${date}日` })
+    for (let i = 1; i < 2; i++) {
+      const next = new Date(year, month, date + i)
+      const [y, m, d] = [next.getFullYear(), next.getMonth() + 1, next.getDate()]
+      this.units.push({ key: `${y}-${m}-${d}`, label: `${y}年${m}月${d}日` })
     }
   },
   updated() {
@@ -84,16 +84,12 @@ export default {
       const form = document.querySelector('.booking-form')
       const top = form.querySelector('.el-card.timeline').clientHeight
       const footer = form.querySelector('footer').clientHeight
-      this.height = bodyHeight - navHeight - top - footer - 5 * 2 - 20 * 2 - 10 * 2 - 4
+      this.height = bodyHeight - navHeight - top - footer - this.occupy
     })
   },
   methods: {
     handleSubmit() {
       console.debug('submit...')
-      // console.debug(this.$refs.brEdit.getFormData() === this.$refs.brEdit.form)
-      // console.debug(JSON.stringify(this.$refs.brEdit.getFormData()))
-      // console.debug(JSON.stringify(this.$refs.brEdit.form))
-      // console.debug(this.$refs.brEdit.getFormData())
       const res = this.$refs.brEdit.getFormData()
       for (const k in res) {
         console.debug(k, ':', res[k])

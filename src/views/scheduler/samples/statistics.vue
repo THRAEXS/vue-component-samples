@@ -42,7 +42,7 @@ export default {
       this.now = new Date(now)
 
       const label0 = (l, r) => r ? `${l} <label style="color: red;">(${r})</label>` : l
-      const label1 = (k, l) => `<a href="/scheduler/booking?id=${k}">${l}</a>`
+      const label1 = (k, l) => `<a href="/scheduler/booking?rid=${k}&start=${this.now.getTime()}">${l}</a>`
       this.units = data.map(({
         [this.props.key]: key,
         [this.props.label]: label,

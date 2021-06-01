@@ -93,8 +93,8 @@ module.exports = [
   {
     url: '/api/thraex/server/time',
     type: 'get',
-    response: _ => ({ code: 20000, data: Date.now() })
-    // response: _ => ({ code: 20000, data: new Date(2021, 4, 29).getTime() })
+    // response: _ => ({ code: 20000, data: Date.now() })
+    response: _ => ({ code: 20000, data: new Date(2021, 4, 31).getTime() })
     // response: _ => {
     //   sleep(5000 * 2)
     //   return { code: 20000, data: new Date(2021, 4, 29).getTime() }
