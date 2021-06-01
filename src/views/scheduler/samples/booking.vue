@@ -15,7 +15,7 @@
     <el-row :gutter="5">
       <el-col :span="18">
         <el-card>
-          <br-edit :style="calcStyle" />
+          <br-edit ref="brEdit" :style="calcStyle" />
         </el-card>
       </el-col>
       <el-col :span="6">
@@ -80,6 +80,7 @@ export default {
   methods: {
     handleSubmit() {
       console.debug('submit...')
+      console.debug(JSON.stringify(this.$refs.brEdit.getFormData()))
     }
   }
 }
