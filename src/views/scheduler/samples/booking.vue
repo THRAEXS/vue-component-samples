@@ -65,13 +65,6 @@ export default {
     */
     const { roomId } = this.$route.query
     getBoardroom(roomId).then(({ data }) => (this.boardroom = data))
-    // getBoardroom('room-10').then(({ data }) => (this.boardroom = data))
-    // this.boardroom = {
-    //   id: '1',
-    //   name: 'asdf',
-    //   report: 0,
-    //   computer: 0
-    // }
 
     const now = new Date()
     for (let i = 0; i < 2; i++) {
@@ -98,9 +91,9 @@ export default {
     handleSubmit() {
       console.debug('submit...')
       // console.debug(this.$refs.brEdit.getFormData() === this.$refs.brEdit.form)
-      // console.debug(JSON.stringify(this.$refs.brEdit.getFormData()))
+      console.debug(JSON.stringify(this.$refs.brEdit.getFormData()))
       // console.debug(JSON.stringify(this.$refs.brEdit.form))
-      console.debug(this.$refs.brEdit.getFormData())
+      // console.debug(this.$refs.brEdit.getFormData())
     }
   }
 }
