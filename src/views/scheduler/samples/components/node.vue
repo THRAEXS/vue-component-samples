@@ -108,7 +108,10 @@ export default {
       this.handleEditDisabled(!(this.edit && this.options.minor[this.edit.for] === val))
     },
     handleEditDisabled(v) {
-      this.edit && this.$set(this.edit, 'disabled', v)
+      if (this.edit) {
+        this.$set(this.edit, 'disabled', v)
+        v && this.$set(this.boxes, this.edit.prop, null)
+      }
     }
   }
 }

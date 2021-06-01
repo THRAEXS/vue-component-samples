@@ -91,9 +91,13 @@ export default {
     handleSubmit() {
       console.debug('submit...')
       // console.debug(this.$refs.brEdit.getFormData() === this.$refs.brEdit.form)
-      console.debug(JSON.stringify(this.$refs.brEdit.getFormData()))
+      // console.debug(JSON.stringify(this.$refs.brEdit.getFormData()))
       // console.debug(JSON.stringify(this.$refs.brEdit.form))
       // console.debug(this.$refs.brEdit.getFormData())
+      const res = this.$refs.brEdit.getFormData()
+      for (const k in res) {
+        console.debug(k, ':', res[k])
+      }
     }
   }
 }

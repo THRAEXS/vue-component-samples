@@ -34,35 +34,35 @@
     <el-row>
       <el-col :span="12">
         <el-form-item label="院内承办单位:">
-          <el-input v-model="form.orgId" placeholder="TODO: refactor" />
+          <el-input v-model.trim="form.orgId" placeholder="TODO: refactor" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item label="会议人数:">
-          <el-input v-model="form.num" />
+          <el-input v-model.trim="form.num" />
         </el-form-item>
       </el-col>
     </el-row>
     <el-row :gutter="5">
       <el-col :span="12">
         <el-form-item label="联系人:">
-          <el-input v-model="form.contacts" />
+          <el-input v-model.trim="form.contacts" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item label="手机:">
-          <el-input v-model="form.mobile" />
+          <el-input v-model.trim="form.mobile" />
         </el-form-item>
       </el-col>
     </el-row>
     <el-form-item label="会议主题:">
-      <el-input v-model="form.subject" />
+      <el-input v-model.trim="form.subject" />
     </el-form-item>
     <el-form-item label="会议简介:">
-      <el-input v-model="form.introduction" />
+      <el-input v-model.trim="form.introduction" />
     </el-form-item>
     <el-form-item label="参与单位:">
-      <el-input v-model="form.participateUnits" />
+      <el-input v-model.trim="form.participateUnits" />
     </el-form-item>
     <template v-for="(item, ind) in nodes">
       <el-row v-if="Array.isArray(item)" :key="`form-node-${ind}`" :gutter="5">
@@ -304,29 +304,12 @@ export default {
   },
   methods: {
     getFormData() {
-      // return Object.assign({}, this.form)
-      // const a = this.boxes.map(it => Array.isArray(it) ? it.join(',') : it)
-
-      // console.debug(Object.keys(this.boxes))
-      // Object.keys(this.boxes).map(k => )
-      // console.debug(this.form === Object.assign({}, this.form))
-      // console.debug(this.form === Object.create(this.form))
-      // console.debug(JSON.stringify(this.form))
-      // console.debug(JSON.stringify(Object.create(this.form)))
       const result = Object.assign({}, this.form)
-      // for (const k of Object.keys(this.boxes)) {
-      //   console.debug(k)
-      // }
-      // Object.keys(this.boxes).forEach(k => {
-      //   const val = this.boxes[k]
-      //   val && console.debug('set new val', k)
-      //   val && console.debug(val.length)
-      //   // if (Array.isArray(val)) {
-      //   //   result[k] = val.join('，')
-      //   // } else {
-      //   //   result[k] = val
-      //   // }
-      // })
+      Object.keys(this.boxes).forEach(k => {
+        const val = this.boxes[k]
+        val && val.length > 0 && (result[k] = Array.isArray(val)
+          ? val.join('，') : `${result[k] || ''}${val}`)
+      })
 
       return result
     }
