@@ -101,14 +101,6 @@ export default {
         {
           prop: 'leaders',
           label: '参会领导',
-          // options: [
-          //   '无院领导或其他单位局级以上领导参会',
-          //   '领导一',
-          //   '领导二',
-          //   '领导三'
-          // ],
-          // tips: '若有局级以上领导参会，请选择：',
-          // type: 'checkbox',
           options: {
             major: '无院领导或其他单位局级以上领导参会',
             minor: [
@@ -119,18 +111,16 @@ export default {
             ],
             tips: '若有局级以上领导参会，请选择：',
             type: 'checkbox'
+          },
+          edit: {
+            prop: 'otherLeaders',
+            label: '其他单位局级以上参会领导姓名：'
           }
         },
         [
           {
             prop: 'photograph',
             label: '照相',
-            // options: [
-            //   '无院领导参会或参会领导明确不照相',
-            //   '订会单位自行通知宣传部',
-            //   '委托接待科转告宣传部'
-            // ],
-            // tips: '若领导明确只是需要照相，请选择：',
             options: {
               major: '无院领导参会或参会领导明确不照相',
               minor: [
@@ -143,12 +133,6 @@ export default {
           {
             prop: 'tableCard',
             label: '桌卡',
-            // options: [
-            //   '不需要',
-            //   '带勘探院名称的院卡',
-            //   '带会议名称的粉卡'
-            // ],
-            // tips: '若需要，请选择：',
             options: {
               major: '不需要',
               minor: [
@@ -163,31 +147,23 @@ export default {
           {
             prop: 'banner',
             label: '横幅',
-            // options: [
-            //   '不需要',
-            //   '订会单位自行订购、悬挂',
-            //   '委托接待科并填写横幅文字内容：TODO'
-            // ],
-            // tips: '若需要，请选择：',
             options: {
               major: '不需要',
               minor: [
                 '订会单位自行订购、悬挂',
-                '委托接待科并填写横幅文字内容：TODO'
+                '委托接待科并填写横幅文字内容：'
               ],
               tips: '若需要，请选择：'
+            },
+            edit: {
+              prop: 'banner',
+              disabled: true,
+              for: 1 // minor index
             }
           },
           {
             prop: 'signpost',
             label: '指路牌',
-            // options: [
-            //   '不需要',
-            //   '1个',
-            //   '2个',
-            //   '3个'
-            // ],
-            // tips: '若需要，请选择：',
             options: {
               major: '不需要',
               minor: [
@@ -221,12 +197,6 @@ export default {
           {
             prop: 'computer',
             label: '电脑',
-            // options: [
-            //   '不需要',
-            //   '订会单位自带笔记本电脑',
-            //   '委托接待科提前布置'
-            // ],
-            // tips: '若需要，请选择：',
             options: {
               major: '不需要',
               minor: [
@@ -239,12 +209,6 @@ export default {
           {
             prop: 'paper',
             label: '摆台纸',
-            // options: [
-            //   '不需要',
-            //   '空白纸',
-            //   '院标抬头纸'
-            // ],
-            // tips: '若需要，请选择：'
             options: {
               major: '不需要',
               minor: [
@@ -259,14 +223,6 @@ export default {
           {
             prop: 'pen',
             label: '摆台笔',
-            // options: [
-            //   '不需要',
-            //   '黑铅笔',
-            //   '红铅笔',
-            //   '签字笔'
-            // ],
-            // tips: '若需要，请选择：',
-            // type: 'checkbox'
             options: {
               major: '不需要',
               minor: [
@@ -280,14 +236,7 @@ export default {
           },
           {
             prop: 'keepSecret',
-            label: '摆台笔',
-            // options: [
-            //   '不需要',
-            //   '屏蔽器',
-            //   '手机屏蔽柜'
-            // ],
-            // tips: '若涉密，请选择：',
-            // type: 'checkbox'
+            label: '保密',
             options: {
               major: '不需要',
               minor: [
@@ -312,7 +261,6 @@ export default {
         introduction: null,
         participateUnits: null,
         leaders: null,
-        // leadersBox: [],
         otherLeaders: null,
         photograph: null,
         tableCard: null,
@@ -323,20 +271,24 @@ export default {
         computer: null,
         paper: null,
         pen: null,
-        // penBox: [],
         keepSecret: null
-        // keepSecretBox: []
       },
       boxes: {
         leaders: [],
         pen: [],
-        keepSecret: []
+        keepSecret: [],
+        otherLeaders: null,
+        banner: null
       }
     }
   },
   methods: {
     getFormData() {
-      return Object.assign({}, this.form)
+      // return Object.assign({}, this.form)
+      return {
+        form: this.form,
+        boxes: this.boxes
+      }
     }
   }
 }

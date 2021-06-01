@@ -21,7 +21,7 @@
     <el-checkbox-group
       v-if="isCheckbox"
       v-model="boxes[prop]"
-      @change="handleCheckboxChange"
+      @change="handleCheckboxGroupChange"
     >
       <el-checkbox
         v-for="(item, ind) in options.minor"
@@ -33,6 +33,7 @@
     <el-radio-group
       v-else
       v-model="form[prop]"
+      @change="handleRadioGroupChange"
     >
       <div
         v-for="(item, ind) in options.minor"
@@ -42,6 +43,11 @@
         <el-radio :label="item" border>{{ item }}</el-radio>
       </div>
     </el-radio-group>
+
+    <div v-if="edit">
+      <div v-if="edit.label"><b>{{ edit.label }}</b></div>
+      <el-input v-model.trim="boxes[edit.prop]" :disabled="edit.disabled" />
+    </div>
   </div>
 </template>
 <script>
@@ -73,6 +79,9 @@ export default {
     options() {
       return this.node.options
     },
+    edit() {
+      return this.node.edit
+    },
     isCheckbox() {
       return this.options.type === 'checkbox'
     }
@@ -80,9 +89,17 @@ export default {
   methods: {
     handleRadioChange() {
       this.isCheckbox && this.$set(this.boxes, this.prop, [])
+      this.handleEditDisabled(true)
     },
-    handleCheckboxChange() {
+    handleCheckboxGroupChange() {
       this.$set(this.form, this.prop, null)
+      this.handleEditDisabled(false)
+    },
+    handleRadioGroupChange(val) {
+      this.handleEditDisabled(!(this.edit && this.options.minor[this.edit.for] === val))
+    },
+    handleEditDisabled(v) {
+      this.edit && this.$set(this.edit, 'disabled', v)
     }
   }
 }
