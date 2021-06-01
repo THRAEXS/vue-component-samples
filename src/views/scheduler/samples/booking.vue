@@ -42,8 +42,7 @@ export default {
     return {
       height: 0,
       units: [],
-      boardroom: {},
-      form: {}
+      boardroom: {}
     }
   },
   computed: {
