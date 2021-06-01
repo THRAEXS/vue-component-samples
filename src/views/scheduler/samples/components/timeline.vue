@@ -123,7 +123,7 @@ export default {
         1.getEventsByDate
         2.getEventsByRoomIdAndDates
       */
-      const { date } = this.scheduler.getState()
+      /* const { date } = this.scheduler.getState()
       const [y, m, d] = [date.getFullYear(), date.getMonth(), date.getDate()]
       this.scheduler.addMarkedTimespan({
         start_date: new Date(y, m, d, 12),
@@ -132,7 +132,7 @@ export default {
         // css: 'doing',
         sections: { timeline: ['room-4', 'room-5', 'room-8', 'room-13'] }
       })
-      this.scheduler.updateView()
+      this.scheduler.updateView() */
     }
   },
   render(h) {

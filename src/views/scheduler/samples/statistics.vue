@@ -3,7 +3,7 @@
     <el-card>
       <br-timeline
         render="tree"
-        height="800px"
+        :height="`${height}px`"
         readonly
         :dx="500"
         :now="now"
@@ -19,6 +19,8 @@ export default {
   components: { BrTimeline: () => import('./components/timeline') },
   data() {
     return {
+      height: 0,
+      occupy: 20 * 2 + 2,
       now: new Date(),
       units: [],
       props: {
@@ -57,6 +59,13 @@ export default {
           [this.props.label]: label
         }) => ({ key, label: label1(key, label) }))
       }))
+    })
+  },
+  updated() {
+    this.$nextTick(() => {
+      const bodyHeight = document.body.clientHeight
+      const navHeight = document.querySelector('.navbar').clientHeight
+      this.height = bodyHeight - navHeight - this.occupy
     })
   }
 }
