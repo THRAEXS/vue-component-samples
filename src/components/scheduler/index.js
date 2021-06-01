@@ -93,6 +93,8 @@ export default async() => {
     .then(_ => loadScript('limit'))
     .then(_ => loadScript('timeline'))
     .then(_ => loadScript('treetimeline'))
+    .then(_ => loadScript('collision'))
+    .then(_ => loadScript('tooltip'))
     .then(_ => locale(window.scheduler))
 
   return window.scheduler

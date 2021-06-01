@@ -98,6 +98,27 @@ export default {
         dhx_cal_next_button: () => this.handleButtonClick(1),
         dhx_cal_today_button: () => this.handleButtonClick()
       })
+
+      const d2s = this.scheduler.date.date_to_str('%H:%i')
+      Object.assign(this.scheduler.templates, {
+        tooltip_text: (start, end, event) => `<b>${event.text}</b>`, // tooltip.js
+        event_bar_text: (start, end, event) => {
+          const { drag_id } = this.scheduler.getState()
+          if (drag_id === event.id) {
+            const sm = start.getMinutes()
+            sm > 0 && sm < 30 && start.setMinutes(0)
+            sm > 30 && sm < 60 && start.setMinutes(30)
+
+            const em = end.getMinutes()
+            em > 0 && em < 30 && end.setMinutes(30)
+            em > 30 && em < 60 && end.setMinutes(60)
+
+            event.text = `${d2s(start)} - ${d2s(end)}`
+          }
+
+          return event.text
+        }
+      })
       Object.assign(this.scheduler.config, this.schedulerCfg)
 
       !this.navline && (this.scheduler.xy.nav_height = 5)
@@ -165,6 +186,11 @@ export default {
 .dhx_cal_container {
   width: 100%;
   /* border: 1px solid red; */
+}
+::v-deep .dhx_cal_event_line {
+  text-align: center;
+  font-size: 18px;
+  line-height: 36px;
 }
 .doing {
   background-color: red;

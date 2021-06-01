@@ -258,8 +258,10 @@ export default {
       form: {
         id: null,
         typeId: null,
+        // typeName: null,
         secret: null,
         orgId: null,
+        // orgName: null,
         num: null,
         contacts: null,
         mobile: null,

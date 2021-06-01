@@ -91,8 +91,9 @@ export default {
     handleSubmit() {
       console.debug('submit...')
       const res = this.$refs.brEdit.getFormData()
-      for (const k in res) {
-        console.debug(k, ':', res[k])
+      const data = Object.assign(res, { roomId: this.boardroom.id })
+      for (const k in data) {
+        console.debug(k, ':', data[k])
       }
     }
   }
