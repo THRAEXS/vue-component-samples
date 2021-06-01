@@ -15,7 +15,12 @@
     <el-row :gutter="5">
       <el-col :span="18">
         <el-card>
-          <br-edit ref="brEdit" :style="calcStyle" />
+          <br-edit
+            ref="brEdit"
+            :has-report="boardroom.report === 1"
+            :has-computer="boardroom.computer === 1"
+            :style="calcStyle"
+          />
         </el-card>
       </el-col>
       <el-col :span="6">
@@ -32,6 +37,8 @@
   </div>
 </template>
 <script>
+import { getBoardroom } from '@/api/boardroom'
+
 export default {
   components: {
     BrTimeline: () => import('./components/timeline'),
@@ -51,10 +58,20 @@ export default {
     }
   },
   created() {
-    this.boardroom = {
-      id: 'id-x',
-      name: '第三会议室'
-    }
+    /*
+      TODO:
+      1. room id
+      2. timestamp param
+    */
+    const { roomId } = this.$route.query
+    getBoardroom(roomId).then(({ data }) => (this.boardroom = data))
+    // getBoardroom('room-10').then(({ data }) => (this.boardroom = data))
+    // this.boardroom = {
+    //   id: '1',
+    //   name: 'asdf',
+    //   report: 0,
+    //   computer: 0
+    // }
 
     const now = new Date()
     for (let i = 0; i < 2; i++) {

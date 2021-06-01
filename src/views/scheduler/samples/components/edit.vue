@@ -83,6 +83,16 @@ export default {
   components: {
     BrNode: () => import('./node')
   },
+  props: {
+    hasReport: {
+      type: Boolean,
+      default: true
+    },
+    hasComputer: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       info: {
@@ -97,7 +107,42 @@ export default {
           { key: 1, label: '否' }
         ]
       },
-      nodes: [
+      form: {
+        id: null,
+        typeId: null,
+        secret: null,
+        orgId: null,
+        num: null,
+        contacts: null,
+        mobile: null,
+        subject: null,
+        introduction: null,
+        participateUnits: null,
+        leaders: null,
+        otherLeaders: null,
+        photograph: null,
+        tableCard: null,
+        banner: null,
+        signpost: null,
+        report: null,
+        projector: null,
+        computer: null,
+        paper: null,
+        pen: null,
+        keepSecret: null
+      },
+      boxes: {
+        leaders: [],
+        pen: [],
+        keepSecret: [],
+        otherLeaders: null,
+        banner: null
+      }
+    }
+  },
+  computed: {
+    nodes() {
+      return [
         {
           prop: 'leaders',
           label: '参会领导',
@@ -182,7 +227,8 @@ export default {
             options: [
               '需要',
               '不需要'
-            ]
+            ],
+            disabled: !this.hasReport
           },
           {
             prop: 'projector',
@@ -204,7 +250,8 @@ export default {
                 '委托接待科提前布置'
               ],
               tips: '若需要，请选择：'
-            }
+            },
+            banned: this.hasComputer ? null : '若需电脑，请自带！'
           },
           {
             prop: 'paper',
@@ -248,38 +295,7 @@ export default {
             }
           }
         ]
-      ],
-      form: {
-        id: null,
-        typeId: null,
-        secret: null,
-        orgId: null,
-        num: null,
-        contacts: null,
-        mobile: null,
-        subject: null,
-        introduction: null,
-        participateUnits: null,
-        leaders: null,
-        otherLeaders: null,
-        photograph: null,
-        tableCard: null,
-        banner: null,
-        signpost: null,
-        report: null,
-        projector: null,
-        computer: null,
-        paper: null,
-        pen: null,
-        keepSecret: null
-      },
-      boxes: {
-        leaders: [],
-        pen: [],
-        keepSecret: [],
-        otherLeaders: null,
-        banner: null
-      }
+      ]
     }
   },
   methods: {

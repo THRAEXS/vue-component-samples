@@ -54,25 +54,28 @@ const locations = [
 ]
 
 const rooms = [
-  { name: '第四会议室(234)', roomId: 'location-0' },
-  { name: '第五会议室(222、555)', roomId: 'location-0' },
-  { name: '第九会议室(678)', roomId: 'location-0' },
-  { name: '137圆桌会议室(137)', roomId: 'location-0' },
-  { name: '139视频会议室(139)', roomId: 'location-0' },
-  { name: '260阶梯会议室(260-261)', roomId: 'location-0' },
-  { name: '第一会议室', roomId: 'location-1' },
-  { name: '第二会议室', roomId: 'location-1' },
-  { name: '第三会议室', roomId: 'location-1' },
-  { name: '第六会议室', roomId: 'location-1' },
-  { name: '第二会议室(917-919)', roomId: 'location-2' },
-  { name: '第三会议室(921-923)', roomId: 'location-2' },
-  { name: '第四会议室(999-999)', roomId: 'location-2' },
-  { name: '第五会议室(999-999)', roomId: 'location-2' },
-  { name: '第六会议室(999-999)', roomId: 'location-2' }
-].map((it, i) => Object.assign(it, { id: `room-${i}` }))
+  { name: '第四会议室(234)', locationId: 'location-0' },
+  { name: '第五会议室(222、555)', locationId: 'location-0' },
+  { name: '第九会议室(678)', locationId: 'location-0' },
+  { name: '137圆桌会议室(137)', locationId: 'location-0', report: 1 },
+  { name: '139视频会议室(139)', locationId: 'location-0', report: 0 },
+  { name: '260阶梯会议室(260-261)', locationId: 'location-0' },
+  { name: '第一会议室', locationId: 'location-1' },
+  { name: '第二会议室', locationId: 'location-1' },
+  { name: '第三会议室', locationId: 'location-1' },
+  { name: '第六会议室', locationId: 'location-1' },
+  { name: '第二会议室(917-919)', locationId: 'location-2' },
+  { name: '第三会议室(921-923)', locationId: 'location-2' },
+  { name: '第四会议室(999-999)', locationId: 'location-2' },
+  { name: '第五会议室(999-999)', locationId: 'location-2' },
+  { name: '第六会议室(999-999)', locationId: 'location-2' }
+].map((it, i) => Object.assign(it, {
+  id: `room-${i}`,
+  computer: it.locationId === 'location-2' ? 0 : 1
+}))
 
 const data = locations.map(it => Object.assign(it,
-  { children: rooms.filter(({ roomId }) => roomId === it.id) }))
+  { children: rooms.filter(({ locationId }) => locationId === it.id) }))
 
 // eslint-disable-next-line
 function sleep(delay) {
@@ -89,6 +92,14 @@ module.exports = [
     //   sleep(5000 * 2)
     //   return { code: 20000, data: new Date(2021, 4, 29).getTime() }
     // }
+  },
+  {
+    url: '/api/thraex/boardrooms/id/\*',
+    type: 'get',
+    response: config => {
+      const id = config.url.split('/').reverse()[0]
+      return { code: 20000, data: rooms.find(it => it.id === id) }
+    }
   },
   {
     url: '/api/thraex/boardrooms/events',

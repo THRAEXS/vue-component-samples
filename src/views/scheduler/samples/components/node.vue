@@ -1,5 +1,9 @@
 <template>
-  <el-radio-group v-if="Array.isArray(options)" v-model="form[prop]">
+  <el-radio-group
+    v-if="Array.isArray(options)"
+    v-model="form[prop]"
+    :disabled="node.disabled"
+  >
     <el-radio-button
       v-for="(item, ind) in options"
       :key="`${prop}-${ind}`"
@@ -9,44 +13,49 @@
     </el-radio-button>
   </el-radio-group>
   <div v-else>
-    <el-radio
-      v-model="form[prop]"
-      :label="options.major"
-      border
-      @change="handleRadioChange"
-    >{{ options.major }}</el-radio>
-
-    <div><b>{{ options.tips }}</b></div>
-
-    <el-checkbox-group
-      v-if="isCheckbox"
-      v-model="boxes[prop]"
-      @change="handleCheckboxGroupChange"
-    >
-      <el-checkbox
-        v-for="(item, ind) in options.minor"
-        :key="`${prop}-${ind}`"
-        :label="item"
+    <b v-if="node.banned">
+      {{ node.banned }}
+    </b>
+    <div v-else>
+      <el-radio
+        v-model="form[prop]"
+        :label="options.major"
         border
-      />
-    </el-checkbox-group>
-    <el-radio-group
-      v-else
-      v-model="form[prop]"
-      @change="handleRadioGroupChange"
-    >
-      <div
-        v-for="(item, ind) in options.minor"
-        :key="`${prop}-${ind}`"
-        style="margin-bottom: 5px;"
-      >
-        <el-radio :label="item" border>{{ item }}</el-radio>
-      </div>
-    </el-radio-group>
+        @change="handleRadioChange"
+      >{{ options.major }}</el-radio>
 
-    <div v-if="edit">
-      <div v-if="edit.label"><b>{{ edit.label }}</b></div>
-      <el-input v-model.trim="boxes[edit.prop]" :disabled="edit.disabled" />
+      <div><b>{{ options.tips }}</b></div>
+
+      <el-checkbox-group
+        v-if="isCheckbox"
+        v-model="boxes[prop]"
+        @change="handleCheckboxGroupChange"
+      >
+        <el-checkbox
+          v-for="(item, ind) in options.minor"
+          :key="`${prop}-${ind}`"
+          :label="item"
+          border
+        />
+      </el-checkbox-group>
+      <el-radio-group
+        v-else
+        v-model="form[prop]"
+        @change="handleRadioGroupChange"
+      >
+        <div
+          v-for="(item, ind) in options.minor"
+          :key="`${prop}-${ind}`"
+          style="margin-bottom: 5px;"
+        >
+          <el-radio :label="item" border>{{ item }}</el-radio>
+        </div>
+      </el-radio-group>
+
+      <div v-if="edit">
+        <div v-if="edit.label"><b>{{ edit.label }}</b></div>
+        <el-input v-model.trim="boxes[edit.prop]" :disabled="edit.disabled" />
+      </div>
     </div>
   </div>
 </template>
