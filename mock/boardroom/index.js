@@ -82,6 +82,13 @@ function sleep(delay) {
   for (var t = Date.now(); Date.now() - t <= delay;);
 }
 
+// const types = [
+//   { id: 'type-0', name: '普通会议' },
+//   { id: 'type-1', name: '科研会' },
+//   { id: 'type-2', name: '院务会' },
+//   { id: 'type-3', name: '其它' }
+// ]
+
 module.exports = [
   {
     url: '/api/thraex/server/time',
@@ -99,6 +106,18 @@ module.exports = [
     response: config => {
       const id = config.url.split('/').reverse()[0]
       return { code: 20000, data: rooms.find(it => it.id === id) }
+    }
+  },
+  {
+    url: '/api/thraex/boardrooms/info',
+    type: 'get',
+    response: _ => {
+      const data = {
+        types: Array.of('普通会议', '科研会', '院务会', '其它').map((it, ind) => ({ id: `type-${ind}`, name: it })),
+        leaders: new Array(10).fill('Leader').map((it, ind) => ({ id: `leader-${ind}`, name: `${it}-${ind}` }))
+      }
+
+      return { code: 20000, data }
     }
   },
   {

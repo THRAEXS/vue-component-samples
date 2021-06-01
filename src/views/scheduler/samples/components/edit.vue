@@ -79,6 +79,8 @@
   </el-form>
 </template>
 <script>
+import { getFormInfo } from '@/api/boardroom'
+
 export default {
   components: {
     BrNode: () => import('./node')
@@ -96,12 +98,8 @@ export default {
   data() {
     return {
       info: {
-        types: [
-          { id: 'type-0', name: '普通会议' },
-          { id: 'type-1', name: '科研会' },
-          { id: 'type-2', name: '院务会' },
-          { id: 'type-3', name: '其它' }
-        ],
+        types: [],
+        leaders: [],
         secrets: [
           { key: 0, label: '是' },
           { key: 1, label: '否' }
@@ -148,12 +146,7 @@ export default {
           label: '参会领导',
           options: {
             major: '无院领导或其他单位局级以上领导参会',
-            minor: [
-              '领导一',
-              '领导二',
-              '领导',
-              '领导三'
-            ],
+            minor: this.info.leaders,
             tips: '若有局级以上领导参会，请选择：',
             type: 'checkbox'
           },
@@ -297,6 +290,12 @@ export default {
         ]
       ]
     }
+  },
+  created() {
+    getFormInfo().then(({ data: { types, leaders }}) => {
+      this.info.types = types
+      this.info.leaders = leaders.map(({ name }) => name)
+    })
   },
   methods: {
     getFormData() {

@@ -113,3 +113,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.el-checkbox-group label {
+  margin: 0;
+}
+</style>

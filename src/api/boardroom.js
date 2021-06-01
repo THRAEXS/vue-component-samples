@@ -21,6 +21,13 @@ export function getBoardroom(id = '') {
   })
 }
 
+export function getFormInfo() {
+  return request({
+    url: `/api/thraex/boardrooms/info`,
+    method: 'get'
+  })
+}
+
 export function getEvents(date) {
   return request({
     url: '/api/thraex/boardrooms/events',
