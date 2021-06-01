@@ -14,6 +14,14 @@ export function getBoardrooms() {
   })
 }
 
+export function save(data) {
+  return request({
+    url: '/api/thraex/boardrooms',
+    method: 'post',
+    data
+  })
+}
+
 export function getBoardroom(id = '') {
   return request({
     url: `/api/thraex/boardrooms/id/${id}`,

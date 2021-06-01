@@ -131,5 +131,10 @@ module.exports = [
     url: '/api/thraex/boardrooms',
     type: 'get',
     response: _ => ({ code: 20000, data })
+  },
+  {
+    url: '/api/thraex/boardrooms',
+    type: 'post',
+    response: _ => ({ code: 20000, data: 'Success' })
   }
 ]

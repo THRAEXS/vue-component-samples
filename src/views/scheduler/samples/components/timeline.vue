@@ -113,7 +113,7 @@ export default {
             em > 0 && em < 30 && end.setMinutes(30)
             em > 30 && em < 60 && end.setMinutes(60)
 
-            event.text = `${d2s(start)} - ${d2s(end)}`
+            event.text = `${d2s(start)}-${d2s(end)}`
           }
 
           return event.text
@@ -154,6 +154,15 @@ export default {
         sections: { timeline: ['room-4', 'room-5', 'room-8', 'room-13'] }
       })
       this.scheduler.updateView() */
+    },
+    getEvents() {
+      const events = this.scheduler.getEvents()
+      const d2s = this.scheduler.date.date_to_str('%H:%i')
+
+      return events.map(e => {
+        const { section_id: id, start_date: sd, end_date: ed } = e
+        return { start: `${id} ${d2s(sd)}`, end: `${id} ${d2s(ed)}` }
+      }).sort((a, b) => new Date(a.start) - new Date(b.start))
     }
   },
   render(h) {

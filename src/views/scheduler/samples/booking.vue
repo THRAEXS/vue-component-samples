@@ -6,6 +6,7 @@
       </div>
 
       <br-timeline
+        ref="brTimeline"
         height="135px"
         :units="units"
         :navline="false"
@@ -37,7 +38,7 @@
   </div>
 </template>
 <script>
-import { getBoardroom } from '@/api/boardroom'
+import { getBoardroom, save } from '@/api/boardroom'
 
 export default {
   components: {
@@ -91,10 +92,17 @@ export default {
     handleSubmit() {
       console.debug('submit...')
       const res = this.$refs.brEdit.getFormData()
-      const data = Object.assign(res, { roomId: this.boardroom.id })
-      for (const k in data) {
-        console.debug(k, ':', data[k])
+      const formData = Object.assign(res, { roomId: this.boardroom.id })
+      // for (const k in formData) {
+      //   console.debug(k, ':', formData[k])
+      // }
+
+      const data = {
+        book: formData,
+        dates: this.$refs.brTimeline.getEvents()
       }
+      console.debug(data)
+      save(data).then(res => console.debug('res:', res))
     }
   }
 }
