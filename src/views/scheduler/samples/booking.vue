@@ -51,8 +51,8 @@ import { getBoardroom, save } from '@/api/boardroom'
 export default {
   components: {
     BrTimeline: () => import('./components/timeline'),
-    BrEdit: () => import('./components/edit'),
-    BrView: () => import('./components/view')
+    BrEdit: () => import('./components/edit-v2')
+    // BrView: () => import('./components/view')
   },
   data() {
     return {
@@ -134,13 +134,12 @@ export default {
   }
 
   form, .content {
-    // border: 1px solid red;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
 
   footer {
     text-align: center;
-    // border: 1px solid red;
   }
 }
 </style>

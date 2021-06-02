@@ -36,6 +36,10 @@ export function getFormInfo() {
   })
 }
 
+export function getOrg() {
+  return request({ url: '/api/thraex/org/tree', method: 'GET', params: { level: 3 }})
+}
+
 export function getEvents(date) {
   return request({
     url: '/api/thraex/boardrooms/events',
