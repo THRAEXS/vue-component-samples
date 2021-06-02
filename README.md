@@ -25,3 +25,12 @@ Bugs(fix: reload `scheduler`):
 - `scheduler` global sharing
 - `scheduler` event repeated rendering
   - fix: `scheduler.clearAll()`
+
+TODO:
+- [ ] Validate
+- [ ] Base info components
+- [ ] Marked
+- [ ] Condition
+- [ ] Style
+- [ ] Event modify
+- [ ] Event cancel

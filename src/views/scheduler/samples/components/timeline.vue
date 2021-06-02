@@ -11,6 +11,8 @@ export default {
       default: '%Y-%m-%d %H:%i'
     },
     markNow: Boolean,
+    dragMove: Boolean,
+    dblclickCreate: Boolean,
     // scheduler style
     height: {
       type: String,
@@ -71,13 +73,17 @@ export default {
         readonly,
         editOnCreate: edit_on_create,
         xmlDate: xml_date,
-        markNow: mark_now
+        markNow: mark_now,
+        dragMove: drag_move,
+        dblclickCreate: dblclick_create
       } = this.$props
       return {
         readonly,
         edit_on_create,
         xml_date,
-        mark_now
+        mark_now,
+        drag_move,
+        dblclick_create
       }
     },
     timelineCfg() {
@@ -121,6 +127,7 @@ export default {
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
 
+      this.scheduler.showLightbox = () => {}
       !this.navline && (this.scheduler.xy.nav_height = 5)
 
       this.scheduler.createTimelineView(this.timelineCfg)

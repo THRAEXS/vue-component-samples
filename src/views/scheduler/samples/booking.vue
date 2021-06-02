@@ -13,7 +13,15 @@
       />
     </el-card>
 
-    <el-row :gutter="5">
+    <el-card>
+      <br-edit
+        ref="brEdit"
+        :has-report="boardroom.report === 1"
+        :has-computer="boardroom.computer === 1"
+        :style="calcStyle"
+      />
+    </el-card>
+    <!-- <el-row :gutter="5">
       <el-col :span="18">
         <el-card>
           <br-edit
@@ -29,7 +37,7 @@
           <br-view :style="calcStyle" />
         </el-card>
       </el-col>
-    </el-row>
+    </el-row> -->
 
     <footer>
       <el-button size="small" type="primary" @click="handleSubmit">提交</el-button>
