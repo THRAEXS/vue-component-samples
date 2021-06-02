@@ -42,7 +42,11 @@ export default {
       const { multiple, major } = this.item.options
       if (multiple) {
         const [first] = val
-        this.form[this.item.prop] = major === first ? [first] : val.filter(it => it !== major)
+        const sorts = this.item.options.minor
+          .map((it, ind) => ({ [it]: ind }))
+          .reduce((acc, item) => Object.assign(acc, item), {})
+        this.form[this.item.prop] = major === first ? [first]
+          : val.filter(it => it !== major).sort((a, b) => sorts[a] - sorts[b])
       }
     }
   }
