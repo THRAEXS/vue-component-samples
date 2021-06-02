@@ -137,6 +137,12 @@ export default {
             minor: [],
             tips: '若有局级以上领导参会，请选择：',
             multiple: true
+          },
+          edit: {
+            prop: 'otherLeaders',
+            label: '其他单位局级以上参会领导姓名',
+            visible: true,
+            non: true
           }
         },
         [
@@ -177,6 +183,12 @@ export default {
                 '委托接待科(文本框内填写横幅内容)'
               ],
               tips: '若需要，请选择：'
+            },
+            edit: {
+              prop: 'bannerTxt',
+              label: '横幅内容',
+              visible: false,
+              for: 1 // minor index
             }
           },
           {
@@ -263,6 +275,7 @@ export default {
         photograph: null,
         tableCard: null,
         banner: null,
+        bannerTxt: null,
         signpost: null,
         // report: null, // hide
         projector: null,
@@ -281,6 +294,17 @@ export default {
     })
     getOrg().then(({ data: [root] }) => this.$set(this.info, 'orgs',
       root.childOrgList.find(it => it.id === '3302').childOrgList))
+  },
+  methods: {
+    getFormData() {
+      const { bannerTxt, ...other } = this.form
+      bannerTxt && (other.banner = `${other.banner}：${bannerTxt}`)
+      Object.keys(other).forEach(k =>
+        Array.isArray(other[k]) && (other[k] = other[k].join('，')))
+
+      const gn = k => (this.info[`${k}s`].find(it => it.id === other[`${k}Id`]) || {}).name
+      return Object.assign(other, { typeName: gn('type'), orgName: gn('org') })
+    }
   }
 }
 </script>
