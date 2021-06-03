@@ -75,6 +75,17 @@ const rooms = [
   mostNumber: 20 * i
 }))
 
+for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 10; j++) {
+    rooms.push({
+      id: `BOARDROOM-${i}-${j}`,
+      name: `Boardroom-${i}-${j}`,
+      locationId: `location-${i}`,
+      mostNumber: 32
+    })
+  }
+}
+
 const data = locations.map(it => Object.assign(it,
   { children: rooms.filter(({ locationId }) => locationId === it.id) }))
 
@@ -124,8 +135,19 @@ module.exports = [
   {
     url: '/api/thraex/boardrooms/events',
     type: 'get',
-    response: _ => {
-      return { code: 20000, data: [] }
+    response: config => {
+      const { date } = config.query
+      const nd = new Date(Number.parseInt(date))
+      const [y, m, d] = [nd.getFullYear(), nd.getMonth(), nd.getDate()]
+      console.debug(new Date(y, m, d, 8))
+      const events = rooms.map(({ id }, i) => ({
+        id: `event-${i}`,
+        roomId: id,
+        startTime: new Date(y, m, d, 8),
+        endTime: new Date(y, m, d, 10, 30)
+      }))
+
+      return { code: 20000, data: events }
     }
   },
   {

@@ -332,13 +332,13 @@ export const constantRoutes = [
       {
         path: 'statistics',
         name: 'SchedulerStatistics',
-        component: () => import('@/views/scheduler/samples/statistics'),
+        component: () => import('@/views/scheduler/samples/statistics-v2'),
         meta: { title: 'Scheduler Statistics', icon: 'el-icon-s-help' }
       },
       {
         path: 'booking',
         name: 'SchedulerBooking',
-        component: () => import('@/views/scheduler/samples/booking'),
+        component: () => import('@/views/scheduler/samples/booking-v2'),
         meta: { title: 'Scheduler Booking', icon: 'el-icon-s-help' },
         hidden: true
       }
