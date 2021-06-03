@@ -36,6 +36,7 @@
         v-show="item.edit.visible"
         v-model.trim="form[item.edit.prop]"
         :placeholder="item.edit.label"
+        @input="handleInput"
       />
     </el-col>
   </el-row>
@@ -110,6 +111,14 @@ export default {
           edit.visible = minor[edit.for] === val
           !edit.visible && this.$set(this.form, this.item.edit.prop, null)
         }
+      }
+    },
+    handleInput(val) {
+      const { edit } = this.item
+      if (edit && edit.non && val.trim() &&
+        this.form[this.item.prop].includes(this.item.options.major)) {
+        this.$set(this.form, this.item.prop, [])
+        this.$set(this.disabled, 'minor', false)
       }
     }
   }
