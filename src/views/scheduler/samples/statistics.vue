@@ -45,7 +45,7 @@ export default {
       this.now = new Date(now)
 
       const label0 = (l, r) => r ? `${l} <label style="color: red;">(${r})</label>` : l
-      const label1 = (k, l) => `<a id="${k}" href="/scheduler/booking?rid=${k}&start=${this.now.getTime()}">${l}</a>`
+      const label1 = (k, l) => `<span id="${k}" class="section-room">${l}</span>`
       this.units = data.map(({
         [this.props.key]: key,
         [this.props.label]: label,
@@ -70,26 +70,38 @@ export default {
     })
   },
   methods: {
-    handleComplete() {
-      import('vue').then(({ default: v }) => {
-        const Links = v.extend({
-          props: ['toLink'],
-          render(h) {
-            return h('button', {
+    async handleComplete() {
+      const els = document.getElementsByClassName('section-room')
+      if (els.length > 0) {
+        const vue = await import('vue').then(({ default: v }) => v)
+        const Link = vue.extend({
+          props: ['value', 'handler'],
+          render(c) {
+            return c('el-link', {
+              attrs: {
+                underline: false
+              },
               on: {
-                click: this.toLink
+                click: () => this.handler(this.value.id)
               }
-            }, 'Link-test')
+            }, this.value.text)
           }
         })
 
-        new Links({ propsData: { toLink: this.handleLink }}).$mount('#room-1')
-      })
-    },
-    handleLink() {
-      console.debug('handleLink...', arguments)
-      const [rid, start] = ['room-1', this.now.getTime()]
-      this.$router.push({ path: '/scheduler/booking', query: { rid, start }})
+        const rooms = []
+        els.forEach(({ id, innerText: text }) => rooms.push({ id, text }))
+        rooms.forEach(({ id, text }) =>
+          new Link({
+            propsData: {
+              value: { id, text },
+              handler: rid => this.$router.push({
+                path: '/scheduler/booking',
+                query: { rid, start: this.now.getTime() }
+              })
+            }
+          }).$mount(`#${id}`)
+        )
+      }
     }
   }
 }
