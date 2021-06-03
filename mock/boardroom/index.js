@@ -71,7 +71,8 @@ const rooms = [
   { name: '第六会议室(999-999)', locationId: 'location-2' }
 ].map((it, i) => Object.assign(it, {
   id: `room-${i}`,
-  computer: it.locationId === 'location-2' ? 0 : 1
+  computer: it.locationId === 'location-2' ? 0 : 1,
+  mostNumber: 20 * i
 }))
 
 const data = locations.map(it => Object.assign(it,

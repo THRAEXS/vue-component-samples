@@ -16,9 +16,8 @@
     <el-card>
       <br-edit
         ref="brEdit"
-        :has-report="boardroom.report === 1"
-        :has-computer="boardroom.computer === 1"
         :style="calcStyle"
+        :capacity="boardroom.mostNumber"
       />
     </el-card>
     <!-- <el-row :gutter="5">
@@ -67,23 +66,21 @@ export default {
       return { height: `${this.height}px` }
     }
   },
+  beforeCreate1() {
+    const { rid } = this.$route.query
+    const to = () => this.$router.push('/scheduler/preview')
+    !rid && to()
+    getBoardroom(rid).then(({ data }) => {
+      data ? (this.boardroom = data) : to()
+    })
+  },
   created() {
-    /*
-      TODO:
-      1. room id
-      2. timestamp param
-    */
-    const { rid, start } = this.$route.query
+    const { rid } = this.$route.query
+    const to = () => this.$router.push('/scheduler/preview')
+    !rid && to()
     getBoardroom(rid).then(({ data }) => (this.boardroom = data))
 
-    const begin = new Date(Number.parseInt(start))
-    const [year, month, date] = [begin.getFullYear(), begin.getMonth(), begin.getDate()]
-    this.units.push({ key: `${year}-${month + 1}-${date}`, label: `${year}年${month + 1}月${date}日` })
-    for (let i = 1; i < 2; i++) {
-      const next = new Date(year, month, date + i)
-      const [y, m, d] = [next.getFullYear(), next.getMonth() + 1, next.getDate()]
-      this.units.push({ key: `${y}-${m}-${d}`, label: `${y}年${m}月${d}日` })
-    }
+    this.handleUnits(this.$route.query.start)
   },
   updated() {
     this.$nextTick(() => {
@@ -97,6 +94,17 @@ export default {
     })
   },
   methods: {
+    handleUnits(start) {
+      const timestamp = Number.parseInt(start)
+      const begin = Number.isNaN(timestamp) ? new Date() : new Date(timestamp)
+      const [year, month, date] = [begin.getFullYear(), begin.getMonth(), begin.getDate()]
+      this.units.push({ key: `${year}-${month + 1}-${date}`, label: `${year}年${month + 1}月${date}日` })
+      for (let i = 1; i < 2; i++) {
+        const next = new Date(year, month, date + i)
+        const [y, m, d] = [next.getFullYear(), next.getMonth() + 1, next.getDate()]
+        this.units.push({ key: `${y}-${m}-${d}`, label: `${y}年${m}月${d}日` })
+      }
+    },
     handleSubmit() {
       console.debug('submit...')
       const res = this.$refs.brEdit.getFormData()
