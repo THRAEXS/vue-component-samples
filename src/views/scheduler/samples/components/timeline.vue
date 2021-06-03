@@ -127,8 +127,8 @@ export default {
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
 
-      const dd = this.scheduler.config.default_date
-      this.scheduler.config.default_date = `${dd}<span id='dhx_cal_date_icon'></span>`
+      // const dd = this.scheduler.config.default_date
+      // this.scheduler.config.default_date = `${dd}<span id='dhx_cal_date_icon'></span>`
 
       this.scheduler.showLightbox = () => {}
       !this.navline && (this.scheduler.xy.nav_height = 5)
@@ -136,9 +136,30 @@ export default {
       this.scheduler.createTimelineView(this.timelineCfg)
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
 
-      this.handleDateIcon()
+      this.handleDatePicker()
+      // this.handleDateIcon()
       this.handleMarked()
     },
+    async handleDatePicker() {
+      const vue = await import('vue').then(({ default: v }) => v)
+      const DatePicker = vue.extend({
+        render(c) {
+          return c('el-date-picker', {
+            style: {
+              top: 0
+            },
+            attrs: {
+              // type: 'date',
+              size: 'mini'
+            }
+          })
+        }
+      })
+      const tmp = document.createElement('div')
+      document.getElementById('dhx_cal_date').appendChild(tmp)
+      new DatePicker({ el: tmp })
+    },
+    // @Deprecated
     handleDateIcon() {
       // <i class='el-icon-date' />
       const icon = document.createElement('i')
@@ -198,7 +219,7 @@ export default {
       h(tag, { class: 'dhx_cal_prev_button' }),
       h(tag, { class: 'dhx_cal_next_button' }),
       h(tag, { class: 'dhx_cal_today_button' }),
-      h(tag, { class: 'dhx_cal_date' })
+      h(tag, { attrs: { id: 'dhx_cal_date' }, class: 'dhx_cal_date' })
     ] : [h(tag, { class: 'dhx_cal_date', style: { display: 'none' }})]
 
     return h(tag, {
