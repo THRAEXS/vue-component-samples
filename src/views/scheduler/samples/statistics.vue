@@ -8,6 +8,7 @@
         :dx="500"
         :now="now"
         :units="units"
+        @complete="handleComplete"
       />
     </el-card>
   </div>
@@ -44,7 +45,7 @@ export default {
       this.now = new Date(now)
 
       const label0 = (l, r) => r ? `${l} <label style="color: red;">(${r})</label>` : l
-      const label1 = (k, l) => `<a href="/scheduler/booking?rid=${k}&start=${this.now.getTime()}">${l}</a>`
+      const label1 = (k, l) => `<a id="${k}" href="/scheduler/booking?rid=${k}&start=${this.now.getTime()}">${l}</a>`
       this.units = data.map(({
         [this.props.key]: key,
         [this.props.label]: label,
@@ -67,6 +68,29 @@ export default {
       const navHeight = document.querySelector('.navbar').clientHeight
       this.height = bodyHeight - navHeight - this.occupy
     })
+  },
+  methods: {
+    handleComplete() {
+      import('vue').then(({ default: v }) => {
+        const Links = v.extend({
+          props: ['toLink'],
+          render(h) {
+            return h('button', {
+              on: {
+                click: this.toLink
+              }
+            }, 'Link-test')
+          }
+        })
+
+        new Links({ propsData: { toLink: this.handleLink }}).$mount('#room-1')
+      })
+    },
+    handleLink() {
+      console.debug('handleLink...', arguments)
+      const [rid, start] = ['room-1', this.now.getTime()]
+      this.$router.push({ path: '/scheduler/booking', query: { rid, start }})
+    }
   }
 }
 </script>

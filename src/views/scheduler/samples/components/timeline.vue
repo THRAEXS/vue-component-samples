@@ -92,7 +92,7 @@ export default {
     }
   },
   mounted() {
-    Scheduler().then(this.init)
+    Scheduler().then(this.init).then(() => this.$emit('complete'))
   },
   methods: {
     init(scheduler) {

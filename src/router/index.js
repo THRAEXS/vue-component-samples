@@ -330,7 +330,7 @@ export const constantRoutes = [
         meta: { title: 'DHTMLX Scheduler', icon: 'el-icon-s-help' }
       },
       {
-        path: 'preview',
+        path: 'statistics',
         name: 'SchedulerStatistics',
         component: () => import('@/views/scheduler/samples/statistics'),
         meta: { title: 'Scheduler Statistics', icon: 'el-icon-s-help' }
