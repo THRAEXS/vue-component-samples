@@ -11,8 +11,12 @@
       <el-option
         :value="item.options.major"
         :label="item.options.major"
+        :disabled="disabled.major"
       />
-      <el-option-group :label="item.options.tips">
+      <el-option-group
+        :label="item.options.tips"
+        :disabled="disabled.minor"
+      >
         <el-option
           v-for="(it, ind) in item.options.minor"
           :key="`minor-${item.prop}-${ind}`"
@@ -48,8 +52,40 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      disabled: {
+        major: false,
+        minor: false
+      }
+    }
+  },
   methods: {
     handleChange(val) {
+      const { multiple, major, minor } = this.item.options
+      if (multiple) {
+        this.$set(this.disabled, 'major', val.filter(v => minor.includes(v)).length > 0)
+        this.$set(this.disabled, 'minor', val.includes(major))
+
+        const sorts = this.item.options.minor
+          .map((it, ind) => ({ [it]: ind }))
+          .reduce((acc, item) => Object.assign(acc, item), {})
+        this.form[this.item.prop] = val.sort((a, b) => sorts[a] - sorts[b])
+      }
+
+      const { edit } = this.item
+      if (edit) {
+        if (edit.non) {
+          this.form[this.item.prop].includes(major) && this.$set(this.form, this.item.edit.prop, null)
+        }
+
+        if (Number.isInteger(edit.for) && edit.for > -1) {
+          edit.visible = minor[edit.for] === val
+          !edit.visible && this.$set(this.form, this.item.edit.prop, null)
+        }
+      }
+    },
+    handleChangeV1(val) {
       const { multiple, major, minor } = this.item.options
       if (multiple) {
         const [first] = val
