@@ -8,7 +8,6 @@ async function loadScript(name) {
     const script = document.createElement('script')
     script.type = 'text\/javascript'
     script.className = `${identifier} data-v-${new Date().getTime()}`
-    document.getE
     script.src = src(name)
     script.onload = resolve
     document.body.appendChild(script)

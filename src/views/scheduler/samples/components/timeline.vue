@@ -127,13 +127,32 @@ export default {
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
 
+      const dd = this.scheduler.config.default_date
+      this.scheduler.config.default_date = `${dd}<span id='dhx_cal_date_icon'></span>`
+
       this.scheduler.showLightbox = () => {}
       !this.navline && (this.scheduler.xy.nav_height = 5)
 
       this.scheduler.createTimelineView(this.timelineCfg)
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
 
+      this.handleDateIcon()
       this.handleMarked()
+    },
+    handleDateIcon() {
+      // <i class='el-icon-date' />
+      const icon = document.createElement('i')
+      icon.className = 'el-icon-date'
+      const styles = icon.style
+      styles.marginLeft = '5px'
+      styles.fontSize = '22px'
+      styles.fontWeight = 600
+      styles.cursor = 'pointer'
+      icon.onclick = this.handleDate
+      document.getElementById('dhx_cal_date_icon').appendChild(icon)
+    },
+    handleDate() {
+      console.debug('handleDate....')
     },
     handleButtonClick(step) {
       let newDate = this.now
