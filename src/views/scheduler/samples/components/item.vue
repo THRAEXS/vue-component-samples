@@ -1,40 +1,44 @@
 <template>
-  <div>
-    <el-select
-      v-model="form[item.prop]"
-      :multiple="item.options.multiple"
-      clearable
-      :placeholder="`请选择${item.label}`"
-      style="width: 100%;"
-      @change="handleChange"
-    >
-      <el-option
-        :value="item.options.major"
-        :label="item.options.major"
-        :disabled="disabled.major"
-      />
-      <el-option-group
-        :label="item.options.tips"
-        :disabled="disabled.minor"
+  <el-row>
+    <el-col :span="item.edit && item.edit.visible ? 12 : 24">
+      <el-select
+        v-model="form[item.prop]"
+        :multiple="item.options.multiple"
+        clearable
+        :placeholder="`请选择${item.label}`"
+        style="width: 100%;"
+        @change="handleChange"
       >
         <el-option
-          v-for="(it, ind) in item.options.minor"
-          :key="`minor-${item.prop}-${ind}`"
-          :value="it"
-          :label="it"
+          :value="item.options.major"
+          :label="item.options.major"
+          :disabled="disabled.major"
         />
-      </el-option-group>
-    </el-select>
-
-    <div v-if="item.edit" style="margin-top: 5px;">
-      <!-- <div class="form-tips">{{ item.edit.label }}</div> -->
+        <el-option-group
+          :label="item.options.tips"
+          :disabled="disabled.minor"
+        >
+          <el-option
+            v-for="(it, ind) in item.options.minor"
+            :key="`minor-${item.prop}-${ind}`"
+            :value="it"
+            :label="it"
+          />
+        </el-option-group>
+      </el-select>
+    </el-col>
+    <el-col
+      v-if="item.edit"
+      :span="12"
+      style="padding-left: 10px;"
+    >
       <el-input
         v-show="item.edit.visible"
         v-model.trim="form[item.edit.prop]"
-        :placeholder="`请填写${item.edit.label}`"
+        :placeholder="item.edit.label"
       />
-    </div>
-  </div>
+    </el-col>
+  </el-row>
 </template>
 <script>
 export default {
@@ -111,9 +115,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-/* .form-tips {
-  font-size: 14px;
-  font-weight: 600;
-} */
-</style>
