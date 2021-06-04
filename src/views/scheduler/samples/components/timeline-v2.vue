@@ -100,7 +100,7 @@ export default {
 
       const d2s = this.scheduler.date.date_to_str('%H:%i')
       Object.assign(this.scheduler.templates, {
-        tooltip_text: (start, end, event) => `<b>${event.text}</b>`, // tooltip.js
+        tooltip_text: (start, end, event) => event.text ? `<b>${event.text}</b>` : null, // tooltip.js
         event_bar_text: (start, end, event) => {
           const { drag_id } = this.scheduler.getState()
           if (drag_id === event.id) {
@@ -123,16 +123,17 @@ export default {
       this.scheduler.showLightbox = () => {}
       this.scheduler.xy.nav_height = 5
 
-      this.scheduler.attachEvent('onViewChange', () => {
-        console.debug('onViewChange')
-        this.$emit('view-change')
-      })
+      this.scheduler.attachEvent('onViewChange', this.handleViewChange)
 
       this.scheduler.createTimelineView(this.timelineCfg)
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
 
       // this.addMarks()
       this.addEvents(this.events)
+    },
+    handleViewChange() {
+      console.debug('onViewChange', arguments)
+      this.$emit('view-change')
     },
     addMarks() {
       // clear...
@@ -152,26 +153,11 @@ export default {
       this.scheduler.updateView()
     },
     addEvents(events = []) {
-      console.debug('add events...')
-      // this.scheduler && this.scheduler.parse(events, 'json')
+      console.debug('add events...', !!this.scheduler)
       if (this.scheduler) {
         this.scheduler.clearAll()
-        this.scheduler.parse(events, 'json')
-        this.$emit('view-change')
-
-        // const year = this.now.getFullYear()
-        // const month = this.now.getMonth()
-        // const day = this.now.getDate()
-        // this.scheduler.parse([
-        //   { start_date: `${year}-${month + 1}-${day} 09:00:00`, end_date: `${year}-${month + 1}-${day} 12:00:00`, text: 'Event 0', section_id: 'room-0'
-        //   },
-        //   { start_date: `${year}-${month + 1}-${day} 09:00`, end_date: `${year}-${month + 1}-${day} 12:00`, text: 'Event 1', section_id: 'room-2'
-        //   },
-        //   { start_date: new Date(year, month, day, 9), end_date: new Date(year, month, day, 12), text: 'Event 2', section_id: 'room-3'
-        //   },
-        //   { start_date: new Date(year, month, day, 9).getTime(), end_date: new Date(year, month, day, 12).getTime(), text: 'Event 3', section_id: 'room-4'
-        //   }
-        // ], 'json')
+        events && events.length > 0 && this.scheduler.parse(events, 'json')
+        this.handleViewChange()
       }
     },
     getEvents() {

@@ -136,10 +136,9 @@ module.exports = [
     url: '/api/thraex/boardrooms/events',
     type: 'get',
     response: config => {
-      const { date } = config.query
-      const nd = new Date(Number.parseInt(date))
+      const { day: date } = config.query
+      const nd = new Date(date)
       const [y, m, d] = [nd.getFullYear(), nd.getMonth(), nd.getDate()]
-      console.debug(new Date(y, m, d, 8))
       const events = rooms.map(({ id }, i) => ({
         id: `event-${i}`,
         roomId: id,

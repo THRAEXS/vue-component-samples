@@ -3,6 +3,7 @@
     <el-card>
       <div slot="header" class="card-header">
         <el-date-picker
+          ref="picker"
           v-model="now"
           :clearable="false"
           size="mini"
@@ -23,7 +24,7 @@
   </div>
 </template>
 <script>
-import { serverTime, getBoardrooms, getEvents } from '@/api/boardroom'
+import { serverTime, getBoardrooms, getBooksByDate } from '@/api/boardroom'
 
 export default {
   components: { BrTimeline: () => import('./components/timeline-v2') },
@@ -43,14 +44,8 @@ export default {
     }
   },
   watch: {
-    now(val) {
-      console.debug('wath date now...')
-      getEvents(this.now.getTime()).then(({ data }) => {
-        console.debug('r', data)
-        this.events = data.map(({ roomId: section_id, startTime, endTime }) => ({
-          section_id, start_date: new Date(startTime), end_date: new Date(endTime)
-        }))
-      })
+    now() {
+      this.loadEvents()
     }
   },
   mounted() {
@@ -59,9 +54,6 @@ export default {
       getBoardrooms(),
       this.getLink()
     ]).then(([{ data: now }, { data }, link]) => {
-      this.Link = link
-      this.now = new Date(now)
-
       const label0 = (l, r) => r ? `${l} <label style="color: red;">(${r})</label>` : l
       const label1 = (k, l) => `<span id="${k}" class="section-room">${l}</span>`
       this.units = data.map(({
@@ -78,11 +70,9 @@ export default {
           [this.props.label]: label
         }) => ({ key, label: label1(key, label) }))
       }))
-    }).then(() => getEvents(this.now.getTime())).then(({ data }) => {
-      console.debug('r', data)
-      this.events = data.map(({ roomId: section_id, startTime, endTime }) => ({
-        section_id, start_date: new Date(startTime), end_date: new Date(endTime)
-      }))
+
+      this.Link = link
+      this.now = new Date(now)
     })
   },
   updated() {
@@ -94,6 +84,19 @@ export default {
     })
   },
   methods: {
+    async loadEvents() {
+      const date = this.$refs.picker.formatToString(this.now)
+      const { data = [] } = await getBooksByDate(date)
+      this.events = data.map(({
+        roomId: section_id,
+        startTime,
+        endTime
+      }) => ({
+        section_id,
+        start_date: new Date(startTime),
+        end_date: new Date(endTime)
+      }))
+    },
     async getLink() {
       const vue = await import('vue').then(({ default: v }) => v)
       return vue.extend({
