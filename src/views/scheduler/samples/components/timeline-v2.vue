@@ -81,7 +81,7 @@ export default {
 
       const d2s = this.scheduler.date.date_to_str('%H:%i')
       Object.assign(this.scheduler.templates, {
-        tooltip_text: (start, end, event) => event.text ? `<b>${event.text}</b>` : null, // tooltip.js
+        tooltip_text: (start, end) => `<b>${d2s(start)}-${d2s(end)}</b>`, // tooltip.js
         event_bar_text: (start, end, event) => {
           const { drag_id } = this.scheduler.getState()
           if (drag_id === event.id) {
@@ -92,11 +92,9 @@ export default {
             const em = end.getMinutes()
             em > 0 && em < 30 && end.setMinutes(30)
             em > 30 && em < 60 && end.setMinutes(60)
-
-            event.text = `${d2s(start)}-${d2s(end)}`
           }
 
-          return event.text
+          return `${d2s(start)}-${d2s(end)}`
         }
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
