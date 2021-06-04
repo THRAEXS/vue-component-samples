@@ -118,9 +118,9 @@ export default {
       const date = this.$refs.picker.formatToString(this.now)
       const { data = [] } = await getBookEvents(date)
       addEvents(data.map(({ roomId, startTime, endTime }) => ({
-        section_id: roomId,
-        start_date: new Date(startTime),
-        end_date: new Date(endTime)
+        key: roomId,
+        start: new Date(startTime),
+        end: new Date(endTime)
       })))
     }
   }

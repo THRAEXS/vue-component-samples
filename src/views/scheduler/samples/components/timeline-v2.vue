@@ -134,10 +134,14 @@ export default {
       if (events && events.length > 0) {
         console.debug('add events...')
         console.debug(JSON.parse(JSON.stringify(events)))
-        this.scheduler.parse(events, 'json')
+        this.scheduler.parse(events.map(({ key, start, end }) => ({
+          [this.timelineCfg.y_property]: key,
+          start_date: start,
+          end_date: end
+        })), 'json')
       }
     },
-    // Only valid for booking
+    // Currently only valid for booking
     getEvents() {
       const events = this.scheduler.getEvents()
       const d2s = this.scheduler.date.date_to_str('%H:%i')
