@@ -95,8 +95,6 @@ export default {
     },
     handleViewChange({ events: addEvents }) {
       this.loadEvents(addEvents).then(() => {
-        console.debug('extend link...')
-
         const els = document.getElementsByClassName('section-room')
         const rooms = []
         els.forEach(({ id, innerText: text }) => rooms.push({ id, text }))
@@ -114,7 +112,6 @@ export default {
       })
     },
     async loadEvents(addEvents) {
-      console.debug('loadEvents...')
       const date = this.$refs.picker.formatToString(this.now)
       const { data = [] } = await getBookEvents(date)
       addEvents(data.map(({ roomId, startTime, endTime }) => ({

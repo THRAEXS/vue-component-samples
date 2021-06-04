@@ -46,7 +46,8 @@ export default {
         section_autoheight: false,
         folder_dy: 40, // Only valid for tree
         dy: 40
-      }
+      },
+      marks: []
     }
   },
   computed: {
@@ -110,30 +111,24 @@ export default {
     },
     handleViewChange() {
       console.debug('onViewChange...')
-      this.$emit('view-change', { events: this.addEvents })
+      this.$emit('view-change', { events: this.addEvents, marks: this.addMarks })
     },
-    addMarks() {
-      // clear...
-      /*
-        1.getEventsByDate
-        2.getEventsByRoomIdAndDates
-      */
-      const { date } = this.scheduler.getState()
-      const [y, m, d] = [date.getFullYear(), date.getMonth(), date.getDate()]
-      this.scheduler.addMarkedTimespan({
-        start_date: new Date(y, m, d, 12),
-        end_date: new Date(y, m, d, 14),
-        type: 'dhx_time_block',
-        // css: 'doing',
-        sections: { timeline: ['room-4', 'room-5', 'room-8', 'room-13'] }
-      })
-      this.scheduler.updateView()
+    addMarks(marks = []) {
+      this.marks.forEach(m => this.scheduler.deleteMarkedTimespan(m))
+      this.marks = []
+      if (marks && marks.length > 0) {
+        this.marks = marks.map(({ key, start, end }) => ({
+          start_date: start,
+          end_date: end,
+          type: 'dhx_time_block',
+          sections: { timeline: key }
+        })).map(m => this.scheduler.addMarkedTimespan(m))
+        this.scheduler.updateView()
+      }
     },
     addEvents(events = []) {
       this.scheduler.clearAll()
       if (events && events.length > 0) {
-        console.debug('add events...')
-        console.debug(JSON.parse(JSON.stringify(events)))
         this.scheduler.parse(events.map(({ key, start, end }) => ({
           [this.timelineCfg.y_property]: key,
           start_date: start,
