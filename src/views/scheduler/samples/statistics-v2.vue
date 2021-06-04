@@ -17,7 +17,6 @@
         :dx="500"
         :now="now"
         :units="units"
-        :events="events"
         @view-change="handleViewChange"
       />
     </el-card>
@@ -39,13 +38,7 @@ export default {
       occupy: 20 * 2 + 5 * 2 + 1 + 2,
       now: null,
       units: null,
-      events: null,
       Link: null
-    }
-  },
-  watch: {
-    now() {
-      this.loadEvents()
     }
   },
   mounted() {
@@ -84,19 +77,6 @@ export default {
     })
   },
   methods: {
-    async loadEvents() {
-      const date = this.$refs.picker.formatToString(this.now)
-      const { data = [] } = await getBooksByDate(date)
-      this.events = data.map(({
-        roomId: section_id,
-        startTime,
-        endTime
-      }) => ({
-        section_id,
-        start_date: new Date(startTime),
-        end_date: new Date(endTime)
-      }))
-    },
     async getLink() {
       const vue = await import('vue').then(({ default: v }) => v)
       return vue.extend({
@@ -113,23 +93,39 @@ export default {
         }
       })
     },
-    handleViewChange() {
-      console.debug('handleViewChange...')
+    handleViewChange({ events: addEvents }) {
+      this.loadEvents(addEvents).then(() => {
+        console.debug('extend link...')
 
-      const els = document.getElementsByClassName('section-room')
-      const rooms = []
-      els.forEach(({ id, innerText: text }) => rooms.push({ id, text }))
-      rooms.forEach(({ id, text }) =>
-        new this.Link({
-          propsData: {
-            value: { id, text },
-            handler: rid => this.$router.push({
-              path: '/scheduler/booking',
-              query: { rid, start: this.now.getTime() }
-            })
-          }
-        }).$mount(`#${id}`)
-      )
+        const els = document.getElementsByClassName('section-room')
+        const rooms = []
+        els.forEach(({ id, innerText: text }) => rooms.push({ id, text }))
+        rooms.forEach(({ id, text }) =>
+          new this.Link({
+            propsData: {
+              value: { id, text },
+              handler: rid => this.$router.push({
+                path: '/scheduler/booking',
+                query: { rid, start: this.now.getTime() }
+              })
+            }
+          }).$mount(`#${id}`)
+        )
+      })
+    },
+    async loadEvents(addEvents) {
+      console.debug('loadEvents...')
+      const date = this.$refs.picker.formatToString(this.now)
+      const { data = [] } = await getBooksByDate(date)
+      addEvents(data.map(({
+        roomId: section_id,
+        startTime,
+        endTime
+      }) => ({
+        section_id,
+        start_date: new Date(startTime),
+        end_date: new Date(endTime)
+      })))
     }
   }
 }

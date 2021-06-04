@@ -25,18 +25,6 @@ export default {
       default() {
         return []
       }
-    },
-    events: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    marks: {
-      type: Array,
-      default() {
-        return []
-      }
     }
   },
   data() {
@@ -80,15 +68,7 @@ export default {
   },
   watch: {
     now(val) {
-      console.debug('watch now...', val, this.scheduler)
       this.scheduler && this.scheduler.setCurrentView(val)
-    },
-    events(val) {
-      console.debug('watch events...', val, this.scheduler)
-      this.addEvents(val)
-    },
-    marks(val) {
-      console.debug('watch marks...', val, this.scheduler)
     }
   },
   mounted() {
@@ -127,13 +107,10 @@ export default {
 
       this.scheduler.createTimelineView(this.timelineCfg)
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
-
-      // this.addMarks()
-      this.addEvents(this.events)
     },
     handleViewChange() {
-      console.debug('onViewChange', arguments)
-      this.$emit('view-change')
+      console.debug('onViewChange')
+      this.$emit('view-change', { events: this.addEvents })
     },
     addMarks() {
       // clear...
@@ -153,11 +130,11 @@ export default {
       this.scheduler.updateView()
     },
     addEvents(events = []) {
-      console.debug('add events...', !!this.scheduler)
-      if (this.scheduler) {
-        this.scheduler.clearAll()
-        events && events.length > 0 && this.scheduler.parse(events, 'json')
-        this.handleViewChange()
+      this.scheduler.clearAll()
+      if (events && events.length > 0) {
+        console.debug('add events...')
+        console.debug(JSON.parse(JSON.stringify(events)))
+        this.scheduler.parse(events, 'json')
       }
     },
     getEvents() {

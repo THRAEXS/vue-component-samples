@@ -139,7 +139,7 @@ module.exports = [
       const { day: date } = config.query
       const nd = new Date(date)
       const [y, m, d] = [nd.getFullYear(), nd.getMonth(), nd.getDate()]
-      const events = rooms.map(({ id }, i) => ({
+      const events = date === '2021-05-30' ? [] : rooms.map(({ id }, i) => ({
         id: `event-${i}`,
         roomId: id,
         startTime: new Date(y, m, d, 8),
