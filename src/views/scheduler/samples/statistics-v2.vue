@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import { serverTime, getBoardrooms, getBooksByDate } from '@/api/boardroom'
+import { serverTime, getBoardrooms, getBookEvents } from '@/api/boardroom'
 
 export default {
   components: { BrTimeline: () => import('./components/timeline-v2') },
@@ -116,13 +116,9 @@ export default {
     async loadEvents(addEvents) {
       console.debug('loadEvents...')
       const date = this.$refs.picker.formatToString(this.now)
-      const { data = [] } = await getBooksByDate(date)
-      addEvents(data.map(({
-        roomId: section_id,
-        startTime,
-        endTime
-      }) => ({
-        section_id,
+      const { data = [] } = await getBookEvents(date)
+      addEvents(data.map(({ roomId, startTime, endTime }) => ({
+        section_id: roomId,
         start_date: new Date(startTime),
         end_date: new Date(endTime)
       })))

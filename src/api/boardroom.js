@@ -40,7 +40,7 @@ export function getOrg() {
   return request({ url: '/api/thraex/org/tree', method: 'GET', params: { level: 3 }})
 }
 
-export function getBooksByDate(day) {
+export function getBookEvents(day) {
   return request({
     url: '/api/thraex/boardrooms/events',
     method: 'get',

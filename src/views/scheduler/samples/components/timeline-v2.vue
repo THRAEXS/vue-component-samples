@@ -109,7 +109,7 @@ export default {
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
     },
     handleViewChange() {
-      console.debug('onViewChange')
+      console.debug('onViewChange...')
       this.$emit('view-change', { events: this.addEvents })
     },
     addMarks() {
@@ -137,13 +137,18 @@ export default {
         this.scheduler.parse(events, 'json')
       }
     },
+    // Only valid for booking
     getEvents() {
       const events = this.scheduler.getEvents()
       const d2s = this.scheduler.date.date_to_str('%H:%i')
 
       return events.map(e => {
-        const { section_id: id, start_date: sd, end_date: ed } = e
-        return { start: `${id} ${d2s(sd)}`, end: `${id} ${d2s(ed)}` }
+        const {
+          [this.timelineCfg.y_property]: key,
+          start_date: sd,
+          end_date: ed
+        } = e
+        return { key, start: `${key} ${d2s(sd)}`, end: `${key} ${d2s(ed)}` }
       }).sort((a, b) => new Date(a.start) - new Date(b.start))
     }
   },
@@ -156,7 +161,7 @@ export default {
       style: { height: this.height }
     }, [
       h(tag, { class: 'dhx_cal_navline' }, [
-        h(tag, { class: 'dhx_cal_date', style: { display: '' }})
+        h(tag, { class: 'dhx_cal_date', style: { display: 'none' }})
       ]),
       h(tag, { class: 'dhx_cal_header' }),
       h(tag, { class: 'dhx_cal_data' })
