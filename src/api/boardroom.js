@@ -47,3 +47,11 @@ export function getBookEvents(day) {
     params: { day }
   })
 }
+
+export function getBookMarks(params) {
+  return request({
+    url: '/api/thraex/boardrooms/marks',
+    method: 'get',
+    params
+  })
+}

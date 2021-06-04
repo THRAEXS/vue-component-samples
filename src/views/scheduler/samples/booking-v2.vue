@@ -9,14 +9,14 @@
         ref="brTimeline"
         height="135px"
         :units="units"
-        :navline="false"
+        @view-change="handleViewChange"
       />
     </el-card>
 
     <el-card>
       <br-edit
         ref="brEdit"
-        :style="calcStyle"
+        :style="{ height: `${height}px` }"
         :capacity="boardroom.mostNumber"
       />
     </el-card>
@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { getBoardroom, save } from '@/api/boardroom'
+import { serverTime, getBoardroom, getBookMarks, save } from '@/api/boardroom'
 
 export default {
   components: {
@@ -43,26 +43,19 @@ export default {
       boardroom: {}
     }
   },
-  computed: {
-    calcStyle() {
-      return { height: `${this.height}px` }
-    }
-  },
-  beforeCreate1() {
-    const { rid } = this.$route.query
-    const to = () => this.$router.push('/scheduler/preview')
-    !rid && to()
-    getBoardroom(rid).then(({ data }) => {
-      data ? (this.boardroom = data) : to()
-    })
-  },
   created() {
-    const { rid } = this.$route.query
+    const { rid, start } = this.$route.query
     const to = () => this.$router.push('/scheduler/preview')
     !rid && to()
-    getBoardroom(rid).then(({ data }) => (this.boardroom = data))
 
-    this.handleUnits(this.$route.query.start)
+    Promise.all([
+      getBoardroom(rid),
+      this.assemblyUnits(start)
+    ]).then(([{ data }, units]) => {
+      // TODO: boardroom does not exist
+      this.boardroom = data
+      this.units = units
+    })
   },
   updated() {
     this.$nextTick(() => {
@@ -76,16 +69,43 @@ export default {
     })
   },
   methods: {
-    handleUnits(start) {
-      const timestamp = Number.parseInt(start)
-      const begin = Number.isNaN(timestamp) ? new Date() : new Date(timestamp)
+    joinDate(y, m, d, cn) {
+      return cn ? `${y}年${m}月${d}日` : `${y}-${m}-${d}`
+    },
+    async assemblyUnits(start) {
+      let timestamp = Number.parseInt(start)
+      Number.isNaN(timestamp) && (timestamp = await serverTime().then(({ data: time }) => time))
+
+      const begin = new Date(timestamp)
       const [year, month, date] = [begin.getFullYear(), begin.getMonth(), begin.getDate()]
-      this.units.push({ key: `${year}-${month + 1}-${date}`, label: `${year}年${month + 1}月${date}日` })
+
+      const units = [{
+        key: this.joinDate(year, month + 1, date),
+        label: this.joinDate(year, month + 1, date, true)
+      }]
       for (let i = 1; i < 2; i++) {
         const next = new Date(year, month, date + i)
         const [y, m, d] = [next.getFullYear(), next.getMonth() + 1, next.getDate()]
-        this.units.push({ key: `${y}-${m}-${d}`, label: `${y}年${m}月${d}日` })
+        units.push({ key: this.joinDate(y, m, d), label: this.joinDate(y, m, d, true) })
       }
+
+      return units
+    },
+    handleViewChange({ now, marks: addMarks }) {
+      getBookMarks({
+        roomId: this.boardroom.id,
+        dates: this.units.map(({ key }) => key)
+      }).then(({ data }) => {
+        const [year, month, date] = [now.getFullYear(), now.getMonth(), now.getDate()]
+        addMarks(data.map(({ startTime, endTime }) => [
+          new Date(startTime),
+          new Date(endTime)
+        ]).map(([start, end]) => ({
+          key: this.joinDate(start.getFullYear(), start.getMonth() + 1, start.getDate()),
+          start: new Date(year, month, date, start.getHours(), start.getMinutes()),
+          end: new Date(year, month, date, end.getHours(), end.getMinutes())
+        })))
+      })
     },
     handleSubmit() {
       console.debug('submit...')
@@ -97,7 +117,7 @@ export default {
 
       const data = {
         book: formData,
-        dates: this.$refs.brTimeline.getEvents()
+        dates: this.$refs.brTimeline.getNewEvents()
       }
       console.debug(data)
       save(data).then(res => console.debug('res:', res))

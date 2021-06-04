@@ -111,7 +111,11 @@ export default {
     },
     handleViewChange() {
       console.debug('onViewChange...')
-      this.$emit('view-change', { events: this.addEvents, marks: this.addMarks })
+      this.$emit('view-change', {
+        now: this.scheduler.getState().date,
+        events: this.addEvents,
+        marks: this.addMarks
+      })
     },
     addMarks(marks = []) {
       this.marks.forEach(m => this.scheduler.deleteMarkedTimespan(m))
@@ -137,7 +141,7 @@ export default {
       }
     },
     // Currently only valid for booking
-    getEvents() {
+    getNewEvents() {
       const events = this.scheduler.getEvents()
       const d2s = this.scheduler.date.date_to_str('%H:%i')
 

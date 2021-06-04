@@ -105,8 +105,8 @@ module.exports = [
   {
     url: '/api/thraex/server/time',
     type: 'get',
-    // response: _ => ({ code: 20000, data: Date.now() })
-    response: _ => ({ code: 20000, data: new Date(2021, 4, 31).getTime() })
+    response: _ => ({ code: 20000, data: Date.now() })
+    // response: _ => ({ code: 20000, data: new Date(2021, 4, 31).getTime() })
     // response: _ => {
     //   sleep(5000 * 2)
     //   return { code: 20000, data: new Date(2021, 4, 29).getTime() }
@@ -139,14 +139,34 @@ module.exports = [
       const { day: date } = config.query
       const nd = new Date(date)
       const [y, m, d] = [nd.getFullYear(), nd.getMonth(), nd.getDate()]
-      const events = date === '2021-05-30' ? [] : rooms.map(({ id }, i) => ({
+      const data = date === '2021-05-30' ? [] : rooms.map(({ id }, i) => ({
         id: `event-${i}`,
         roomId: id,
         startTime: new Date(y, m, d, 8),
         endTime: new Date(y, m, d, 10, 30)
       }))
 
-      return { code: 20000, data: events }
+      return { code: 20000, data }
+    }
+  },
+  {
+    url: '/api/thraex/boardrooms/marks',
+    type: 'get',
+    response: config => {
+      const { roomId, dates } = config.query
+      const data = dates.map((it, i) => {
+        const nd = new Date(it)
+        const [y, m, d] = [nd.getFullYear(), nd.getMonth(), nd.getDate()]
+
+        return {
+          id: `mark-${i}`,
+          roomId,
+          startTime: new Date(y, m, d, 12),
+          endTime: new Date(y, m, d, 13, 30)
+        }
+      })
+
+      return { code: 20000, data }
     }
   },
   {
