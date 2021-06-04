@@ -58,7 +58,6 @@ export default {
         edit_on_create: false,
         xml_date: '%Y-%m-%d %H:%i',
         mark_now: false,
-        drag_move: false,
         dblclick_create: false
       }
     },
@@ -80,22 +79,10 @@ export default {
       this.scheduler = scheduler
 
       const d2s = this.scheduler.date.date_to_str('%H:%i')
+      const format = (s, e) => `${d2s(s)}-${d2s(e)}`
       Object.assign(this.scheduler.templates, {
-        tooltip_text: (start, end) => `<b>${d2s(start)}-${d2s(end)}</b>`, // tooltip.js
-        event_bar_text: (start, end, event) => {
-          const { drag_id } = this.scheduler.getState()
-          if (drag_id === event.id) {
-            const sm = start.getMinutes()
-            sm > 0 && sm < 30 && start.setMinutes(0)
-            sm > 30 && sm < 60 && start.setMinutes(30)
-
-            const em = end.getMinutes()
-            em > 0 && em < 30 && end.setMinutes(30)
-            em > 30 && em < 60 && end.setMinutes(60)
-          }
-
-          return `${d2s(start)}-${d2s(end)}`
-        }
+        event_bar_text: (start, end) => format(start, end),
+        tooltip_text: (start, end) => `<b>${format(start, end)}</b>` // tooltip.js
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
 
@@ -103,12 +90,22 @@ export default {
       this.scheduler.xy.nav_height = 5
 
       this.scheduler.attachEvent('onViewChange', this.handleViewChange)
+      this.scheduler.attachEvent('onDragEnd', this.adjustTime)
 
       this.scheduler.createTimelineView(this.timelineCfg)
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
     },
+    adjustTime() {
+      this.scheduler.getEvents().forEach(({ start_date: sd, end_date: ed }) => {
+        const [sm, em] = [sd.getMinutes(), ed.getMinutes()]
+        sm > 0 && sm < 30 && sd.setMinutes(0)
+        sm > 30 && sm < 60 && sd.setMinutes(30)
+        em > 0 && em < 30 && ed.setMinutes(30)
+        em > 30 && em < 60 && ed.setMinutes(60)
+      })
+      this.scheduler.updateView()
+    },
     handleViewChange() {
-      console.debug('onViewChange...')
       this.$emit('view-change', {
         now: this.scheduler.getState().date,
         events: this.addEvents,
