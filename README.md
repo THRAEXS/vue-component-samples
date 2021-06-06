@@ -27,10 +27,15 @@ Bugs(fix: reload `scheduler`):
   - fix: `scheduler.clearAll()`
 
 TODO:
-- [ ] Validate
+- [ ] Time out of bounds
+- [ ] Form validate
+- [ ] Blocked tips
+- [ ] Secret dialog
+- [ ] Notice
 - [ ] Base info components
-- [ ] Marked
-- [ ] Condition
+- [ ] Event/Marked color
+- [X] Condition
 - [ ] Style
-- [ ] Event modify
-- [ ] Event cancel
+- [X] Event modify: move/resize
+- [ ] Event cancel: icon
+- [ ] Remark position
