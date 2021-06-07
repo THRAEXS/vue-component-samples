@@ -2258,6 +2258,7 @@ div.dhx_menu_head,div.dhx_menu_icon {
   font-size: 18px;
   line-height: 36px;
 	opacity: 0.75;
+	color: rgb(0, 0, 0);
 }
 
 .thx_event_tips {
@@ -2268,17 +2269,8 @@ div.dhx_menu_head,div.dhx_menu_icon {
 
 .thx_event_pending {
 	background-color: rgba(255, 0, 0, 0.25);
-	/* opacity: 0.25; */
 }
 
 .thx_event_completed {
 	background-color: rgba(0, 255, 0, 0.25);
-}
-
-.event_math {
-	/* // color:orange !important; */
-	-webkit-transition: opacity 0.1s;
-	transition: opacity 0.1s;
-	opacity: 0.7;
-	background-color: #36BD14!important;
 }

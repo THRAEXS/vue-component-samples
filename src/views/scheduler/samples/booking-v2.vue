@@ -45,7 +45,7 @@ export default {
   },
   created() {
     const { rid, start } = this.$route.query
-    const to = () => this.$router.push('/scheduler/preview')
+    const to = () => this.$router.push('/scheduler/statistics')
     !rid && to()
 
     Promise.all([

@@ -40,4 +40,5 @@ TODO:
 - [X] Event modify: move/resize
 - [ ] Event cancel: icon
 - [X] Remark position
+- [ ] Submit dialog ???
 - [ ] Style
