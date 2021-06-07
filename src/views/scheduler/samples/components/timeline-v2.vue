@@ -98,12 +98,28 @@ export default {
       this.scheduler.init(this.$refs.scheduler, this.now, 'timeline')
     },
     adjustTime() {
+      const { min_date: min, max_date: max } = this.scheduler.getState()
       this.scheduler.getEvents().forEach(({ start_date: sd, end_date: ed }) => {
         const [sm, em] = [sd.getMinutes(), ed.getMinutes()]
         sm > 0 && sm < 30 && sd.setMinutes(0)
         sm > 30 && sm < 60 && sd.setMinutes(30)
         em > 0 && em < 30 && ed.setMinutes(30)
         em > 30 && em < 60 && ed.setMinutes(60)
+
+        if (sd < min) {
+          sd.setFullYear(min.getFullYear())
+          sd.setMonth(min.getMonth())
+          sd.setDate(min.getDate())
+          sd.setHours(min.getHours())
+          sd.setMinutes(min.getMinutes())
+        }
+        if (ed > max) {
+          ed.setFullYear(max.getFullYear())
+          ed.setMonth(max.getMonth())
+          ed.setDate(max.getDate())
+          ed.setHours(max.getHours())
+          ed.setMinutes(max.getMinutes())
+        }
       })
       this.scheduler.updateView()
     },

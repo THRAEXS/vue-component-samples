@@ -27,12 +27,14 @@ Bugs(fix: reload `scheduler`):
   - fix: `scheduler.clearAll()`
 
 TODO:
-- [ ] Time out of bounds
+- [X] Time out of bounds
 - [ ] Form validate
+- [ ] Form modify
 - [ ] Blocked tips
 - [ ] Secret dialog
 - [ ] Notice
 - [ ] Base info components
+- [ ] `boardroom` does not exist for booking
 - [X] Event/Marked color
 - [X] Condition
 - [X] Event modify: move/resize
