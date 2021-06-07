@@ -49,6 +49,7 @@ export default {
       now: null,
       units: [],
       rooms: [],
+      remarks: [],
       Link: null,
       drawer: {
         visible: false,
@@ -66,12 +67,14 @@ export default {
         .map(({ [this.props.children]: childs }) => childs)
         .reduce((acc, cur) => [...acc, ...cur], [])
 
+      this.remarks = data.filter(({ remark }) => remark)
+        .map(({ [this.props.key]: key, remark: text }) => ({ key, text, css: 'thx_event_tips' }))
+
       const label1 = (k, l) => `<span id="${k}" class="section-room">${l}</span>`
       this.units = data.map(({
         [this.props.key]: key,
         [this.props.label]: label,
-        [this.props.children]: children,
-        remark = ''
+        [this.props.children]: children
       }) => ({
         key,
         label,
@@ -153,27 +156,23 @@ export default {
       })
     },
     async loadEvents(addEvents) {
+      const [y, m, n] = [this.now.getFullYear(), this.now.getMonth(), this.now.getDate()]
+      const remarks = this.remarks.map(it => ({
+        ...it,
+        start: new Date(y, m, n, 7),
+        end: new Date(y, m, n, 23)
+      }))
+
       const date = this.$refs.picker.formatToString(this.now)
       const { data = [] } = await getBookEvents(date)
 
-      const events = data.map(({ roomId, startTime, endTime }) => ({
+      const events = data.map(({ roomId, startTime, endTime, state }) => ({
         key: roomId,
         start: new Date(startTime),
-        end: new Date(endTime)
+        end: new Date(endTime),
+        css: state === 20 ? 'thx_event_completed' : 'thx_event_pending'
       }))
-      // const now = this.now
-      // const [y, m, n] = [now.getFullYear(), now.getMonth(), now.getDate()]
-      // events.push({
-      //   key: 'location-0',
-      //   start: new Date(y, m, n, 7),
-      //   end: new Date(y, m, n, 23)
-      // })
-      addEvents(events)
-      // addEvents(data.map(({ roomId, startTime, endTime }) => ({
-      //   key: roomId,
-      //   start: new Date(startTime),
-      //   end: new Date(endTime)
-      // })))
+      addEvents([...remarks, ...events])
     }
   }
 }

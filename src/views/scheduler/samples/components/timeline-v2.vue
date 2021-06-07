@@ -82,9 +82,9 @@ export default {
       const d2s = this.scheduler.date.date_to_str('%H:%i')
       const format = (s, e) => `${d2s(s)}-${d2s(e)}`
       Object.assign(this.scheduler.templates, {
-        event_bar_text: (start, end) => format(start, end),
-        tooltip_text: (start, end) => `<b>${format(start, end)}</b>`, // tooltip.js
-        event_class: () => 'thx_event'
+        event_bar_text: (start, end, { text }) => text || format(start, end),
+        tooltip_text: (start, end, { text }) => text || `<b>${format(start, end)}</b>`, // tooltip.js
+        event_class: (start, end, { css }) => `thx_event ${css ?? ''}`
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
 
@@ -118,11 +118,12 @@ export default {
       this.marks.forEach(m => this.scheduler.deleteMarkedTimespan(m))
       this.marks = []
       if (marks && marks.length > 0) {
-        this.marks = marks.map(({ key, start, end }) => ({
+        this.marks = marks.map(({ key, start, end, ...others }) => ({
           start_date: start,
           end_date: end,
           type: 'dhx_time_block',
-          sections: { timeline: key }
+          sections: { timeline: key },
+          ...others
         })).map(m => this.scheduler.addMarkedTimespan(m))
         this.scheduler.updateView()
       }
@@ -130,10 +131,11 @@ export default {
     addEvents(events = []) {
       this.scheduler.clearAll()
       if (events && events.length > 0) {
-        this.scheduler.parse(events.map(({ key, start, end }) => ({
+        this.scheduler.parse(events.map(({ key, start, end, ...others }) => ({
           [this.timelineCfg.y_property]: key,
           start_date: start,
-          end_date: end
+          end_date: end,
+          ...others
         })), 'json')
       }
     },

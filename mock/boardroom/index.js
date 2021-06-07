@@ -143,7 +143,8 @@ module.exports = [
         id: `event-${i}`,
         roomId: id,
         startTime: new Date(y, m, d, 8),
-        endTime: new Date(y, m, d, 10, 30)
+        endTime: new Date(y, m, d, 10, 30),
+        state: [10, 20][i % 2]
       }))
 
       return { code: 20000, data }
