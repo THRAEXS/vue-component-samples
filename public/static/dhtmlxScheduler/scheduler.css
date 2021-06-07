@@ -851,7 +851,7 @@ div.icon_delete {
 	width: 10px;
 	padding-right: 3px;
 	/* fix: Guiwang */
-	margin: 0 10px;
+	margin: 0 9px;
 }
 
 .dhx_matrix_scell.folder .dhx_scell_name {

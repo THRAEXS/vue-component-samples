@@ -20,6 +20,15 @@
         @view-change="handleViewChange"
       />
     </el-card>
+
+    <el-drawer
+      :visible.sync="drawer.visible"
+      :with-header="false"
+    >
+      <div v-for="it in Object.entries(drawer.room)" :key="it[0]">
+        {{ it[0] }}: {{ it[1] }}
+      </div>
+    </el-drawer>
   </div>
 </template>
 <script>
@@ -37,8 +46,13 @@ export default {
       height: 0,
       occupy: 20 * 2 + 5 * 2 + 1 + 2,
       now: null,
-      units: null,
-      Link: null
+      units: [],
+      rooms: [],
+      Link: null,
+      drawer: {
+        visible: false,
+        room: {}
+      }
     }
   },
   mounted() {
@@ -47,7 +61,10 @@ export default {
       getBoardrooms(),
       this.getLink()
     ]).then(([{ data: now }, { data }, link]) => {
-      // const label0 = (l, r) => r ? `${l} <label style="color: red;">(${r})</label>` : l
+      this.rooms = data
+        .map(({ [this.props.children]: childs }) => childs)
+        .reduce((acc, cur) => [...acc, ...cur], [])
+
       const label1 = (k, l) => `<span id="${k}" class="section-room">${l}</span>`
       this.units = data.map(({
         [this.props.key]: key,
@@ -56,7 +73,7 @@ export default {
         remark = ''
       }) => ({
         key,
-        label, // : label0(label, remark),
+        label,
         open: true,
         children: children.map(({
           [this.props.key]: key,
@@ -80,16 +97,35 @@ export default {
     async getLink() {
       const vue = await import('vue').then(({ default: v }) => v)
       return vue.extend({
-        props: ['value', 'handler'],
+        props: ['value', 'handler', 'viewer'],
         render(c) {
-          return c('el-link', {
-            attrs: {
-              underline: false
-            },
-            on: {
-              click: () => this.handler(this.value.id)
+          const attrs = {
+            underline: false
+          }
+          return c('div', {
+            style: {
+              textAlign: 'left'
             }
-          }, this.value.text)
+          }, [
+            c('el-link', {
+              attrs: {
+                ...attrs,
+                type: 'primary'
+              },
+              on: {
+                click: () => this.handler(this.value.id)
+              }
+            }, this.value.text),
+            c('el-link', {
+              attrs: attrs,
+              style: {
+                marginLeft: '5px'
+              },
+              on: {
+                click: () => this.viewer(this.value.id)
+              }
+            }, [c('i', { class: 'el-icon-view' })])
+          ])
         }
       })
     },
@@ -105,7 +141,11 @@ export default {
               handler: rid => this.$router.push({
                 path: '/scheduler/booking',
                 query: { rid, start: this.now.getTime() }
-              })
+              }),
+              viewer: rid => {
+                this.drawer.room = this.rooms.find(({ [this.props.key]: id }) => id === rid)
+                this.drawer.visible = true
+              }
             }
           }).$mount(`#${id}`)
         )
