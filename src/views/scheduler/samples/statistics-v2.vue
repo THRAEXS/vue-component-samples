@@ -14,7 +14,7 @@
         render="tree"
         :height="`${height}px`"
         readonly
-        :dx="500"
+        :dx="250"
         :now="now"
         :units="units"
         @view-change="handleViewChange"
@@ -47,7 +47,7 @@ export default {
       getBoardrooms(),
       this.getLink()
     ]).then(([{ data: now }, { data }, link]) => {
-      const label0 = (l, r) => r ? `${l} <label style="color: red;">(${r})</label>` : l
+      // const label0 = (l, r) => r ? `${l} <label style="color: red;">(${r})</label>` : l
       const label1 = (k, l) => `<span id="${k}" class="section-room">${l}</span>`
       this.units = data.map(({
         [this.props.key]: key,
@@ -56,7 +56,7 @@ export default {
         remark = ''
       }) => ({
         key,
-        label: label0(label, remark),
+        label, // : label0(label, remark),
         open: true,
         children: children.map(({
           [this.props.key]: key,
@@ -114,11 +114,25 @@ export default {
     async loadEvents(addEvents) {
       const date = this.$refs.picker.formatToString(this.now)
       const { data = [] } = await getBookEvents(date)
-      addEvents(data.map(({ roomId, startTime, endTime }) => ({
+
+      const events = data.map(({ roomId, startTime, endTime }) => ({
         key: roomId,
         start: new Date(startTime),
         end: new Date(endTime)
-      })))
+      }))
+      // const now = this.now
+      // const [y, m, n] = [now.getFullYear(), now.getMonth(), now.getDate()]
+      // events.push({
+      //   key: 'location-0',
+      //   start: new Date(y, m, n, 7),
+      //   end: new Date(y, m, n, 23)
+      // })
+      addEvents(events)
+      // addEvents(data.map(({ roomId, startTime, endTime }) => ({
+      //   key: roomId,
+      //   start: new Date(startTime),
+      //   end: new Date(endTime)
+      // })))
     }
   }
 }

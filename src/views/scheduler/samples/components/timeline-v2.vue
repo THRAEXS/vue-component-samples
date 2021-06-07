@@ -45,6 +45,7 @@ export default {
         },
         section_autoheight: false,
         folder_dy: 40, // Only valid for tree
+        // folder_events_available: true,
         dy: 40
       },
       marks: []
@@ -82,7 +83,8 @@ export default {
       const format = (s, e) => `${d2s(s)}-${d2s(e)}`
       Object.assign(this.scheduler.templates, {
         event_bar_text: (start, end) => format(start, end),
-        tooltip_text: (start, end) => `<b>${format(start, end)}</b>` // tooltip.js
+        tooltip_text: (start, end) => `<b>${format(start, end)}</b>`, // tooltip.js
+        event_class: () => 'thx_event'
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
 
@@ -169,17 +171,7 @@ export default {
 </script>
 <style scoped>
 @import '/static/dhtmlxScheduler/scheduler.css';
-
 .dhx_cal_container {
   width: 100%;
-}
-::v-deep .dhx_cal_event_line {
-  text-align: center;
-  font-size: 18px;
-  line-height: 36px;
-}
-.doing {
-  background-color: red;
-  opacity: 0.5;
 }
 </style>
