@@ -25,9 +25,7 @@
       :visible.sync="drawer.visible"
       :with-header="false"
     >
-      <div v-for="it in Object.entries(drawer.room)" :key="it[0]">
-        {{ it[0] }}: {{ it[1] }}
-      </div>
+      <br-view :data="drawer.room" />
     </el-drawer>
   </div>
 </template>
@@ -35,7 +33,10 @@
 import { serverTime, getBoardrooms, getBookEvents } from '@/api/boardroom'
 
 export default {
-  components: { BrTimeline: () => import('./components/timeline-v2') },
+  components: {
+    BrTimeline: () => import('./components/timeline-v2'),
+    BrView: () => import('./components/view')
+  },
   data() {
     return {
       props: {
