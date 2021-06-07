@@ -97,13 +97,15 @@ export default {
         dates: this.units.map(({ key }) => key)
       }).then(({ data }) => {
         const [year, month, date] = [now.getFullYear(), now.getMonth(), now.getDate()]
-        addMarks(data.map(({ startTime, endTime }) => [
+        addMarks(data.map(({ startTime, endTime, state }) => [
           new Date(startTime),
-          new Date(endTime)
-        ]).map(([start, end]) => ({
+          new Date(endTime),
+          state
+        ]).map(([start, end, state]) => ({
           key: this.joinDate(start.getFullYear(), start.getMonth() + 1, start.getDate()),
           start: new Date(year, month, date, start.getHours(), start.getMinutes()),
-          end: new Date(year, month, date, end.getHours(), end.getMinutes())
+          end: new Date(year, month, date, end.getHours(), end.getMinutes()),
+          css: state === 20 ? 'thx_event_completed' : 'thx_event_pending'
         })))
       })
     },

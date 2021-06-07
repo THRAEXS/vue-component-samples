@@ -2267,11 +2267,12 @@ div.dhx_menu_head,div.dhx_menu_icon {
 }
 
 .thx_event_pending {
-	background-color: #FF0000;
+	background-color: rgba(255, 0, 0, 0.25);
+	/* opacity: 0.25; */
 }
 
 .thx_event_completed {
-	background-color: #12be00;
+	background-color: rgba(0, 255, 0, 0.25);
 }
 
 .event_math {

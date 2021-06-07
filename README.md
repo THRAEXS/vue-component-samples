@@ -33,9 +33,9 @@ TODO:
 - [ ] Secret dialog
 - [ ] Notice
 - [ ] Base info components
-- [ ] Event/Marked color
+- [X] Event/Marked color
 - [X] Condition
-- [ ] Style
 - [X] Event modify: move/resize
 - [ ] Event cancel: icon
-- [ ] Remark position
+- [X] Remark position
+- [ ] Style

@@ -163,7 +163,8 @@ module.exports = [
           id: `mark-${i}`,
           roomId,
           startTime: new Date(y, m, d, 12),
-          endTime: new Date(y, m, d, 13, 30)
+          endTime: new Date(y, m, d, 13, 30),
+          state: [10, 20][i % 2]
         }
       })
 
