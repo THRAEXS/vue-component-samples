@@ -17,7 +17,7 @@
         :dx="250"
         :now="now"
         :units="units"
-        @view-change="handleViewChange"
+        @view-changed="handleViewChange"
       />
     </el-card>
 

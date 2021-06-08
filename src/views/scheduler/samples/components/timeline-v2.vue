@@ -124,7 +124,7 @@ export default {
       this.scheduler.updateView()
     },
     handleViewChange() {
-      this.$emit('view-change', {
+      this.$emit('view-changed', {
         now: this.scheduler.getState().date,
         events: this.addEvents,
         marks: this.addMarks

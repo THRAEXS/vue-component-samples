@@ -9,7 +9,7 @@
         ref="brTimeline"
         height="135px"
         :units="units"
-        @view-change="handleViewChange"
+        @view-changed="handleViewChange"
       />
     </el-card>
 
