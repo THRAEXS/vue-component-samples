@@ -2261,6 +2261,11 @@ div.dhx_menu_head,div.dhx_menu_icon {
 	color: rgb(0, 0, 0);
 }
 
+.thx_event_menu {
+  padding: 2px;
+  border: 1px solid red;
+}
+
 .thx_event_tips {
 	text-align: left;
 	color: #FF0000;

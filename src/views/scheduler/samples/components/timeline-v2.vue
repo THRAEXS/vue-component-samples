@@ -82,7 +82,8 @@ export default {
       const d2s = this.scheduler.date.date_to_str('%H:%i')
       const format = (s, e) => `${d2s(s)}-${d2s(e)}`
       Object.assign(this.scheduler.templates, {
-        event_bar_text: (start, end, { text }) => text || format(start, end),
+        event_bar_text: (start, end, { id, text }) =>
+          `<div id="${id}" class="thx_event_temp">${text || format(start, end)}</div>`,
         tooltip_text: (start, end, { text }) => text || `<b>${format(start, end)}</b>`, // tooltip.js
         event_class: (start, end, { css }) => `thx_event ${css ?? ''}`
       })
@@ -122,6 +123,45 @@ export default {
         }
       })
       this.scheduler.updateView()
+      this.handleEventMenu()
+    },
+    async handleEventMenu() {
+      const vue = await import('vue').then(({ default: v }) => v)
+      const Tooltip = vue.extend({
+        props: ['value', 'handler'],
+        render(c) {
+          return c('el-tooltip', {
+            attrs: {
+              placement: 'top',
+              'popper-class': 'thx_event_menu'
+            }
+          }, [
+            c('el-button', {
+              attrs: {
+                type: 'danger',
+                icon: 'el-icon-delete',
+                size: 'mini'
+              },
+              slot: 'content',
+              on: {
+                click: () => this.handler(this.value.id)
+              }
+            }),
+            c('div', this.value.text)
+          ])
+        }
+      })
+
+      document.querySelectorAll('.thx_event_temp').forEach(el => new Tooltip({
+        el,
+        propsData: {
+          value: {
+            id: el.id,
+            text: el.innerHTML
+          },
+          handler: eid => this.scheduler.deleteEvent(eid)
+        }
+      }))
     },
     handleViewChange() {
       this.$emit('view-changed', {

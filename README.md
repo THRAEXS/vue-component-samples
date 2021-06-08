@@ -38,7 +38,8 @@ TODO:
 - [X] Event/Marked color
 - [X] Condition
 - [X] Event modify: move/resize
-- [ ] Event cancel: icon
+- [X] Event cancel: icon
+- [ ] Opt: event cancel icon
 - [X] Remark position
 - [ ] Submit dialog ???
 - [ ] Style
