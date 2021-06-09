@@ -92,7 +92,7 @@ export default {
   updated() {
     this.$nextTick(() => {
       const bodyHeight = document.body.clientHeight
-      const navHeight = document.querySelector('.navbar').clientHeight
+      const navHeight = document.querySelector('.navbar')?.clientHeight || 0
       const headerHeight = document.querySelector('.card-header').clientHeight
       this.height = bodyHeight - navHeight - headerHeight - this.occupy
     })
@@ -135,7 +135,7 @@ export default {
     },
     handleViewChange({ events: addEvents }) {
       this.loadEvents(addEvents).then(() => {
-        const els = document.getElementsByClassName('section-room')
+        const els = document.querySelectorAll('.section-room')
         const rooms = []
         els.forEach(({ id, innerText: text }) => rooms.push({ id, text }))
         rooms.forEach(({ id, text }) =>
@@ -151,7 +151,7 @@ export default {
                 this.drawer.visible = true
               }
             }
-          }).$mount(`#${id}`)
+          }).$mount(document.getElementById(id))
         )
       })
     },

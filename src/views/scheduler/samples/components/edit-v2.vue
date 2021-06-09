@@ -24,7 +24,7 @@
             <el-radio-button
               v-for="(item, ind) in info.secrets"
               :key="`secrets-${ind}`"
-              :label="item"
+              :label="ind"
             >
               {{ item }}
             </el-radio-button>
@@ -125,7 +125,7 @@ export default {
       info: {
         types: [],
         orgs: [],
-        secrets: ['是', '否'],
+        secrets: ['否', '是'],
         projector: ['需要', '不需要']
       },
       items: [
