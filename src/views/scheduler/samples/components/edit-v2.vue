@@ -1,8 +1,14 @@
 <template>
-  <el-form :model="form" size="mini" label-width="120px">
+  <el-form
+    ref="form"
+    :model="form"
+    :rules="rules"
+    size="mini"
+    label-width="120px"
+  >
     <el-row>
       <el-col :span="8">
-        <el-form-item label="会议类型:">
+        <el-form-item label="会议类型:" prop="typeId">
           <el-select
             v-model="form.typeId"
             clearable
@@ -19,7 +25,7 @@
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="是否涉密:">
+        <el-form-item label="是否涉密:" prop="secret">
           <el-radio-group v-model="form.secret">
             <el-radio-button
               v-for="(item, ind) in info.secrets"
@@ -32,8 +38,8 @@
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="会议人数:">
-          <el-input v-model.trim="form.num">
+        <el-form-item label="会议人数:" prop="num">
+          <el-input v-model.trim.number="form.num">
             <template slot="append">
               <span style="color: red;">(容纳{{ capacity }}人)</span>
             </template>
@@ -43,7 +49,7 @@
     </el-row>
     <el-row>
       <el-col :span="8">
-        <el-form-item label="院内承办单位:">
+        <el-form-item label="院内承办单位:" prop="orgId">
           <el-select
             v-model="form.orgId"
             clearable
@@ -60,38 +66,38 @@
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="联系人:">
+        <el-form-item label="联系人:" prop="contacts">
           <el-input v-model.trim="form.contacts" />
         </el-form-item>
       </el-col>
       <el-col :span="8">
-        <el-form-item label="手机:">
+        <el-form-item label="手机:" prop="mobile">
           <el-input v-model.trim="form.mobile" />
         </el-form-item>
       </el-col>
     </el-row>
-    <el-form-item label="会议主题:">
+    <el-form-item label="会议主题:" prop="subject">
       <el-input v-model.trim="form.subject" />
     </el-form-item>
-    <el-form-item label="会议简介:">
+    <el-form-item label="会议简介:" prop="introduction">
       <el-input v-model.trim="form.introduction" />
     </el-form-item>
-    <el-form-item label="参与单位:">
+    <el-form-item label="参与单位:" prop="participateUnits">
       <el-input v-model.trim="form.participateUnits" />
     </el-form-item>
     <template v-for="(item, ind) in items">
       <el-row v-if="Array.isArray(item)" :key="`form-item-${ind}`">
         <el-col v-for="col in item" :key="col.prop" :span="12">
-          <el-form-item :label="`${col.label}:`">
+          <el-form-item :label="`${col.label}:`" :prop="col.prop">
             <br-item :form="form" :item="col" />
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item v-else :key="`form-item-${ind}`" :label="`${item.label}:`">
+      <el-form-item v-else :key="`form-item-${ind}`" :label="`${item.label}:`" :prop="item.prop">
         <br-item :form="form" :item="item" />
       </el-form-item>
     </template>
-    <el-form-item label="投影仪:">
+    <el-form-item label="投影仪:" prop="projector">
       <el-radio-group v-model="form.projector">
         <el-radio-button
           v-for="(item, ind) in info.projector"
@@ -108,12 +114,14 @@
   </el-form>
 </template>
 <script>
+import Rules from './rules'
 import { getFormInfo, getOrg } from '@/api/boardroom'
 
 export default {
   components: {
     BrItem: () => import('./item')
   },
+  mixins: [Rules],
   props: {
     capacity: {
       type: Number,
@@ -270,7 +278,7 @@ export default {
         subject: null,
         introduction: null,
         participateUnits: null,
-        leaders: null,
+        leaders: [],
         otherLeaders: null,
         photograph: null,
         tableCard: null,
@@ -281,8 +289,8 @@ export default {
         projector: null,
         computer: null,
         paper: null,
-        pen: null,
-        keepSecret: null,
+        pen: [],
+        keepSecret: [],
         remark: null
       }
     }
@@ -296,13 +304,19 @@ export default {
   },
   methods: {
     getFormData() {
-      const { bannerTxt, ...other } = this.form
+      /* const { bannerTxt, ...other } = this.form
       bannerTxt && (other.banner = `${other.banner}：${bannerTxt}`)
       Object.keys(other).forEach(k =>
         Array.isArray(other[k]) && (other[k] = other[k].join('，')))
 
       const gn = k => (this.info[`${k}s`].find(it => it.id === other[`${k}Id`]) || {}).name
-      return Object.assign(other, { typeName: gn('type'), orgName: gn('org') })
+      return Object.assign(other, { typeName: gn('type'), orgName: gn('org') }) */
+
+      this.$refs.form.validate(valid => {
+        console.debug(valid)
+      })
+
+      return {}
     }
   }
 }
