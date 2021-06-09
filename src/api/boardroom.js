@@ -38,6 +38,7 @@ export function getFormInfo() {
 
 export function getOrg() {
   return request({ url: '/api/thraex/org/tree', method: 'GET', params: { level: 3 }})
+    .then(({ code, data: [root] }) => ({ code, data: root.childOrgList.find(it => it.id === '3302').childOrgList }))
 }
 
 export function getBookEvents(day) {

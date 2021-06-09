@@ -292,8 +292,7 @@ export default {
       this.$set(this.info, 'types', types)
       this.$set(this.items[0].options, 'minor', leaders.map(({ name }) => name))
     })
-    getOrg().then(({ data: [root] }) => this.$set(this.info, 'orgs',
-      root.childOrgList.find(it => it.id === '3302').childOrgList))
+    getOrg().then(({ data }) => this.$set(this.info, 'orgs', data))
   },
   methods: {
     getFormData() {
