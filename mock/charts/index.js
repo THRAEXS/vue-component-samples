@@ -6,7 +6,7 @@ const tmp = require('../../bars.tmp/data')
 const data = collation(source)
 
 function log() {
-  Boolean(process.argv[2]) && console.log(...arguments)
+  // Boolean(process.argv[2]) && console.log(...arguments)
 }
 
 function collation(data) {
@@ -17,7 +17,7 @@ function collation(data) {
     const { defKey: key, defName: name, processInsts: instances } = it
     const ilen = instances.length
     log('------------------------------------------------------------------------')
-    console.log('Key: %s, Name: %s, Instances:', key, name, ilen)
+    log('Key: %s, Name: %s, Instances:', key, name, ilen)
 
     const taskCount = instances.reduce((a, b) => a + b.data.length, 0)
     log('Task total: ', taskCount)
@@ -47,9 +47,9 @@ function collation(data) {
         }
       })
 
-      console.log('Instance num:', ilen, countTotal)
-      console.log('Value total:', valueTotal)
-      console.log('Value:', valueTotal / ilen, valueTotal / countTotal)
+      log('Instance num:', ilen, countTotal)
+      log('Value total:', valueTotal)
+      log('Value:', valueTotal / ilen, valueTotal / countTotal)
       result.push({ key, name, value: valueTotal / countTotal })
     } else {
       console.warn('The number of %s(%s) instances is:', key, name, ilen)
@@ -77,6 +77,27 @@ function collation(data) {
 }
 
 module.exports = [
+  {
+    url: '/api/thraex/flows/step',
+    type: 'get',
+    response: config => {
+      const { key } = config.query
+      const model = source.find(it => it.defKey === key) || {}
+      const { processInsts: instance } = model
+      const data = instance
+        ? instance.map(({ processInstId: id, data: tasks }) => ({ id, tasks })) : []
+      data.forEach(it => {
+        const { tasks } = it
+        const timestamps = tasks.map(({ handleTime: time }) => Date.parse(time))
+        const start = timestamps.slice(0, timestamps.length - 1)
+        const end = timestamps.slice(1)
+        const diffs = end.map((e, i) => e - start[i])
+        it.diffs = diffs
+      })
+
+      return { code: 20000, data }
+    }
+  },
   {
     url: '/api/thraex/flows',
     type: 'get',

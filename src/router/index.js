@@ -226,6 +226,13 @@ export const constantRoutes = [
         meta: { title: 'Bar Chart Flow', icon: 'el-icon-pie-chart' }
       },
       {
+        path: 'flow/step',
+        component: () => import('@/views/charts/flow-step'),
+        name: 'BarChartFlowStep',
+        hidden: true,
+        meta: { title: 'Bar Chart Flow Step', icon: 'el-icon-pie-chart' }
+      },
+      {
         path: 'demo',
         component: () => import('@/views/charts/demo'),
         name: 'BarChartDemo',
@@ -310,6 +317,61 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
+
+  {
+    path: '/scheduler',
+    component: Layout,
+    meta: { title: 'Scheduler', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: '',
+        name: 'SchedulerDhtmlx',
+        component: () => import('@/views/scheduler'),
+        meta: { title: 'DHTMLX Scheduler', icon: 'el-icon-s-help' }
+      },
+      {
+        path: 'statistics',
+        name: 'SchedulerStatistics',
+        component: () => import('@/views/scheduler/samples/statistics-v2'),
+        meta: { title: 'Scheduler Statistics', icon: 'el-icon-s-help' }
+      },
+      {
+        path: 'booking',
+        name: 'SchedulerBooking',
+        component: () => import('@/views/scheduler/samples/booking-v2'),
+        meta: { title: 'Scheduler Booking', icon: 'el-icon-s-help' },
+        hidden: true
+      }
+    ]
+  },
+
+  {
+    path: '/boardroom',
+    redirect: '/boardroom/index',
+    component: Layout,
+    meta: { title: 'Boardroom', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'BoardroomStatistics',
+        component: () => import('@/views/boardroom/statistics'),
+        meta: { title: 'Statistics', icon: 'el-icon-s-help' }
+      },
+      {
+        path: 'booking',
+        name: 'BoardroomBooking',
+        component: () => import('@/views/boardroom/booking'),
+        meta: { title: 'Booking', icon: 'el-icon-s-help' },
+        hidden: true
+      },
+      {
+        path: 'my',
+        name: 'BoardroomMy',
+        component: () => import('@/views/boardroom/components/view'),
+        meta: { title: 'My', icon: 'el-icon-s-help' }
+      }
+    ]
+  },
 
   {
     path: '/components/plus',
