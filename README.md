@@ -54,11 +54,13 @@ Bugs(fix: reload `scheduler`):
 - [X] static/dhtmlxScheduler
 - [X] components/scheduler
 
-- [ ] booking.vue: `handleSubmit`
+- [ ] booking.vue
+  - [ ] `handleSubmit`
 - [X] statistics.vue
 
 - [X] edit.vue
 - [X] item.vue
 - [X] rules.js
 - [ ] timeline.vue
+  - [ ] style: remove `scoped` and add 5 `../`
 - [X] view.vue

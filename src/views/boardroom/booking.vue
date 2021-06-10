@@ -5,12 +5,17 @@
         <label>{{ boardroom.name }}</label>
       </div>
 
-      <br-timeline
-        ref="brTimeline"
-        :units="units"
-        height="135px"
-        @view-changed="handleViewChange"
-      />
+      <el-form ref="form" :rules="rules" size="mini">
+        <el-form-item prop="dates">
+          <br-timeline
+            ref="brTimeline"
+            :units="units"
+            height="135px"
+            @view-changed="handleViewChange"
+            @drag-end="$refs.form.clearValidate()"
+          />
+        </el-form-item>
+      </el-form>
     </el-card>
 
     <el-card>
@@ -40,7 +45,12 @@ export default {
       height: 0,
       occupy: 5 * 2 + 20 * 2 + 10 * 2 + 4,
       units: [],
-      boardroom: {}
+      boardroom: {},
+      rules: {
+        dates: {
+          validator: (_, value, callback) => callback('请选择日期')
+        }
+      }
     }
   },
   created() {
@@ -115,20 +125,27 @@ export default {
         })))
       })
     },
+    getBookEvents() {
+      return new Promise((resolve, reject) => {
+        const events = this.$refs.brTimeline.getNewEvents()
+        if (events.length > 0) {
+          resolve(events)
+        } else {
+          this.$refs.form.validateField(Object.keys(this.rules))
+          reject()
+        }
+      })
+    },
     handleSubmit() {
-      console.debug('submit...')
-      const res = this.$refs.brEdit.getFormData()
-      const formData = Object.assign(res, { roomId: this.boardroom.id })
-      // for (const k in formData) {
-      //   console.debug(k, ':', formData[k])
-      // }
-
-      const data = {
-        book: formData,
-        dates: this.$refs.brTimeline.getNewEvents()
-      }
-      console.debug(data)
-      save(data).then(res => console.debug('res:', res))
+      Promise.all([
+        this.getBookEvents(),
+        this.$refs.brEdit.getFormData()
+      ]).then(([dates, data]) => {
+        save({
+          book: Object.assign(data, { roomId: this.boardroom.id }),
+          dates
+        }).then(res => console.debug('res:', res))
+      }).catch(() => console.warn('Please select a date and fill in the form.'))
     }
   }
 }

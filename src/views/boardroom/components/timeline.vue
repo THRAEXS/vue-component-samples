@@ -124,6 +124,8 @@ export default {
       })
       this.scheduler.updateView()
       this.handleEventMenu()
+
+      this.$emit('drag-end')
     },
     async handleEventMenu() {
       const vue = await import('vue').then(({ default: v }) => v)

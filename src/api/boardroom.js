@@ -15,6 +15,7 @@ export function getBoardrooms() {
 }
 
 export function save(data) {
+  console.debug('Save data(Need to convert):', data)
   return request({
     url: '/api/thraex/boardrooms',
     method: 'post',
