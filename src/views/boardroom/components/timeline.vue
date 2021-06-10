@@ -228,8 +228,5 @@ export default {
 }
 </script>
 <style scoped>
-@import '~@/components/scheduler/style.css';
-.dhx_cal_container {
-  width: 100%;
-}
+@import '/static/dhtmlxScheduler/scheduler.css';
 </style>

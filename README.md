@@ -53,10 +53,8 @@ Bugs(fix: reload `scheduler`):
 
 - [X] static/dhtmlxScheduler
 - [X] components/scheduler
-  - [X] index.js
-  - [ ] style.css
 
-- [ ] booking.vue
+- [ ] booking.vue: `handleSubmit`
 - [X] statistics.vue
 
 - [X] edit.vue
