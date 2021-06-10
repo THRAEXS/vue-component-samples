@@ -92,7 +92,10 @@ export default {
   updated() {
     this.$nextTick(() => {
       const bodyHeight = document.body.clientHeight
-      const navHeight = document.querySelector('.navbar')?.clientHeight || 0
+      // const navHeight = document.querySelector('.navbar')?.clientHeight || 0
+      const navbar = document.querySelector('.navbar')
+      const navHeight = navbar ? navbar.clientHeight : 0
+
       const headerHeight = document.querySelector('.card-header').clientHeight
       this.height = bodyHeight - navHeight - headerHeight - this.occupy
     })

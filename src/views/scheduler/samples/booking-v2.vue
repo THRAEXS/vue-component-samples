@@ -60,7 +60,9 @@ export default {
   updated() {
     this.$nextTick(() => {
       const bodyHeight = document.body.clientHeight
-      const navHeight = document.querySelector('.navbar')?.clientHeight || 0
+      // const navHeight = document.querySelector('.navbar')?.clientHeight || 0
+      const navbar = document.querySelector('.navbar')
+      const navHeight = navbar ? navbar.clientHeight : 0
 
       const form = document.querySelector('.booking-form')
       const top = form.querySelector('.el-card.timeline').clientHeight
