@@ -82,8 +82,8 @@ export default {
       const d2s = this.scheduler.date.date_to_str('%H:%i')
       const format = (s, e) => `${d2s(s)}-${d2s(e)}`
       Object.assign(this.scheduler.templates, {
-        event_bar_text: (start, end, { id, text }) =>
-          `<div id="${id}" class="thx_event_temp">${text || format(start, end)}</div>`,
+        event_bar_text: (start, end, { id, text }) => this.readonly ? text
+          : `<div id="${id}" class="thx_event_temp">${format(start, end)}</div>`,
         tooltip_text: (start, end, { text }) => text || `<b>${format(start, end)}</b>`, // tooltip.js
         event_class: (start, end, { css }) => `thx_event ${css || ''}`
       })
