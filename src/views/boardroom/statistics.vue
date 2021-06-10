@@ -11,12 +11,12 @@
       </div>
 
       <br-timeline
-        render="tree"
         :height="`${height}px`"
-        readonly
         :dx="250"
         :now="now"
         :units="units"
+        render="tree"
+        readonly
         @view-changed="handleViewChange"
       />
     </el-card>

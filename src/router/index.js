@@ -365,10 +365,10 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: 'my',
-        name: 'BoardroomMy',
+        path: 'booking/my',
+        name: 'BoardroomMyBooking',
         component: () => import('@/views/boardroom/components/view'),
-        meta: { title: 'My', icon: 'el-icon-s-help' }
+        meta: { title: 'My Booking', icon: 'el-icon-s-help' }
       }
     ]
   },
