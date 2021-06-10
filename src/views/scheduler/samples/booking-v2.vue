@@ -7,8 +7,8 @@
 
       <br-timeline
         ref="brTimeline"
-        height="135px"
         :units="units"
+        height="135px"
         @view-changed="handleViewChange"
       />
     </el-card>
