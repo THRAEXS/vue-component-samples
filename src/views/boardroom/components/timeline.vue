@@ -85,7 +85,7 @@ export default {
         event_bar_text: (start, end, { id, text }) =>
           `<div id="${id}" class="thx_event_temp">${text || format(start, end)}</div>`,
         tooltip_text: (start, end, { text }) => text || `<b>${format(start, end)}</b>`, // tooltip.js
-        event_class: (start, end, { css }) => `thx_event ${css ?? ''}`
+        event_class: (start, end, { css }) => `thx_event ${css || ''}`
       })
       Object.assign(this.scheduler.config, this.schedulerCfg)
 
@@ -228,7 +228,7 @@ export default {
 }
 </script>
 <style scoped>
-@import '/static/dhtmlxScheduler/scheduler.css';
+@import '~@/components/scheduler/style.css';
 .dhx_cal_container {
   width: 100%;
 }
