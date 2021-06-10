@@ -70,7 +70,11 @@ export default {
   },
   methods: {
     joinDate(y, m, d, cn) {
-      return cn ? `${y}年${m}月${d}日` : `${y}-${m}-${d}`
+      const to = p => {
+        const n = p.toString()
+        return n.length > 1 ? n : `0${n}`
+      }
+      return cn ? `${y}年${m}月${d}日` : `${y}-${to(m)}-${to(d)}`
     },
     async assemblyUnits(start) {
       let timestamp = Number.parseInt(start)
