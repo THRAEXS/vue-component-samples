@@ -346,6 +346,34 @@ export const constantRoutes = [
   },
 
   {
+    path: '/boardroom',
+    redirect: '/boardroom/index',
+    component: Layout,
+    meta: { title: 'Boardroom', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'BoardroomStatistics',
+        component: () => import('@/views/boardroom/statistics'),
+        meta: { title: 'Statistics', icon: 'el-icon-s-help' }
+      },
+      {
+        path: 'booking',
+        name: 'BoardroomBooking',
+        component: () => import('@/views/boardroom/booking'),
+        meta: { title: 'Booking', icon: 'el-icon-s-help' },
+        hidden: true
+      },
+      {
+        path: 'my',
+        name: 'BoardroomMy',
+        component: () => import('@/views/boardroom/components/view'),
+        meta: { title: 'My', icon: 'el-icon-s-help' }
+      }
+    ]
+  },
+
+  {
     path: '/components/plus',
     component: Layout,
     meta: { title: 'Components Plus', icon: 'el-icon-finished' },

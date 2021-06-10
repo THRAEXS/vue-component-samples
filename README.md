@@ -6,7 +6,9 @@ Some samples of vue components.
 
 - [element-widgets](https://github.com/THRAEX-70/element-widgets)
 
-## DhtmlxScheduler v4.1.0
+## Boardroom
+
+### DhtmlxScheduler v4.1.0
 
 Plugins(`public/static/dhtmlxScheduler`):
 
@@ -26,7 +28,8 @@ Bugs(fix: reload `scheduler`):
 - `scheduler` event repeated rendering
   - fix: `scheduler.clearAll()`
 
-TODO:
+### TODO
+
 - [X] Time out of bounds
 - [ ] Form validate
 - [ ] Form modify
@@ -43,3 +46,19 @@ TODO:
 - [X] Remark position
 - [ ] Submit dialog ???
 - [ ] Style
+
+### Files
+
+**Moved from `views/scheduler/samples/` to `views/boardroom/`**
+
+- [X] static/dhtmlxScheduler
+- [X] components/scheduler
+
+- [X] edit.vue
+- [X] item.vue
+- [X] rules.js
+- [ ] timeline.vue
+- [X] view.vue
+
+- [ ] booking.vue
+- [ ] statistics.vue
