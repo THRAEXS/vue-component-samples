@@ -304,19 +304,21 @@ export default {
   },
   methods: {
     getFormData() {
-      /* const { bannerTxt, ...other } = this.form
-      bannerTxt && (other.banner = `${other.banner}：${bannerTxt}`)
-      Object.keys(other).forEach(k =>
-        Array.isArray(other[k]) && (other[k] = other[k].join('，')))
+      return new Promise((resolve, reject) => {
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            const { bannerTxt, ...other } = this.form
+            bannerTxt && (other.banner = `${other.banner}：${bannerTxt}`)
+            Object.keys(other).forEach(k =>
+              Array.isArray(other[k]) && (other[k] = other[k].join('，')))
 
-      const gn = k => (this.info[`${k}s`].find(it => it.id === other[`${k}Id`]) || {}).name
-      return Object.assign(other, { typeName: gn('type'), orgName: gn('org') }) */
-
-      this.$refs.form.validate(valid => {
-        console.debug(valid)
+            const gn = k => (this.info[`${k}s`].find(it => it.id === other[`${k}Id`]) || {}).name
+            resolve(Object.assign(other, { typeName: gn('type'), orgName: gn('org') }))
+          } else {
+            reject()
+          }
+        })
       })
-
-      return {}
     }
   }
 }

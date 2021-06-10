@@ -33,6 +33,7 @@ export default {
       if (edit) {
         if (edit.non) {
           rule = {
+            required: true,
             validator: (_, value, callback) =>
               value.length === 0 && !this.form[edit.prop] && callback(`请选择${label}或填写${edit.label}`)
           }
