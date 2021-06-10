@@ -138,14 +138,14 @@ export default {
     },
     handleSubmit() {
       Promise.all([
-        this.getBookEvents(),
-        this.$refs.brEdit.getFormData()
-      ]).then(([dates, data]) => {
-        save({
-          book: Object.assign(data, { roomId: this.boardroom.id }),
-          dates
-        }).then(res => console.debug('res:', res))
-      }).catch(() => console.warn('Please select a date and fill in the form.'))
+        this.$refs.brEdit.getFormData().then(data =>
+          Object.assign(data, { roomId: this.boardroom.id })),
+        this.getBookEvents()
+      ]).then(([book, dates]) => this.handleSave({ book, dates }))
+        .catch(() => console.warn('Please select a date and fill in the form.'))
+    },
+    handleSave(data) {
+      save(data).then(res => console.debug('res:', res))
     }
   }
 }
