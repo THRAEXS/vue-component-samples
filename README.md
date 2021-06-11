@@ -31,11 +31,14 @@ Bugs(fix: reload `scheduler`):
 ### TODO
 
 - [X] Time out of bounds
-- [ ] Form validate
+- [X] Form validate
 - [ ] Form modify
+- [ ] Submit dialog
 - [ ] Blocked tips
-- [ ] Secret dialog
+- [ ] Org filter
+- [X] Secret dialog
 - [ ] Notice
+- [X] Legends
 - [ ] Base info components
 - [ ] `boardroom` does not exist for booking
 - [X] Event/Marked color
@@ -44,7 +47,6 @@ Bugs(fix: reload `scheduler`):
 - [X] Event cancel: icon
 - [ ] Opt: event cancel icon
 - [X] Remark position
-- [ ] Submit dialog ???
 - [ ] Style
 
 ### Files
