@@ -34,8 +34,8 @@ export default {
         if (edit.non) {
           rule = {
             required: true,
-            validator: (_, value, callback) =>
-              value.length === 0 && !this.form[edit.prop] && callback(`请选择${label}或填写${edit.label}`)
+            validator: (_, value, callback) => callback(
+              value.length === 0 && !this.form[edit.prop] ? `请选择${label}或填写${edit.label}` : undefined)
           }
         }
 
@@ -43,8 +43,8 @@ export default {
           rule = [
             rule,
             {
-              validator: (_, value, callback) =>
-                value === options.minor[edit.for] && !this.form[edit.prop] && callback(`请填写${edit.label}`)
+              validator: (_, value, callback) => callback(
+                value === options.minor[edit.for] && !this.form[edit.prop] ? `请填写${edit.label}` : undefined)
             }
           ]
         }
