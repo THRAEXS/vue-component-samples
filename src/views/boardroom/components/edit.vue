@@ -53,6 +53,7 @@
           <el-select
             v-model="form.orgId"
             clearable
+            filterable
             placeholder="请选择院内承办单位"
             style="width: 100%;"
           >

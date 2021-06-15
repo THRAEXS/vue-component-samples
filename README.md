@@ -35,9 +35,8 @@ Bugs(fix: reload `scheduler`):
 - [ ] Form modify
 - [X] Submit dialog
 - [X] Blocked tips
-- [ ] Org filter
+- [X] Org filter
 - [X] Secret dialog
-- [ ] Notice
 - [X] Legends
 - [ ] Base info components
 - [X] `boardroom` does not exist for booking
@@ -46,6 +45,7 @@ Bugs(fix: reload `scheduler`):
 - [X] Remark position
 - [X] Event modify: move/resize
 - [X] Event cancel: icon
+- [ ] Notice
 - [ ] Opt: event cancel icon
 - [ ] Style
 
