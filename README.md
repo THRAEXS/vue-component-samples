@@ -56,8 +56,7 @@ Bugs(fix: reload `scheduler`):
 - [X] static/dhtmlxScheduler
 - [X] components/scheduler
 
-- [ ] booking.vue
-  - [ ] `handleSubmit`
+- [X] booking.vue
 - [X] statistics.vue
 
 - [X] edit.vue

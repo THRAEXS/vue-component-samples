@@ -136,16 +136,35 @@ export default {
         }
       })
     },
+    emptyFunction() {
+      return () => {}
+    },
     handleSubmit() {
       Promise.all([
         this.$refs.brEdit.getFormData().then(data =>
           Object.assign(data, { roomId: this.boardroom.id })),
         this.getBookEvents()
       ]).then(([book, dates]) => this.handleSave({ book, dates }))
-        .catch(() => console.warn('Please select a date and fill in the form.'))
+        .catch(this.emptyFunction)
     },
     handleSave(data) {
-      save(data).then(res => console.debug('res:', res))
+      const msg = (pre = '', items, post = '') => `
+        ${pre}
+        ${items.map(([start, end]) => `<div><strong>${start} 至 ${end}</strong></div>`).join('')}
+        ${post}
+        `
+      const cfg = {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnClickModal: true,
+        dangerouslyUseHTMLString: true
+      }
+      this.$confirm(msg('您预定的时间段为:', data.dates.map(({ start, end }) => [start, end]), '确认提交?'), '确认', cfg)
+        .then(() => save(data))
+        .then(({ code, message }) => code === 200
+          ? this.$router.push('/boardroom/index')
+          : this.$alert(msg('以下时间段已被占用:', message), '提示', cfg).catch(this.emptyFunction))
+        .catch(this.emptyFunction)
     }
   }
 }

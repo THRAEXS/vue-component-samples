@@ -16,11 +16,10 @@ export function getBoardrooms() {
 
 export function save(data) {
   console.debug('Save data(Need to convert):', data)
-  return request({
-    url: '/api/thraex/boardrooms',
-    method: 'post',
-    data
-  })
+  return request({ url: '/api/thraex/boardrooms', method: 'post', data })
+    .then(({ code, ...other }) => ({ code: Number.parseInt(code / 100) + code % 100, ...other }))
+    .then(({ code, message, ...other }) => ({ code, message: code === 206
+      ? message.split(',').map(it => it.split('&')) : message, ...other }))
 }
 
 export function getBoardroom(id = '') {

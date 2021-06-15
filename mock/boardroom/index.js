@@ -179,6 +179,13 @@ module.exports = [
   {
     url: '/api/thraex/boardrooms',
     type: 'post',
-    response: _ => ({ code: 20000, data: 'Success' })
+    // response: _ => ({ code: 20000, data: 'Success' })
+    response: config => {
+      const { book: { roomId }, dates } = config.body
+      return roomId === 'room-1'
+        // ? { code: 20006, message: dates.map(({ start, end }) => `${start}至${end}已被预定!\n`).join('') }
+        ? { code: 20006, message: dates.map(({ start, end }) => `${start}&${end}`).join(',') }
+        : { code: 20000, data: dates.length }
+    }
   }
 ]
