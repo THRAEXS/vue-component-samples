@@ -33,20 +33,20 @@ Bugs(fix: reload `scheduler`):
 - [X] Time out of bounds
 - [X] Form validate
 - [ ] Form modify
-- [ ] Submit dialog
-- [ ] Blocked tips
+- [X] Submit dialog
+- [X] Blocked tips
 - [ ] Org filter
 - [X] Secret dialog
 - [ ] Notice
 - [X] Legends
 - [ ] Base info components
-- [ ] `boardroom` does not exist for booking
+- [X] `boardroom` does not exist for booking
 - [X] Event/Marked color
 - [X] Condition
+- [X] Remark position
 - [X] Event modify: move/resize
 - [X] Event cancel: icon
 - [ ] Opt: event cancel icon
-- [X] Remark position
 - [ ] Style
 
 ### Files

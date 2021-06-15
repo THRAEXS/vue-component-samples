@@ -55,16 +55,18 @@ export default {
   },
   created() {
     const { rid, start } = this.$route.query
-    const to = () => this.$router.push('/boardroom/index')
-    !rid && to()
+    !rid && this.handleRoute()
 
     Promise.all([
       getBoardroom(rid),
       this.assemblyUnits(start)
     ]).then(([{ data }, units]) => {
-      // TODO: boardroom does not exist
-      this.boardroom = data
-      this.units = units
+      if (data) {
+        this.boardroom = data
+        this.units = units
+      } else {
+        this.handleRoute()
+      }
     })
   },
   updated() {
@@ -81,6 +83,9 @@ export default {
     })
   },
   methods: {
+    handleRoute() {
+      this.$router.push('/boardroom/index')
+    },
     joinDate(y, m, d, cn) {
       const to = p => {
         const n = p.toString()
@@ -162,7 +167,7 @@ export default {
       this.$confirm(msg('您预定的时间段为:', data.dates.map(({ start, end }) => [start, end]), '确认提交?'), '确认', cfg)
         .then(() => save(data))
         .then(({ code, message }) => code === 200
-          ? this.$router.push('/boardroom/index')
+          ? this.handleRoute()
           : this.$alert(msg('以下时间段已被占用:', message), '提示', cfg).catch(this.emptyFunction))
         .catch(this.emptyFunction)
     }
