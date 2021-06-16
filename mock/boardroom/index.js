@@ -113,15 +113,7 @@ module.exports = [
     // }
   },
   {
-    url: '/api/thraex/boardrooms/id/\*',
-    type: 'get',
-    response: config => {
-      const id = config.url.split('/').reverse()[0]
-      return { code: 20000, data: rooms.find(it => it.id === id) }
-    }
-  },
-  {
-    url: '/api/thraex/boardrooms/info',
+    url: '/api/thraex/boardrooms/book/info',
     type: 'get',
     response: _ => {
       const data = {
@@ -133,7 +125,7 @@ module.exports = [
     }
   },
   {
-    url: '/api/thraex/boardrooms/events',
+    url: '/api/thraex/boardrooms/book/events',
     type: 'get',
     response: config => {
       const { day: date } = config.query
@@ -151,7 +143,7 @@ module.exports = [
     }
   },
   {
-    url: '/api/thraex/boardrooms/marks',
+    url: '/api/thraex/boardrooms/book/marks',
     type: 'get',
     response: config => {
       const { roomId, dates } = config.query
@@ -172,12 +164,15 @@ module.exports = [
     }
   },
   {
-    url: '/api/thraex/boardrooms',
+    url: '/api/thraex/boardrooms/book',
     type: 'get',
-    response: _ => ({ code: 20000, data })
+    response: config => {
+      console.debug(config.url)
+      return { code: 20000, data: 'gui' }
+    }
   },
   {
-    url: '/api/thraex/boardrooms',
+    url: '/api/thraex/boardrooms/book',
     type: 'post',
     // response: _ => ({ code: 20000, data: 'Success' })
     response: config => {
@@ -186,6 +181,21 @@ module.exports = [
         // ? { code: 20006, message: dates.map(({ start, end }) => `${start}至${end}已被预定!\n`).join('') }
         ? { code: 20006, message: dates.map(({ start, end }) => `${start}&${end}`).join(',') }
         : { code: 20000, data: dates.length }
+    }
+  },
+  {
+    url: '/api/thraex/boardrooms/group',
+    type: 'get',
+    response: _ => ({ code: 20000, data })
+  },
+  {
+    // url: '/api/thraex/boardrooms/id/\*',
+    url: '/api/thraex/boardrooms',
+    type: 'get',
+    response: config => {
+      console.debug('config.url', config.url)
+      const id = config.url.split('/').reverse()[0]
+      return { code: 20000, data: rooms.find(it => it.id === id) }
     }
   }
 ]
