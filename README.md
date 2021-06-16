@@ -8,6 +8,8 @@ Some samples of vue components.
 
 ## Boardroom
 
+Move to [https://github.com/O70/thraex-boardroom](https://github.com/O70/thraex-boardroom)
+
 ### DhtmlxScheduler v4.1.0
 
 Plugins(`public/static/dhtmlxScheduler`):
