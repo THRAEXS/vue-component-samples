@@ -4,8 +4,8 @@
       <el-select
         v-model="form[item.prop]"
         :multiple="item.options.multiple"
-        clearable
         :placeholder="`请选择${item.label}`"
+        clearable
         style="width: 100%;"
         @change="handleChange"
       >

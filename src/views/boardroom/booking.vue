@@ -5,12 +5,17 @@
         <label>{{ boardroom.name }}</label>
       </div>
 
-      <br-timeline
-        ref="brTimeline"
-        :units="units"
-        height="135px"
-        @view-changed="handleViewChange"
-      />
+      <el-form ref="form" :rules="rules" size="mini">
+        <el-form-item prop="dates">
+          <br-timeline
+            ref="brTimeline"
+            :units="units"
+            height="135px"
+            @view-changed="handleViewChange"
+            @drag-end="$refs.form.clearValidate()"
+          />
+        </el-form-item>
+      </el-form>
     </el-card>
 
     <el-card>
@@ -40,21 +45,28 @@ export default {
       height: 0,
       occupy: 5 * 2 + 20 * 2 + 10 * 2 + 4,
       units: [],
-      boardroom: {}
+      boardroom: {},
+      rules: {
+        dates: {
+          validator: (_, value, callback) => callback('请选择日期')
+        }
+      }
     }
   },
   created() {
     const { rid, start } = this.$route.query
-    const to = () => this.$router.push('/boardroom/index')
-    !rid && to()
+    !rid && this.handleRoute()
 
     Promise.all([
       getBoardroom(rid),
       this.assemblyUnits(start)
     ]).then(([{ data }, units]) => {
-      // TODO: boardroom does not exist
-      this.boardroom = data
-      this.units = units
+      if (data) {
+        this.boardroom = data
+        this.units = units
+      } else {
+        this.handleRoute()
+      }
     })
   },
   updated() {
@@ -71,6 +83,9 @@ export default {
     })
   },
   methods: {
+    handleRoute() {
+      this.$router.push('/boardroom/index')
+    },
     joinDate(y, m, d, cn) {
       const to = p => {
         const n = p.toString()
@@ -115,20 +130,46 @@ export default {
         })))
       })
     },
+    getBookEvents() {
+      return new Promise((resolve, reject) => {
+        const events = this.$refs.brTimeline.getNewEvents()
+        if (events.length > 0) {
+          resolve(events)
+        } else {
+          this.$refs.form.validateField(Object.keys(this.rules))
+          reject()
+        }
+      })
+    },
+    emptyFunction() {
+      return () => {}
+    },
     handleSubmit() {
-      console.debug('submit...')
-      const res = this.$refs.brEdit.getFormData()
-      const formData = Object.assign(res, { roomId: this.boardroom.id })
-      // for (const k in formData) {
-      //   console.debug(k, ':', formData[k])
-      // }
-
-      const data = {
-        book: formData,
-        dates: this.$refs.brTimeline.getNewEvents()
+      Promise.all([
+        this.$refs.brEdit.getFormData().then(data =>
+          Object.assign(data, { roomId: this.boardroom.id })),
+        this.getBookEvents()
+      ]).then(([book, dates]) => this.handleSave({ book, dates }))
+        .catch(this.emptyFunction)
+    },
+    handleSave(data) {
+      const msg = (pre = '', items, post = '') => `
+        ${pre}
+        ${items.map(([start, end]) => `<div><strong>${start} 至 ${end}</strong></div>`).join('')}
+        ${post}
+        `
+      const cfg = {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnClickModal: true,
+        dangerouslyUseHTMLString: true
       }
-      console.debug(data)
-      save(data).then(res => console.debug('res:', res))
+      this.$confirm(msg('您预定的时间段为:', data.dates.map(({ start, end }) => [start, end]), '确认提交?'), '确认', cfg)
+        .then(() => save(data))
+        .then(({ code, message }) => code === 200
+          ? this.handleRoute()
+          : this.$alert(msg('以下时间段已被占用:', message), '提示', cfg).catch(this.emptyFunction))
+        .catch(this.emptyFunction)
     }
   }
 }

@@ -8,15 +8,19 @@
           :clearable="false"
           size="mini"
         />
+        <div class="thx-legend">
+          <span class="thx_event_pending" />审批中
+          <span class="thx_event_completed" />审批通过
+        </div>
       </div>
 
       <br-timeline
-        render="tree"
         :height="`${height}px`"
-        readonly
         :dx="250"
         :now="now"
         :units="units"
+        render="tree"
+        readonly
         @view-changed="handleViewChange"
       />
     </el-card>
@@ -188,6 +192,20 @@ export default {
   }
   ::v-deep &__body {
     padding: 0;
+  }
+
+  .thx-legend {
+    display: -webkit-flex;
+    display: flex;
+    margin: 0 10px;
+    line-height: 22px;
+    float: right;
+    span {
+      margin: 0 5px;
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
   }
 }
 </style>

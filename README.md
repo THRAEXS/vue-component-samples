@@ -8,6 +8,8 @@ Some samples of vue components.
 
 ## Boardroom
 
+Move to [https://github.com/O70/thraex-boardroom](https://github.com/O70/thraex-boardroom)
+
 ### DhtmlxScheduler v4.1.0
 
 Plugins(`public/static/dhtmlxScheduler`):
@@ -31,20 +33,22 @@ Bugs(fix: reload `scheduler`):
 ### TODO
 
 - [X] Time out of bounds
-- [ ] Form validate
+- [X] Form validate
 - [ ] Form modify
-- [ ] Blocked tips
-- [ ] Secret dialog
-- [ ] Notice
+- [X] Submit dialog
+- [X] Blocked tips
+- [X] Org filter
+- [X] Secret dialog
+- [X] Legends
 - [ ] Base info components
-- [ ] `boardroom` does not exist for booking
+- [X] `boardroom` does not exist for booking
 - [X] Event/Marked color
 - [X] Condition
+- [X] Remark position
 - [X] Event modify: move/resize
 - [X] Event cancel: icon
+- [ ] Notice
 - [ ] Opt: event cancel icon
-- [X] Remark position
-- [ ] Submit dialog ???
 - [ ] Style
 
 ### Files
@@ -54,11 +58,12 @@ Bugs(fix: reload `scheduler`):
 - [X] static/dhtmlxScheduler
 - [X] components/scheduler
 
+- [X] booking.vue
+- [X] statistics.vue
+
 - [X] edit.vue
 - [X] item.vue
 - [X] rules.js
 - [ ] timeline.vue
+  - [ ] style: remove `scoped` and add 5 `../`
 - [X] view.vue
-
-- [ ] booking.vue
-- [ ] statistics.vue
