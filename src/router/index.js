@@ -287,12 +287,19 @@ export const constantRoutes = [
   {
     path: '/demos',
     component: Layout,
+    meta: { title: 'Demos', icon: 'example' },
     children: [
       {
         path: '',
         component: () => import('@/views/demo'),
         name: 'DemoDownload',
         meta: { title: 'Download', icon: 'el-icon-pie-chart' }
+      },
+      {
+        path: 'dropdown',
+        component: () => import('@/views/demo/dropdown'),
+        name: 'DemoDropdown',
+        meta: { title: 'Dropdown', icon: 'example' }
       }
     ]
   },
